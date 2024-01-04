@@ -25,6 +25,9 @@ migrate_fresh:
 migrate:
 	@docker compose run php php artisan migrate
 
+show:
+	@docker compose run php php artisan db:show
+
 nginx:
 	@docker compose exec nginx bash
 

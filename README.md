@@ -15,7 +15,7 @@ git clone git@github.com:MrBamboozle/project-mayhem.git
 
 There is a Makefile which "aliases" all commands. 
 
-To see actual commands that are running reference the [Makefile](./back/Makefile).
+To see actual commands that are running reference the [Makefile](back/Makefile).
 
 #### 1. Build docker images
 ```
