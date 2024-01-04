@@ -44,6 +44,9 @@ This will `composer install` in the `php` service to install all packages.
 ```
 make migrate
 ```
+If you get `[2002] Connection refused` error, wait a minute or two for db service to properly start, and then try to migrate again.
+Takes a bit of time on first run. 
+
 Your Laravel backend should now be running. Happy coding!
 
 #### Kill docker
