@@ -13,6 +13,9 @@ ps:
 build:
 	@docker compose build
 
+flogs:
+	@docker compose logs --follow
+
 php:
 	@docker compose exec php bash
 
