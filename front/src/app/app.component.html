@@ -1,1 +1,24 @@
-<h1>2024</h1>
+<div class="app">
+  <header>
+    <section>
+      <h1>{{ title }}</h1>
+    </section>
+    <nav>
+      <ul>
+        <li><a routerLink="/">Home</a></li>
+        <li><a routerLink="/users">Users</a></li>
+        <li><a routerLink="/events">Events</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <h4>Routes Result</h4>
+    <router-outlet></router-outlet>
+  </main>
+
+  <footer>
+    Footer
+  </footer>
+
+</div>
