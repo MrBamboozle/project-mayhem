@@ -28,6 +28,12 @@ migrate_fresh:
 migrate:
 	@docker compose run php php artisan migrate
 
+seed:
+	@docker compose run php php artisan db:seed
+
+list:
+	@docker compose run php php artisan list
+
 show:
 	@docker compose run php php artisan db:show
 
