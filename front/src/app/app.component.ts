@@ -27,17 +27,6 @@ export class AppComponent {
     public readonly userStore: UserStoreService
   ) {}
 
-  ngOnInit(): void {
-    this.authService.getCurrentUser().subscribe({
-      next: (data: User) => {
-        console.log('aaa')
-        this.userStore.storeCurrentUser(data);
-      },
-      error: (e) => console.error(e),
-      complete: () => console.info('complete') 
-    })
-  }
-
   public toggleSidebar(): void {
     this.isSidebarHidden = !this.isSidebarHidden;
   }
