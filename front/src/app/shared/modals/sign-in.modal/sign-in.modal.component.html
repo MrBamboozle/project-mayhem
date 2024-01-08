@@ -1,0 +1,33 @@
+<div class="modal-header">
+  <h4 class="modal-title">Sign in/Register</h4>
+  <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></button>
+</div>
+<div class="modal-body">
+  <ul ngbNav #nav="ngbNav" [(activeId)]="active" (navChange)="onNavChange($event)" class="nav-tabs">
+    <li [ngbNavItem]="1">
+      <button ngbNavLink>Sign in</button>
+      <ng-template ngbNavContent>
+        <app-sign-in (onSignedIn)="activeModal.dismiss('User signed in')"></app-sign-in>
+
+        <p>Don't have an account? 
+          
+          <button class="btn btn-sm btn-link" (click)="nav.select(2)">
+            Register!
+          </button>
+        </p>
+      </ng-template>
+    </li>
+    <li [ngbNavItem]="2">
+      <button ngbNavLink>Register</button>
+      <ng-template ngbNavContent>
+        <app-register></app-register>
+      </ng-template>
+    </li>
+  </ul>
+  
+  <div [ngbNavOutlet]="nav" class="mt-2"></div>
+    
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
+</div>
