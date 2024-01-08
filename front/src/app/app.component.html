@@ -17,11 +17,11 @@
         <h1><b>{{ title }}</b></h1>
       </div>
       <div>
-        <button type="button" class="btn btn-primary" *ngIf="!isSignedIn; else userMenu" (click)="signIn()">Sign in</button>
+        <button type="button" class="btn btn-primary" *ngIf="(userStore.currentUser | async) === null; else userMenu" (click)="openSignInModal()">Sign in</button>
         <ng-template #userMenu>
           <div ngbDropdown>
             <button class="btn btn-secondary" type="button" ngbDropdownToggle>
-              Avatar
+              {{ (userStore.currentUser | async)?.name }}
             </button>
             <div ngbDropdownMenu aria-labelledby="navbarDropdown2" class="dropdown-menu dropdown-menu-end">
               <button ngbDropdownItem type="button">Profile</button>

@@ -16,6 +16,10 @@ $spacers: (
 /* Importing Bootstrap SCSS file. */
 @import 'bootstrap/scss/bootstrap';
 
+.show-modal .modal {
+  display: contents !important;
+}
+
 $font-primary: 'Poppins',Arial, sans-serif;
 $primary: #2f89fc;
 
