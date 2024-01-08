@@ -16,3 +16,7 @@ use Illuminate\Support\Facades\Route;
 //Route::get('/', function () {
 //    return 'Welcome to my humble abode';
 //});
+
+Route::get('/login', function () {
+    return view('unauthenticated');
+})->name('login');
