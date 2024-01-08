@@ -8,7 +8,7 @@ import { User } from '../models/user';
 export class UserStoreService {
   public readonly currentUser: BehaviorSubject<User|null> = new BehaviorSubject<User|null>(null);
 
-  public storeCurrentUser(user: User): void {
+  public storeCurrentUser(user: User|null): void {
     console.log('user stored', user);
     this.currentUser.next(user);
   }

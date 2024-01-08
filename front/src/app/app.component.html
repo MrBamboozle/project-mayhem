@@ -21,7 +21,7 @@
         <ng-template #userMenu>
           <div ngbDropdown>
             <button class="btn btn-secondary" type="button" ngbDropdownToggle>
-              {{ (userStore.currentUser | async)?.username }}
+              {{ (userStore.currentUser | async)?.name }}
             </button>
             <div ngbDropdownMenu aria-labelledby="navbarDropdown2" class="dropdown-menu dropdown-menu-end">
               <button ngbDropdownItem type="button">Profile</button>

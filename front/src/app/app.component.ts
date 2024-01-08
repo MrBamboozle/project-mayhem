@@ -6,6 +6,8 @@ import { SignInModalComponent } from './shared/modals/sign-in.modal/sign-in.moda
 import { ModalHelperService } from './shared/services/modal-helper.service';
 import { HttpClientModule } from '@angular/common/http';
 import { UserStoreService } from './shared/stores/user.store.service';
+import { AuthenticationService } from './services/authentication.service';
+import { User } from './shared/models/user';
 
 @Component({
   selector: 'app-root',
@@ -21,8 +23,20 @@ export class AppComponent {
 
   constructor(
     private readonly modalService: ModalHelperService,
+    private readonly authService: AuthenticationService,
     public readonly userStore: UserStoreService
   ) {}
+
+  ngOnInit(): void {
+    this.authService.getCurrentUser().subscribe({
+      next: (data: User) => {
+        console.log('aaa')
+        this.userStore.storeCurrentUser(data);
+      },
+      error: (e) => console.error(e),
+      complete: () => console.info('complete') 
+    })
+  }
 
   public toggleSidebar(): void {
     this.isSidebarHidden = !this.isSidebarHidden;
@@ -33,6 +47,6 @@ export class AppComponent {
   }
 
   public signOut(): void {
-    this.isSignedIn = false;
+    this.authService.logout();
   }
 }

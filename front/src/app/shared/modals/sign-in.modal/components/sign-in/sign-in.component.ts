@@ -3,6 +3,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, EventEmitter, Output } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthenticationService } from '@app/services/authentication.service';
+import { LoginRequest, LoginResponse } from '@app/shared/models/login';
 import { User } from '@app/shared/models/user';
 import { UserStoreService } from '@app/shared/stores/user.store.service';
 
@@ -37,15 +38,22 @@ export class SignInComponent {
       return;
     }
 
+    const request: LoginRequest = {
+      email: this.loginForm.value.email,
+      password: this.loginForm.value.password,
+    }
+
     this.authService
-      .login(this.loginForm.value.email, this.loginForm.value.password)
+      .login(request)
       .subscribe({
-        next: (data) => {
+        next: (data: LoginResponse) => {
+          console.log(data)
           const user: User = {
             email: 'aaa',
-            username: 'bbb'
+            name: 'bbb'
           };
           this.userStore.storeCurrentUser(user);
+          this.authService.storeAccessToken(data.token)
           this.onSignedIn.emit(true);
         },
         error: (e) => console.error(e),
