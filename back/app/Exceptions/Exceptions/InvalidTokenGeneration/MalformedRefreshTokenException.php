@@ -11,7 +11,7 @@ class MalformedRefreshTokenException extends BaseException
         parent::__construct(
             'Malformed refresh token',
             ['token' => 'Unable to generate access token from refresh token'],
-            401
+            403
         );
     }
 }
