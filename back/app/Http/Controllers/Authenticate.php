@@ -2,16 +2,25 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\TokenAbility;
 use App\Exceptions\BaseException;
 use App\Exceptions\Exceptions\InvalidCredentialsException;
+use App\Exceptions\Exceptions\InvalidTokenGeneration\MalformedRefreshTokenException;
+use App\Exceptions\Exceptions\InvalidTokenGeneration\UnableToGenerateTokenPairsException;
 use App\Http\Requests\AuthenticateRequest;
+use App\Models\PersonalAccessToken;
 use App\Models\User;
+use App\Services\TokenGenerateService\TokenGeneration;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Laravel\Sanctum\PersonalAccessToken;
+use Illuminate\Support\Facades\DB;
 
 class Authenticate extends Controller
 {
+    public function __construct(
+        protected TokenGeneration $tokenGenerationService
+    ){}
+
     /**
      * @throws BaseException
      */
@@ -22,24 +31,15 @@ class Authenticate extends Controller
         }
 
         Auth::login(User::where('email', $request->email)->firstOrFail());
+        /** @var User $user */
         $user = Auth::user();
 
-        /** @var PersonalAccessToken[] $tokens */
-        $tokens = $user->tokens;
-
-        if (!empty($tokens)) {
-            foreach ($tokens as $token) {
-                $token->delete();
-            }
-        }
+        $tokenPair = $this->tokenGenerationService->generateTokenPair($user);
 
         return [
-            'token' => $user
-                ->createToken(
-                    'secret',
-                    ['*'],
-                    now()->addDays(6)
-                )->plainTextToken
+            'user' => $user,
+            'token' => $tokenPair->getAccessToken()->plainTextToken,
+            'refresh_token' => $tokenPair->getRefreshToken()->plainTextToken,
         ];
     }
 
@@ -55,5 +55,38 @@ class Authenticate extends Controller
     public function loggedInUser(Request $request): User
     {
         return $request->user();
+    }
+
+    /**
+     * @throws MalformedRefreshTokenException
+     * @throws UnableToGenerateTokenPairsException
+     */
+    public function refreshAccessToken(): array
+    {
+        /** @var User $user */
+        $user = Auth::user();
+        /** @var PersonalAccessToken $token */
+        $token = $user->currentAccessToken();
+        $accessToken = $token->parentToken;
+
+        // if access token not yet expired we assume it is a malicious user and want to stop him in his tracks
+        // normal users do not request token refresh if access token has not yet expired
+        if ($accessToken->expires_at < now()) {
+            $user->tokens()->delete();
+
+            throw new MalformedRefreshTokenException();
+        }
+
+        $tokenPair = $this->tokenGenerationService->refreshTokenPair($user, $accessToken, $token);
+
+        return [
+            'token' => $tokenPair->getAccessToken()->plainTextToken,
+            'refresh_token' => $tokenPair->getRefreshToken()->plainTextToken
+        ];
+    }
+
+    public function register(): array
+    {
+        return ['token' => 'moj mali lkurac'];
     }
 }
