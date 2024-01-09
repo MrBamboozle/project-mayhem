@@ -24,7 +24,7 @@
               {{ (userStore.currentUser | async)?.name }}
             </button>
             <div ngbDropdownMenu aria-labelledby="navbarDropdown2" class="dropdown-menu dropdown-menu-end">
-              <button ngbDropdownItem type="button">Profile</button>
+              <button ngbDropdownItem type="button" [routerLink]="['/profile']">Profile</button>
               <button ngbDropdownItem type="button" (click)="signOut()">Sign out</button>
             </div>
           </div>

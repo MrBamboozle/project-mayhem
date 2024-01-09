@@ -18,7 +18,7 @@ export interface RefreshTokenResponse {
 
 export interface RegisterRequest {
   email: string;
-  alias: string;
+  name: string;
   password: string;
   repeatPassword: string;
 }
