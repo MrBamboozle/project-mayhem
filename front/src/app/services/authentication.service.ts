@@ -5,7 +5,7 @@ import { config } from '@app/core/app-config';
 import { LoginRequest, LoginResponse, RefreshTokenResponse } from '@app/shared/models/login';
 import { User } from '@app/shared/models/user';
 import { UserStoreService } from '@app/shared/stores/user.store.service';
-import { Observable, catchError, map, take, tap } from 'rxjs';
+import { Observable, catchError, map, of, take, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -37,15 +37,19 @@ export class AuthenticationService {
       .post(this.logoutUrl, {})
   }
 
-  public getRefreshToken(): Observable<RefreshTokenResponse> {
-    return this._http
-      .get<any>(this.refreshTokenUrl, {
-        headers: {
-          // eslint-disable-next-line prettier/prettier
-          'refreshToken': this.refreshToken || '',
-        },
-      })
-      .pipe(take(1), tap(console.log));
+  public getRefreshToken(): Observable<RefreshTokenResponse|null> {
+    if(this.refreshToken) {
+      const refreshToken: string = `Bearer ${this.refreshToken}`
+      return this._http
+        .get(this.refreshTokenUrl, {
+          headers: {
+            'Authorization': refreshToken,
+          },
+        })
+        .pipe(take(1), tap(console.log));
+    } else {
+      return of(null)
+    }
   }
 
   public getCurrentUser(): Observable<User> {
