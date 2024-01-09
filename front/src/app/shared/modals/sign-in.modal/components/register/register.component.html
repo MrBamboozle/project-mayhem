@@ -1,1 +1,56 @@
-<p>register works!</p>
+<form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="form">
+  <!-- Email Field -->
+  <div class="form-group">
+    <label for="email">Email</label>
+    <input id="email" type="email" formControlName="email" class="form-control"
+           [ngClass]="{ 'is-invalid': controls.email.touched && controls.email.invalid }">
+    <div *ngIf="controls.email.touched && controls.email.invalid" class="text-danger">
+      <small *ngIf="controls.email.errors?.required">Email is required.</small>
+      <small *ngIf="controls.email.errors?.email">Email is invalid.</small>
+    </div>
+  </div>
+
+  <!-- Alias Field -->
+  <div class="form-group">
+    <label for="alias">Alias</label>
+    <input id="alias" type="text" formControlName="alias" class="form-control"
+           [ngClass]="{ 'is-invalid': controls.alias.touched && controls.alias.invalid }">
+    <div *ngIf="controls.alias.touched && controls.alias.invalid" class="text-danger">
+      <small *ngIf="controls.alias.errors?.required">Alias is required.</small>
+      <small *ngIf="controls.alias.errors?.maxlength">Alias must be less than 16 characters.</small>
+      <small *ngIf="controls.alias.errors?.invalidUsername">Alias cannot contain an ampersand (&), equals sign (=), underscore (_), apostrophe ('), dash (-), plus sign (+), comma (,), brackets (&lt;,>), or more than one period (.)</small>
+      <!-- Add any other specific validation messages for the alias here -->
+    </div>
+  </div>
+
+  <!-- Password Field -->
+  <div class="form-group">
+    <label for="password">Password</label>
+    <input id="password" type="password" formControlName="password" class="form-control"
+           [ngClass]="{ 'is-invalid': controls.password.touched && controls.password.invalid }">
+    <div *ngIf="controls.password.touched && controls.password.invalid" class="text-danger">
+      <small *ngIf="controls.password.errors?.required">Password is required.</small>
+    </div>
+  </div>
+
+  <!-- Repeat Password Field -->
+  <div class="form-group">
+    <label for="repeatPassword">Repeat Password</label>
+    <input id="repeatPassword" type="password" formControlName="repeatPassword" class="form-control"
+           [ngClass]="{ 'is-invalid': controls.repeatPassword.touched && controls.repeatPassword.invalid }">
+    <div *ngIf="controls.repeatPassword.touched && controls.repeatPassword.invalid" class="text-danger">
+      <small *ngIf="controls.repeatPassword.errors?.required">Repeat password is required.</small>
+    </div>
+  </div>
+
+  <!-- Passwords Do Not Match Error -->
+  <div *ngIf="registerForm.errors?.passwordsNotMatching && (controls.password.touched || controls.repeatPassword.touched)" class="text-danger">
+    <small>Passwords do not match.</small>
+  </div>
+
+  <!-- Submit Button -->
+  <div class="form-group">
+    <button type="submit" class="btn btn-success">Register</button>
+  </div>
+</form>
+

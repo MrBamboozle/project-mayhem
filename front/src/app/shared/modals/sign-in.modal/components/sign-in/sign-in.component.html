@@ -1,21 +1,26 @@
-<form #form="ngForm" [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="form">
+<form [formGroup]="loginForm" class="form">
+  <!-- Email Field -->
   <div class="form-group">
     <label for="email">Email</label>
     <input id="email" type="email" formControlName="email" class="form-control"
-            [ngClass]="{ 'is-invalid': form.submitted && controls.email.invalid }">
-    <div *ngIf="form.submitted && controls.email.invalid" class="text-danger">
+           [ngClass]="{ 'is-invalid': controls.email.touched && controls.email.invalid }">
+    <div *ngIf="controls.email.touched && controls.email.invalid" class="text-danger">
       <small *ngIf="controls.email.errors?.required">Email is required.</small>
       <small *ngIf="controls.email.errors?.email">Email is invalid.</small>
     </div>
   </div>
+
+  <!-- Password Field -->
   <div class="form-group">
     <label for="password">Password</label>
     <input id="password" type="password" formControlName="password" class="form-control"
-            [ngClass]="{ 'is-invalid': form.submitted && controls.password.invalid }">
-    <div *ngIf="form.submitted && controls.password.invalid" class="text-danger">
+           [ngClass]="{ 'is-invalid': controls.password.touched && controls.password.invalid }">
+    <div *ngIf="controls.password.touched && controls.password.invalid" class="text-danger">
       <small *ngIf="controls.password.errors?.required">Password is required.</small>
     </div>
   </div>
+
+  <!-- Submit Button -->
   <div class="form-group">
     <button type="submit" class="btn btn-success">Login</button>
   </div>

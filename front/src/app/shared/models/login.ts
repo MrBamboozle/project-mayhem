@@ -15,3 +15,10 @@ export interface RefreshTokenResponse {
   token: string;
   refreshToken: string;
 }
+
+export interface RegisterRequest {
+  email: string;
+  alias: string;
+  password: string;
+  repearPassword: string;
+}
