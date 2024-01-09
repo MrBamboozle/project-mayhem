@@ -3,7 +3,7 @@ import { User } from "./user";
 export interface LoginResponse {
   user: User;
   token: string;
-  refreshToken: string;
+  refresh_token: string;
 }
 
 export interface LoginRequest {
@@ -20,5 +20,5 @@ export interface RegisterRequest {
   email: string;
   alias: string;
   password: string;
-  repearPassword: string;
+  repeatPassword: string;
 }

@@ -9,6 +9,7 @@ import {
 import { catchError, tap, switchMap } from 'rxjs/operators';
 import { Observable, of, Subject, throwError } from 'rxjs';
 import { AuthenticationService } from '@app/services/authentication.service';
+import { RefreshTokenResponse } from '@app/shared/models/login';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
@@ -21,7 +22,7 @@ export class AuthInterceptor implements HttpInterceptor {
   ) {}
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<any> {
-    if (request.url.endsWith('/login')) {
+    if (request.url.endsWith('/login') || request.url.endsWith('/refresh-token')) {
       return next.handle(request);
     }
     console.log('caught by interceptor')
@@ -40,6 +41,7 @@ export class AuthInterceptor implements HttpInterceptor {
   addAuthHeader(request: HttpRequest<any>): HttpRequest<any> {
     const accessToken: string | null = this.authService.accessToken;
 
+    
     // Clone the request and set the new header in one step.
     const authReq = request.clone({
       headers: request.headers.set('Authorization', `Bearer ${accessToken}`)
@@ -60,7 +62,9 @@ export class AuthInterceptor implements HttpInterceptor {
       this.refreshTokenInProgress = true;
 
       return this.authService.getRefreshToken().pipe(
-        tap((data) => {
+        tap((data: any) => {
+          this.authService.storeAccessToken(data?.token);
+          this.authService.storeRefreshToken(data?.refresh_token);
           this.refreshTokenInProgress = false;
           this.tokenRefreshedSource.next(true);
         }),

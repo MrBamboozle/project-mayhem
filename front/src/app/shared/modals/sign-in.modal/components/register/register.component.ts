@@ -40,7 +40,7 @@ export class RegisterComponent {
       email: this.registerForm.value.email,
       alias: this.registerForm.value.alias,
       password: this.registerForm.value.password,
-      repearPassword: this.registerForm.value.repeatPassword,
+      repeatPassword: this.registerForm.value.repeatPassword,
     }
 
     console.log('form is valis, submitting:', request);

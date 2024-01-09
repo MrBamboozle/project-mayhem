@@ -71,7 +71,7 @@ class Authenticate extends Controller
 
         // if access token not yet expired we assume it is a malicious user and want to stop him in his tracks
         // normal users do not request token refresh if access token has not yet expired
-        if ($accessToken->expires_at < now()) {
+        if ($accessToken->expires_at > now()) {
             $user->tokens()->delete();
 
             throw new MalformedRefreshTokenException();

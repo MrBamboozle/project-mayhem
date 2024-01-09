@@ -5,7 +5,7 @@ import { routes } from './app.routes';
 import { HTTP_INTERCEPTORS, HttpClient, provideHttpClient, withFetch, withInterceptors, withInterceptorsFromDi } from '@angular/common/http';
 import { AuthInterceptor } from './core/interceptors/auth-interceptor';
 import { UserStoreService } from './shared/stores/user.store.service';
-import { Observable, tap } from 'rxjs';
+import { Observable, catchError, of, tap } from 'rxjs';
 import { config } from './core/app-config';
 
 function initializeAppFactory(httpClient: HttpClient, userStore: UserStoreService): () => Observable<any> {
@@ -17,6 +17,12 @@ function initializeAppFactory(httpClient: HttpClient, userStore: UserStoreServic
         },
         error: (e) => console.error(e),
         complete: () => console.info('complete')
+      }),
+      catchError((error) => {
+        console.log('error caught on initialization', error)
+        // Handle or log error
+        // Return an observable to allow the app to continue initializing
+        return of(null);
       })
     )
  }
