@@ -4,7 +4,7 @@ import { Component, EventEmitter, Output } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthenticationService } from '@app/services/authentication.service';
 import { LoginRequest, LoginResponse } from '@app/shared/models/login';
-import { User } from '@app/shared/models/user';
+import { User, UserRequest } from '@app/shared/models/user';
 import { UserStoreService } from '@app/shared/stores/user.store.service';
 
 @Component({
@@ -47,12 +47,7 @@ export class SignInComponent {
       .login(request)
       .subscribe({
         next: (data: LoginResponse) => {
-          console.log(data)
-          const user: User = {
-            email: 'aaa',
-            name: 'bbb'
-          };
-          this.userStore.storeCurrentUser(user);
+          this.userStore.storeCurrentUser(data.user);
           this.authService.storeAccessToken(data.token)
           this.onSignedIn.emit(true);
         },
