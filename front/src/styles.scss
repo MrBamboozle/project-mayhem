@@ -20,7 +20,20 @@ $spacers: (
   display: contents !important;
 }
 
-$font-primary: 'Poppins',Arial, sans-serif;
+/* In a .css or .scss file */
+@font-face {
+  font-family: 'PunkTypewriter';
+  src: url('/assets/fonts/PunkTypewriter.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'ModernTypewriter';
+  src: url('/assets/fonts/ModernTypewriter.ttf') format('truetype');
+}
+
+$font-primary: 'ModernTypewriter', Arial, sans-serif;
 $primary: #2f89fc;
 
 body{
