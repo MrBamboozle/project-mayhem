@@ -19,7 +19,7 @@ import { User } from './shared/models/user';
 export class AppComponent {
   public isSidebarHidden: boolean = false;
   public isSignedIn: boolean = false;
-  public title: string = 'Project Mayhem';
+  public title: string = 'PROJECT MAYHEM';
 
   constructor(
     private readonly modalService: ModalHelperService,

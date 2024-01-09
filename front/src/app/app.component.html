@@ -14,7 +14,7 @@
       <!-- Header  -->
     <div id="header" class="d-flex align-items-center pe-3">
       <div class="d-flex justify-content-center flex-grow-1">
-        <h1><b>{{ title }}</b></h1>
+        <h1>{{ title }}</h1>
       </div>
       <div>
         <button type="button" class="btn btn-primary" *ngIf="(userStore.currentUser | async) === null; else userMenu" (click)="openSignInModal()">Sign in</button>
