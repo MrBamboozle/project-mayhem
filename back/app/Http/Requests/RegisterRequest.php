@@ -24,9 +24,8 @@ class RegisterRequest extends FormRequest
     public function rules(): array
     {
         return [
-            JsonFieldNames::NAME->value => 'string | required | unique:users',
+            JsonFieldNames::EMAIL->value => 'string | required | unique:users',
             JsonFieldNames::PASSWORD->value => 'string | required',
-            JsonFieldNames::REPEAT_PASSWORD->value => 'string | required',
             JsonFieldNames::NAME->value => 'string | required | unique:users',
         ];
     }

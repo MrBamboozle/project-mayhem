@@ -94,9 +94,9 @@ class Authenticate extends Controller
     {
         $data = $request->validated();
 
-        if ($data['password'] !== $data['repeatPassword']) {
-            throw new NonMatchingPasswordsException();
-        }
+        // if ($data['password'] !== $data['repeatPassword']) {
+        //     throw new NonMatchingPasswordsException();
+        // }
 
         $user = User::factory()->createOne($request->validated());
         $tokenPair = $this->tokenGenerationService->generateTokenPair($user);

@@ -32,19 +32,19 @@
 		position: absolute;
 		top: 90px;
 		right: 0;
-		margin-right: -159px;
+		margin-right: -113px;
 		@include transition(.3s);
 
     .paperclip-button {
       background-image: url('../assets/images/paperclip.png'); /* Path to your PNG image */
       background-size: cover; /* Adjusts the background image to cover the entire button */
       border: none; /* Removes the border */
-      width: 210px; /* Set the width as per your requirement */
-      height: 70px; /* Set the height as per your requirement */
+      width: 150px; /* Set the width as per your requirement */
+      height: 50px; /* Set the height as per your requirement */
       cursor: pointer; /* Changes cursor to pointer when hovering over the button */
       background-color: rgba(0,0,0,0);
       padding-left: 30px;
-      font-size: medium;
+      font-size: small;
     }
   
     .paperclip-button:focus {
@@ -100,10 +100,11 @@
     width: 600px;
     background-position-y: -40px;
     height: 80px;
+    overflow: hidden;
     h1 {
       font-family: 'PunkTypewriter', sans-serif;
-      font-size: 70px;
-      line-height: 55px;
+      font-size: 65px;
+      line-height: 45px;
       margin: 0;
       color: $dark;
     }
