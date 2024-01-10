@@ -34,14 +34,18 @@ $spacers: (
 }
 
 $font-primary: 'ModernTypewriter', Arial, sans-serif;
-$primary: #2f89fc;
 
-body{
+body {
+  background-image: url('./assets/images/wood-texture.jpg'); /* Path to your texture image */
+  background-repeat: repeat; /* This will make the texture repeat */
+  background-size: auto; /* Keep the texture's original size */
+  background-attachment: fixed; /* Optional: makes the background fixed during scroll */
+  background-position: center; /* Optional: positions the background image */
+
 	font-family: $font-primary;
 	font-size: 14px;
 	line-height: 1.8;
 	font-weight: normal;
-	background: #fff;
 	color: lighten($black,50%);
 }
 a {
@@ -98,107 +102,6 @@ h1, h2, h3, h4, h5,
 
 
 
-//SIDEBAR
-.wrapper {
-  width: 100%;
-}
-
-#sidebar {
-  min-width: 250px;
-  max-width: 250px;
-  background: #212121;
-  color: #fff;
-  transition: all 0.3s;
-  position: relative;
-  .h6{
-  	color: $white;
-  }
-  &.active{
-  	margin-left: -250px;
-  	.custom-menu{
-		margin-right: -50px;
-  }
-  }
-  h1{
-  	margin-bottom: 20px;
-  	font-weight: 700;
-  	font-size: 20px;
-  	.logo{
-  		color: $white;
-  		display: block;
-  		padding: 10px 30px;
-  		background: $primary;
-  	}
-  }
-  ul.components{
-  	padding: 0;
-  }
-  ul{
-    li{
-    	font-size: 16px;
-    	>ul{
-    		margin-left: 10px;
-    		li{
-    			font-size: 14px;
-    		}
-    	}
-    	a{
-    		padding: 15px 30px;
-		    display: block;
-		    color: rgba(255,255,255,.6);
-		    border-bottom: 1px solid rgba(255,255,255,.1);
-		    &:hover{
-		    	color: $white;
-		    	background: $primary;
-		    	border-bottom: 1px solid $primary;
-		    }
-    	}
-    	&.active{
-    		> a{
-    			background: transparent;
-    			color: $white;
-    			&:hover{
-    				background: $primary;
-			    	border-bottom: 1px solid $primary;
-    			}
-    		}
-    	}
-    }
-  }
-  @include media-breakpoint-down(md){
-    margin-left: -250px;
-    &.active {
-        margin-left: 0;
-    }
-    .custom-menu{
-    	margin-right: -60px !important;
-    	top: 21px !important;
-    }
-  }
-
-  .custom-menu{
-		display: inline-block;
-		position: absolute;
-		top: 21px;
-		right: 0;
-		margin-right: -50px;
-		@include transition(.3s);
-		.btn{
-			&.btn-primary{
-				background: transparent;
-				border-color: transparent;
-				i{
-					color: black;
-					font-size: 24px;
-				}
-				&:hover, &:focus{
-					background: transparent !important;
-					border-color: transparent !important;
-				}
-			}
-		}
-  }
-}
 
 
 a[data-toggle="collapse"] {
@@ -227,11 +130,7 @@ a[data-toggle="collapse"] {
   min-height: 100vh;
 }
 
-#header {
-  width: 100%;
-  min-height: 80px;
-  background-color: gray;
-}
+
 
 #content {
   width: 100%;
