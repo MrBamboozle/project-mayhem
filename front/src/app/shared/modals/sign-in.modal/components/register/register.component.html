@@ -12,13 +12,13 @@
 
   <!-- Alias Field -->
   <div class="form-group">
-    <label for="alias">Alias</label>
-    <input id="alias" type="text" formControlName="alias" class="form-control"
-           [ngClass]="{ 'is-invalid': controls.alias.touched && controls.alias.invalid }">
-    <div *ngIf="controls.alias.touched && controls.alias.invalid" class="text-danger">
-      <small *ngIf="controls.alias.errors?.required">Alias is required.</small>
-      <small *ngIf="controls.alias.errors?.maxlength">Alias must be less than 16 characters.</small>
-      <small *ngIf="controls.alias.errors?.invalidUsername">Alias cannot contain an ampersand (&), equals sign (=), underscore (_), apostrophe ('), dash (-), plus sign (+), comma (,), brackets (&lt;,>), or more than one period (.)</small>
+    <label for="name">Alias</label>
+    <input id="name" type="text" formControlName="name" class="form-control"
+           [ngClass]="{ 'is-invalid': controls.name.touched && controls.name.invalid }">
+    <div *ngIf="controls.name.touched && controls.name.invalid" class="text-danger">
+      <small *ngIf="controls.name.errors?.required">Alias is required.</small>
+      <small *ngIf="controls.name.errors?.maxlength">Alias must be less than 16 characters.</small>
+      <small *ngIf="controls.name.errors?.invalidUsername">Alias cannot contain an ampersand (&), equals sign (=), underscore (_), apostrophe ('), dash (-), plus sign (+), comma (,), brackets (&lt;,>), or more than one period (.)</small>
       <!-- Add any other specific validation messages for the alias here -->
     </div>
   </div>

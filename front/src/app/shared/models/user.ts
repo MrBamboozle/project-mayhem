@@ -11,3 +11,9 @@ export interface UserRequest {
   name: string;
   email: string;
 }
+
+export interface UserEditRequest {
+  name: string;
+  password: string;
+  repeatPassword: string;
+}
