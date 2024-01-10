@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Contracts\Validation\ValidationRule;
+use App\Enums\JsonFieldNames;
 use Illuminate\Foundation\Http\FormRequest;
 
 class AuthenticateRequest extends FormRequest
@@ -15,8 +15,8 @@ class AuthenticateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => 'string | required',
-            'password' => 'string | required'
+            JsonFieldNames::EMAIL->value => 'string | required',
+            JsonFieldNames::PASSWORD->value => 'string | required'
         ];
     }
 }
