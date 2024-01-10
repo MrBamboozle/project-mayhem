@@ -1,9 +1,11 @@
 <div class="wrapper d-flex align-items-stretch app">
   <nav id="sidebar" [ngClass]="{'active': isSidebarHidden}">
     <div class="custom-menu">
-      <button type="button" class="btn btn-secondary" (click)="toggleSidebar()">Toggle sidebar</button>
+      <button type="button" class="paperclip-button" (click)="toggleSidebar()">  
+        {{ isSidebarHidden ? 'Menu' : 'Close Menu' }}
+      </button>
     </div>
-    <div class="list-group mt-7 px-2">
+    <div class="list-group navigation-menu">
       <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" class="list-group-item list-group-item-action">Homepage</a>
       <a routerLink="/users" routerLinkActive="active" class="list-group-item list-group-item-action">Users</a>
       <a routerLink="/events" routerLinkActive="active" class="list-group-item list-group-item-action">Events</a>
@@ -14,7 +16,9 @@
       <!-- Header  -->
     <div id="header" class="d-flex align-items-center pe-3">
       <div class="d-flex justify-content-center flex-grow-1">
-        <h1>{{ title }}</h1>
+        <div class="title-container d-flex justify-content-center align-items-end">
+          <h1>{{ title }}</h1>
+        </div>
       </div>
       <div>
         <button type="button" class="btn btn-primary" *ngIf="(userStore.currentUser | async) === null; else userMenu" (click)="openSignInModal()">Sign in</button>
@@ -32,7 +36,7 @@
       </div>
     </div>
       <!-- Page Content  -->
-    <div id="content" class="p-4 p-md-5 pt-5">
+    <div id="content" class="pt-7 px-5">
       <router-outlet></router-outlet>
     </div>
   </div>
