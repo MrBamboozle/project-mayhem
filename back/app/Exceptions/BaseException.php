@@ -2,6 +2,7 @@
 
 namespace App\Exceptions;
 
+use App\Enums\JsonFieldNames;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -19,8 +20,8 @@ class BaseException extends Exception
     public function render(Request $request): Response
     {
         return response([
-            'message' => $this->message,
-            'errors' => $this->errors,
+            JsonFieldNames::MESSAGE->value => $this->message,
+            JsonFieldNames::ERRORS->value => $this->errors,
         ],
             $this->getCode()
         );

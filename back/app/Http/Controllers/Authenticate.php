@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\JsonFieldNames;
 use App\Enums\TokenAbility;
 use App\Exceptions\BaseException;
 use App\Exceptions\Exceptions\InvalidCredentialsException;
 use App\Exceptions\Exceptions\InvalidTokenGeneration\MalformedRefreshTokenException;
 use App\Exceptions\Exceptions\InvalidTokenGeneration\UnableToGenerateTokenPairsException;
+use App\Exceptions\Exceptions\NonMatchingPasswordsException;
 use App\Http\Requests\AuthenticateRequest;
+use App\Http\Requests\RegisterRequest;
 use App\Models\PersonalAccessToken;
 use App\Models\User;
 use App\Services\TokenGenerateService\TokenGeneration;
@@ -37,9 +40,9 @@ class Authenticate extends Controller
         $tokenPair = $this->tokenGenerationService->generateTokenPair($user);
 
         return [
-            'user' => $user,
-            'token' => $tokenPair->getAccessToken()->plainTextToken,
-            'refresh_token' => $tokenPair->getRefreshToken()->plainTextToken,
+            JsonFieldNames::USER->value=> $user,
+            JsonFieldNames::TOKEN->value => $tokenPair->getAccessToken()->plainTextToken,
+            JsonFieldNames::REFRESH_TOKEN->value => $tokenPair->getRefreshToken()->plainTextToken,
         ];
     }
 
@@ -48,7 +51,7 @@ class Authenticate extends Controller
         auth()->user()->tokens()->delete();
 
         return [
-            'message' => 'Logged out'
+            JsonFieldNames::MESSAGE->value => 'Logged out'
         ];
     }
 
@@ -80,13 +83,30 @@ class Authenticate extends Controller
         $tokenPair = $this->tokenGenerationService->refreshTokenPair($user, $accessToken, $token);
 
         return [
-            'token' => $tokenPair->getAccessToken()->plainTextToken,
-            'refresh_token' => $tokenPair->getRefreshToken()->plainTextToken
+            JsonFieldNames::TOKEN->value => $tokenPair->getAccessToken()->plainTextToken,
+            JsonFieldNames::REFRESH_TOKEN->value => $tokenPair->getRefreshToken()->plainTextToken,
         ];
     }
 
-    public function register(): array
+    /**
+     * @throws UnableToGenerateTokenPairsException
+     * @throws NonMatchingPasswordsException
+     */
+    public function register(RegisterRequest $request): array
     {
-        return ['token' => 'moj mali lkurac'];
+        $data = $request->validated();
+
+        if ($data['password'] !== $data['repeatPassword']) {
+            throw new NonMatchingPasswordsException();
+        }
+
+        $user = User::factory()->createOne($request->validated());
+        $tokenPair = $this->tokenGenerationService->generateTokenPair($user);
+
+        return [
+            JsonFieldNames::USER->value=> $user,
+            JsonFieldNames::TOKEN->value => $tokenPair->getAccessToken()->plainTextToken,
+            JsonFieldNames::REFRESH_TOKEN->value => $tokenPair->getRefreshToken()->plainTextToken,
+        ];
     }
 }

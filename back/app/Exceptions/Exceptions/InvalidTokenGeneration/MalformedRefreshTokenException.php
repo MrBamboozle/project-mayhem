@@ -2,6 +2,7 @@
 
 namespace App\Exceptions\Exceptions\InvalidTokenGeneration;
 
+use App\Enums\JsonFieldNames;
 use App\Exceptions\BaseException;
 
 class MalformedRefreshTokenException extends BaseException
@@ -10,7 +11,7 @@ class MalformedRefreshTokenException extends BaseException
     {
         parent::__construct(
             'Malformed refresh token',
-            ['token' => 'Unable to generate access token from refresh token'],
+            [JsonFieldNames::TOKEN->name => 'Unable to generate access token from refresh token'],
             403
         );
     }
