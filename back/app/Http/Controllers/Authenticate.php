@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Enums\JsonFieldNames;
-use App\Enums\TokenAbility;
 use App\Exceptions\BaseException;
 use App\Exceptions\Exceptions\InvalidCredentialsException;
 use App\Exceptions\Exceptions\InvalidTokenGeneration\MalformedRefreshTokenException;
@@ -16,7 +15,6 @@ use App\Models\User;
 use App\Services\TokenGenerateService\TokenGeneration;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 
 class Authenticate extends Controller
 {
