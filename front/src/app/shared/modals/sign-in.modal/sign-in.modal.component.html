@@ -20,7 +20,7 @@
     <li [ngbNavItem]="2">
       <button ngbNavLink>Register</button>
       <ng-template ngbNavContent>
-        <app-register></app-register>
+        <app-register (onRegistered)="activeModal.dismiss('User registered')"></app-register>
       </ng-template>
     </li>
   </ul>
