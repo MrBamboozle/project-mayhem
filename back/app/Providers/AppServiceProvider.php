@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\PersonalAccessToken;
+use App\Services\ModelService;
 use App\Services\TokenGenerateService\TokenGeneration;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
@@ -17,6 +18,9 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->singleton(TokenGeneration::class, function (Application $app) {
             return new TokenGeneration();
+        });
+        $this->app->singleton(ModelService::class, function (Application $app) {
+            return new ModelService();
         });
     }
 
