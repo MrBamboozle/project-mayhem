@@ -1,1 +1,34 @@
-<p>user-list works!</p>
+<table class="table">
+  <thead>
+    <tr class="printed">
+      <th>#</th>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Actions</th>
+      <!-- Add other user attributes here -->
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let user of users; let i = index">
+      <td class="printed">{{ (currentPage - 1) * pageSize + i + 1 }}</td>
+      <td>{{ user.name }}</td>
+      <td>{{ user.email }}</td>
+      <td>
+        <button class="btn btn-sm btn-link" (click)="editUser(user.id)">
+          Edit
+        </button>
+        <button class="btn btn-sm btn-link text-danger" (click)="deleteUser(user.id)">
+          Delete
+        </button>
+      </td>
+      <!-- Display other user attributes here -->
+    </tr>
+  </tbody>
+</table>
+
+<ngb-pagination 
+  [collectionSize]="collectionSize" 
+  [(page)]="currentPage" 
+  [pageSize]="pageSize"
+  (pageChange)="onPageChange($event)"
+  aria-label="Default pagination"></ngb-pagination>

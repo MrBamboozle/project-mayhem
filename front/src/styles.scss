@@ -33,7 +33,17 @@ $spacers: (
   src: url('/assets/fonts/ModernTypewriter.ttf') format('truetype');
 }
 
+@font-face {
+  font-family: 'OldSchool';
+  src: url('/assets/fonts/OldSchool.ttf') format('truetype');
+}
+
 $font-primary: 'ModernTypewriter', Arial, sans-serif;
+
+.printed {
+  font-family: 'OldSchool', sans-serif;
+  color: $dark;
+}
 
 body {
   background-image: url('./assets/images/wood-texture.jpg'); /* Path to your texture image */
@@ -48,6 +58,7 @@ body {
 	font-weight: normal;
 	color: lighten($black,50%);
 }
+
 a {
 	transition: .3s all ease;
 	color: $primary;
