@@ -24,6 +24,8 @@ enum JsonFieldNames: string
 
     case SYSTEM_MESSAGE = 'systemMessage';
 
+    case ID = 'id';
+
     public function snakeCase(): string
     {
         return Str::snake($this->value);

@@ -4,10 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Enums\AllowedParams;
 use App\Enums\FilterableSortableModels;
+use App\Enums\JsonFieldNames;
 use App\Enums\Operators;
+use App\Exceptions\Exceptions\ApiModelNotFoundException;
+use App\Http\Requests\UserStoreRequest;
+use App\Http\Requests\UserUpdateRequest;
 use App\Models\User;
 use App\Services\ModelService;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -45,25 +50,45 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(UserStoreRequest $request)
     {
-        return ['test' => 'mali pimpek'];
+        $user = User::factory()->createOne($request->validated());
+
+        return [JsonFieldNames::USER->value => $user];
     }
 
     /**
      * Display the specified resource.
+     * @throws ApiModelNotFoundException
      */
-    public function show(string $id)
+    public function show(int $id)
     {
-        return ['test' => 'mali pimpek'];
+        try {
+            $user = User::findOrFail($id);
+        } catch (ModelNotFoundException $exception) {
+            throw new ApiModelNotFoundException($id, User::class);
+        }
+
+        return [JsonFieldNames::USER->value => $user];
     }
 
     /**
      * Update the specified resource in storage.
+     * @throws ApiModelNotFoundException
      */
-    public function update(Request $request, string $id)
+    public function update(UserUpdateRequest $request, string $id)
     {
-        return ['test' => 'mali pimpek'];
+        $data = $request->validated();
+
+        try {
+            $user = User::findOrFail($id);
+        } catch (ModelNotFoundException $exception) {
+            throw new ApiModelNotFoundException($id, User::class);
+        }
+
+        $user->update($data);
+
+        return [JsonFieldNames::USER->value => $user];
     }
 
     /**
@@ -71,6 +96,14 @@ class UserController extends Controller
      */
     public function destroy(string $id)
     {
-        return ['test' => 'mali pimpek'];
+        try {
+            $user = User::findOrFail($id);
+        } catch (ModelNotFoundException $exception) {
+            throw new ApiModelNotFoundException($id, User::class);
+        }
+
+        $user->delete();
+
+        return [JsonFieldNames::MESSAGE->value => "User $user->name with id $id deleted"];
     }
 }
