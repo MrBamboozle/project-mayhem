@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { config } from '@app/core/app-config';
+import { PaginatedResponse } from '@app/shared/models/paginated-response';
 import { User, UserRequest } from '@app/shared/models/user';
 import { Observable } from 'rxjs';
 
@@ -14,9 +15,9 @@ export class UsersService {
     private readonly _http: HttpClient,
   ) { }
 
-  public getUsers(): Observable<User[]> {
+  public getUsers(page?: number): Observable<PaginatedResponse<User>> {
     return this._http
-      .get<User[]>(this.usersUrl);
+      .get<PaginatedResponse<User>>(`${this.usersUrl}${page ? '?page=' + page : ''}`);
   }
 
   public getUser(id: string): Observable<User> {
@@ -35,7 +36,7 @@ export class UsersService {
   }
 
   //TODO: delete response?
-  public deleteEvent(id: string): Observable<User> {
+  public deleteUser(id: string): Observable<User> {
     return this._http
       .delete<User>(`${this.usersUrl}/${id}`);
   }

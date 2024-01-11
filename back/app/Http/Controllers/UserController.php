@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class UserController extends Controller
 {
@@ -24,7 +25,7 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request): array
+    public function index(Request $request): LengthAwarePaginator
     {
         $model = FilterableSortableModels::USER;
         /** @var Builder $query */
@@ -43,9 +44,7 @@ class UserController extends Controller
             $model
         );
 
-        return [
-            $query->paginate(3),
-        ];
+        return $query->paginate(3);
     }
 
     /**
