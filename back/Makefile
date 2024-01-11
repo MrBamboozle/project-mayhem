@@ -34,6 +34,9 @@ seed:
 list:
 	@docker compose run php php artisan list
 
+link:
+	@docker compose run php php artisan storage:link
+
 show:
 	@docker compose run php php artisan db:show
 

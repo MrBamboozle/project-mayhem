@@ -4,15 +4,21 @@ namespace App\Models;
 
 use DateTimeInterface;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Storage;
 use Laravel\Sanctum\HasApiTokens;
 use Laravel\Sanctum\NewAccessToken;
 
 /**
  * @mixin Builder
  * @property PersonalAccessToken[] $tokens
+ * @property int $id
+ * @property string $name
+ * @property string $email
+ * @property string $avatar
  */
 class User extends Authenticatable
 {
@@ -27,6 +33,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'avatar',
     ];
 
     /**
@@ -54,7 +61,7 @@ class User extends Authenticatable
      * Create a new personal access token for the user.
      *
      * @param string $name
-     * @param int $parentId
+     * @param int|null $parentId
      * @param array $abilities
      * @param DateTimeInterface|null $expiresAt
      * @return NewAccessToken
@@ -80,4 +87,10 @@ class User extends Authenticatable
         return new NewAccessToken($token, $token->getKey().'|'.$plainTextToken);
     }
 
+    public function avatar(): Attribute
+    {
+        return Attribute::make(
+            get: fn (string $value) => Storage::url($value),
+        );
+    }
 }
