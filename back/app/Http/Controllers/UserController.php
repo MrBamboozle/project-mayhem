@@ -14,6 +14,7 @@ use App\Services\ModelService;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -105,5 +106,35 @@ class UserController extends Controller
         $user->delete();
 
         return [JsonFieldNames::MESSAGE->value => "User $user->name with id $id deleted"];
+    }
+
+    /**
+     * @throws ApiModelNotFoundException
+     */
+    public function addAvatar(Request $request, int $id): array
+    {
+        try {
+            $user = User::findOrFail($id);
+        } catch (ModelNotFoundException $exception) {
+            throw new ApiModelNotFoundException($id, User::class);
+        }
+
+        $file = $request->file('avatar');
+
+        if (empty($file)) {
+            return [JsonFieldNames::MESSAGE->value => 'did squat shit'];
+        }
+
+        // skip defined accessor as we need the original path from DB to pass to Storage::delete
+        $currentAvatar = $user->getRawOriginal('avatar');
+
+        if (!empty($currentAvatar)) {
+            Storage::delete($currentAvatar);
+        }
+
+        $path = $file->store('public/avatars');
+        $user->update(['avatar' => $path]);
+
+        return [JsonFieldNames::MESSAGE->value => Storage::url($path)];
     }
 }
