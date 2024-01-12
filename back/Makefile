@@ -35,7 +35,7 @@ list:
 	@docker compose run php php artisan list
 
 link:
-	@docker compose run php php artisan storage:link
+	@docker compose run php php artisan storage:link && cp -r ./default_avatars/* ./storage/app/public/avatars
 
 show:
 	@docker compose run php php artisan db:show
