@@ -34,7 +34,7 @@ Route::middleware(['auth:sanctum', 'ability:' . TokenAbility::ACCESS_API->value]
     Route::post('/users/{id}/avatar', [UserController::class, 'addAvatar']);
 
     //Avatar api
-    Route::get('/avatar', [AvatarController::class, 'index']);
+    Route::get('/avatars', [AvatarController::class, 'index']);
 });
 
 Route::get('/refresh-token',[Authenticate::class, 'refreshAccessToken'])
