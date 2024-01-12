@@ -11,7 +11,7 @@ class MalformedRefreshTokenException extends BaseException
     {
         parent::__construct(
             'Malformed refresh token',
-            [JsonFieldNames::TOKEN->name => 'Unable to generate access token from refresh token'],
+            [JsonFieldNames::TOKEN->value => 'Unable to generate access token from refresh token'],
             403
         );
     }
