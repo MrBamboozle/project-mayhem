@@ -22,14 +22,14 @@ class TokenGeneration
                     'access_token',
                     null,
                     [TokenAbility::ACCESS_API->value],
-                    now()->addMinutes(config('sanctum.expiration'))
+                    now()->addMinutes(config('sanctum.expiration')),
                 );
             $refreshToken = $user
                 ->createToken(
                     'refresh_token',
                     $accessToken->accessToken->id,
                     [TokenAbility::ISSUE_ACCESS_TOKEN->value],
-                    now()->addMinutes(config('sanctum.rt_expiration'))
+                    now()->addMinutes(config('sanctum.rt_expiration')),
                 );
         } catch (\Throwable $error) {
             DB::rollBack();

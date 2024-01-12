@@ -3,13 +3,14 @@
 namespace App\Models;
 
 use DateTimeInterface;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use \Laravel\Sanctum\PersonalAccessToken as SanctumToken;
 
 /**
- * @property int $id
+ * @property string $id
  * @property int $parent_id
  * @property PersonalAccessToken $parentToken
  * @property PersonalAccessToken $childToken
@@ -17,7 +18,7 @@ use \Laravel\Sanctum\PersonalAccessToken as SanctumToken;
  */
 class PersonalAccessToken extends SanctumToken
 {
-    use HasFactory;
+    use HasFactory, HasUuids;
 
     protected $fillable = [
         'name',
