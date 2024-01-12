@@ -88,16 +88,9 @@ class Authenticate extends Controller
 
     /**
      * @throws UnableToGenerateTokenPairsException
-     * @throws NonMatchingPasswordsException
      */
     public function register(RegisterRequest $request): array
     {
-        $data = $request->validated();
-
-        // if ($data['password'] !== $data['repeatPassword']) {
-        //     throw new NonMatchingPasswordsException();
-        // }
-
         $user = User::factory()->createOne($request->validated());
         $tokenPair = $this->tokenGenerationService->generateTokenPair($user);
 

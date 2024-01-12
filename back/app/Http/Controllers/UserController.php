@@ -7,13 +7,16 @@ use App\Enums\FilterableSortableModels;
 use App\Enums\JsonFieldNames;
 use App\Enums\Operators;
 use App\Exceptions\Exceptions\ApiModelNotFoundException;
+use App\Exceptions\Exceptions\FailToAddAvatarException;
 use App\Http\Requests\UserStoreRequest;
 use App\Http\Requests\UserUpdateRequest;
+use App\Models\Avatar;
 use App\Models\User;
 use App\Services\ModelService;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Pagination\LengthAwarePaginator;
 
@@ -61,7 +64,7 @@ class UserController extends Controller
      * Display the specified resource.
      * @throws ApiModelNotFoundException
      */
-    public function show(int $id)
+    public function show(string $id)
     {
         try {
             $user = User::findOrFail($id);
@@ -109,8 +112,9 @@ class UserController extends Controller
 
     /**
      * @throws ApiModelNotFoundException
+     * @throws FailToAddAvatarException
      */
-    public function addAvatar(Request $request, int $id): array
+    public function addAvatar(Request $request, string $id): array
     {
         try {
             $user = User::findOrFail($id);
@@ -121,19 +125,43 @@ class UserController extends Controller
         $file = $request->file('avatar');
 
         if (empty($file)) {
-            return [JsonFieldNames::MESSAGE->value => 'did squat shit'];
+            throw new FailToAddAvatarException('Missing upload file');
         }
 
-        // skip defined accessor as we need the original path from DB to pass to Storage::delete
-        $currentAvatar = $user->getRawOriginal('avatar');
-
-        if (!empty($currentAvatar)) {
-            Storage::delete($currentAvatar);
-        }
-
+        // We have defined $with on User model which always returns avatar without all values,
+        // this way we get the whole Avatar object
+        // if we don't do this Avatar object won't have "default" field and this will fail
+        $currentAvatar = $user->avatar()->first();
+        // getRawOriginal() bypasses the defined "path" accessor on Avatar model
+        $currentAvatarPath = $currentAvatar->getRawOriginal('path');
         $path = $file->store('public/avatars');
-        $user->update(['avatar' => $path]);
 
-        return [JsonFieldNames::MESSAGE->value => Storage::url($path)];
+        DB::beginTransaction();
+
+        try {
+            $newAvatar = Avatar::factory()->create([
+                'path' => $path,
+                'default' => false,
+            ]);
+
+            $user->update(['avatar_id' => $newAvatar->id]);
+
+            if (!$currentAvatar->default) {
+                $currentAvatar->delete();
+                Storage::delete($currentAvatarPath);
+            }
+        } catch (\Throwable $error) {
+            if (Storage::exists($path)) {
+                Storage::delete($path);
+            }
+
+            DB::rollBack();
+
+            throw new FailToAddAvatarException($error->getMessage());
+        }
+
+        DB::commit();
+
+        return [JsonFieldNames::MESSAGE->value => $newAvatar->path];
     }
 }

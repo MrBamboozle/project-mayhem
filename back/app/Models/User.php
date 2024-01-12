@@ -5,7 +5,9 @@ namespace App\Models;
 use DateTimeInterface;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Storage;
@@ -18,11 +20,11 @@ use Laravel\Sanctum\NewAccessToken;
  * @property int $id
  * @property string $name
  * @property string $email
- * @property string $avatar
+ * @property Avatar $avatar
  */
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, HasUuids;
 
     /**
      * The attributes that are mass assignable.
@@ -33,7 +35,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'avatar',
+        'avatar_id',
     ];
 
     /**
@@ -45,6 +47,7 @@ class User extends Authenticatable
         'password',
         'remember_token',
         'tokens',
+        'avatar_id',
     ];
 
     /**
@@ -57,6 +60,15 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
+    protected $with = [
+        'avatar:id,path'
+    ];
+
+    public function avatar(): BelongsTo
+    {
+        return $this->belongsTo(Avatar::class, 'avatar_id', 'id');
+    }
+
     /**
      * Create a new personal access token for the user.
      *
@@ -68,7 +80,7 @@ class User extends Authenticatable
      */
     public function createToken(
         string $name,
-        int $parentId = null,
+        string $parentId = null,
         array $abilities = ['*'],
         DateTimeInterface $expiresAt = null
     ): NewAccessToken
@@ -85,12 +97,5 @@ class User extends Authenticatable
         ]);
 
         return new NewAccessToken($token, $token->getKey().'|'.$plainTextToken);
-    }
-
-    public function avatar(): Attribute
-    {
-        return Attribute::make(
-            get: fn (string $value) => Storage::url($value),
-        );
     }
 }

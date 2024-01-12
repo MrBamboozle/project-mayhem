@@ -11,8 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('{{ table }}', function (Blueprint $table) {
+        Schema::create('avatars', function (Blueprint $table) {
             $table->uuid('id')->primary();
+            $table->string('path')->nullable(false);
+            $table->boolean('default')->nullable(false)->default(false);
             $table->timestamps();
         });
     }
@@ -22,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('{{ table }}');
+        Schema::dropIfExists('avatars');
     }
 };
