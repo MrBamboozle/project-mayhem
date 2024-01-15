@@ -31,7 +31,7 @@ Route::middleware(['auth:sanctum', 'ability:' . TokenAbility::ACCESS_API->value]
     Route::get('/users/{id}', [UserController::class, 'show']);
     Route::patch('/users/{id}', [UserController::class, 'update']);
     Route::delete('/users/{id}', [UserController::class, 'destroy']);
-    Route::post('/users/{id}/avatar', [UserController::class, 'addAvatar']);
+    Route::post('/users/{userId}/avatars/{avatarId?}', [UserController::class, 'addAvatar']);
 
     //Avatar api
     Route::get('/avatars', [AvatarController::class, 'index']);

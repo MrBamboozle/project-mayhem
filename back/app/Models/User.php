@@ -20,6 +20,7 @@ use Laravel\Sanctum\NewAccessToken;
  * @property int $id
  * @property string $name
  * @property string $email
+ * @property string $avatar_id
  * @property Avatar $avatar
  */
 class User extends Authenticatable
