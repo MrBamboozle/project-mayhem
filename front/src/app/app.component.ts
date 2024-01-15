@@ -8,6 +8,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { UserStoreService } from './shared/stores/user.store.service';
 import { AuthenticationService } from './services/authentication.service';
 import { User } from './shared/models/user';
+import { config } from './core/app-config';
 
 @Component({
   selector: 'app-root',
@@ -18,8 +19,11 @@ import { User } from './shared/models/user';
 })
 export class AppComponent {
   public isSidebarHidden: boolean = false;
-  public isSignedIn: boolean = false;
   public title: string = 'PROJECT MAYHEM';
+
+  get avatarSrc(): string {
+    return `${config.BACKEND_URL}${this.userStore.currentUser.getValue().avatar.path}`
+  }
 
   constructor(
     private readonly modalService: ModalHelperService,
