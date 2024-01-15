@@ -24,8 +24,8 @@
         <button type="button" class="pokerchip-button" *ngIf="(userStore.isStored | async) === false; else userMenu" (click)="openSignInModal()">Sign<br>in</button>
         <ng-template #userMenu>
           <div ngbDropdown>
-            <button class="btn btn-secondary" type="button" ngbDropdownToggle>
-              {{ (userStore.currentUser | async)?.name }}
+            <button class="pokerchip-button" type="button" ngbDropdownToggle>
+              <img [src]="avatarSrc">
             </button>
             <div ngbDropdownMenu aria-labelledby="navbarDropdown2" class="dropdown-menu dropdown-menu-end">
               <button ngbDropdownItem type="button" [routerLink]="['/profile']">Profile</button>
