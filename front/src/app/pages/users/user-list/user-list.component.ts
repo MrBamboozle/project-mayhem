@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { UsersService } from '@app/services/users.service';
 import { User } from '@app/shared/models/user';
+import { ModalHelperService } from '@app/shared/services/modal-helper.service';
 import { NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
@@ -23,6 +24,7 @@ export class UserListComponent {
   constructor(
     private readonly _router: Router,
     private readonly usersService: UsersService,
+    private readonly modalService: ModalHelperService,
   ) {}
 
   ngOnInit() {
@@ -48,8 +50,14 @@ export class UserListComponent {
   }
 
   deleteUser(id: string) {
-    this.usersService.deleteUser(id).subscribe(() => {
-      this.fetchUsers(this.currentPage);
-    });
+    this.modalService.openCofirmModal(
+      'Delete user?',
+      'Are you sure you want to delete this user?',
+      () => {
+        this.usersService.deleteUser(id).subscribe(() => {
+          this.fetchUsers(this.currentPage);
+        });
+      }
+    )
   }
 }
