@@ -19,7 +19,7 @@ class AvatarFactory extends Factory
     public function definition(): array
     {
         return [
-            'path' => 'avatars/default' . random_int(1, 2) . 'png',
+            'path' => 'avatars/default' . random_int(1, 30) . 'png',
             'default' => true,
         ];
     }

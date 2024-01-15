@@ -13,9 +13,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-//Route::get('/', function () {
+// Route::get('/', function () {
 //    return 'Welcome to my humble abode';
-//});
+// });
 
 Route::get('/login', function () {
     return view('unauthenticated');

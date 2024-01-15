@@ -5,6 +5,7 @@ export interface User {
   name: string;
   email: string;
   emailVerifiedAt: string;
+  avatar: Avatar;
 }
 
 export interface UserRequest {
@@ -16,4 +17,9 @@ export interface UserEditRequest {
   name: string;
   password: string;
   repeatPassword: string;
+}
+
+export interface Avatar {
+  id: string;
+  path: string;
 }
