@@ -46,7 +46,7 @@ export class UserListComponent {
   }
 
   editUser(id: string) {
-    this._router.navigate(['users', id]);
+    this._router.navigate(['users', 'edit', id]);
   }
 
   deleteUser(id: string) {

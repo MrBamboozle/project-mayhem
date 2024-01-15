@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { UsersService } from '@app/services/users.service';
-import { UserEditRequest } from '@app/shared/models/user';
+import { User, UserEditRequest } from '@app/shared/models/user';
 import { passwordMatchingValidator } from '@app/shared/validators/password-matching.validator';
 
 @Component({
@@ -13,6 +13,8 @@ import { passwordMatchingValidator } from '@app/shared/validators/password-match
   styleUrl: './change-password.component.scss'
 })
 export class ChangePasswordComponent {
+
+  @Input() user!: User;
 
   public readonly changePasswordForm: FormGroup = this.formBuilder.group({
     password: ['', [Validators.required]],

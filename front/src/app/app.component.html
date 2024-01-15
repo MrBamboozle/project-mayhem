@@ -21,7 +21,7 @@
         </div>
       </div>
       <div>
-        <button type="button" class="pokerchip-button" *ngIf="(userStore.currentUser | async) === null; else userMenu" (click)="openSignInModal()">Sign<br>in</button>
+        <button type="button" class="pokerchip-button" *ngIf="(userStore.isStored | async) === false; else userMenu" (click)="openSignInModal()">Sign<br>in</button>
         <ng-template #userMenu>
           <div ngbDropdown>
             <button class="btn btn-secondary" type="button" ngbDropdownToggle>

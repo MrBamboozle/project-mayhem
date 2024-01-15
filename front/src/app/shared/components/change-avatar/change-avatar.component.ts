@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { User } from '@app/shared/models/user';
 
 @Component({
   selector: 'app-change-avatar',
@@ -8,5 +9,7 @@ import { Component } from '@angular/core';
   styleUrl: './change-avatar.component.scss'
 })
 export class ChangeAvatarComponent {
+
+  @Input() user!: User;
 
 }

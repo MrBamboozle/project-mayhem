@@ -1,28 +1,24 @@
-
 <ng-container *ngIf="fetchedUser | async">
-  
   <ul ngbNav #nav="ngbNav" [(activeId)]="active" (navChange)="onNavChange($event)" class="nav-tabs">
     <li [ngbNavItem]="1">
       <button ngbNavLink>User data</button>
       <ng-template ngbNavContent>
-        <app-general-data [user]="currentUser"></app-general-data>
+        <app-general-data [user]="user"></app-general-data>
       </ng-template>
     </li>
     <li [ngbNavItem]="2">
       <button ngbNavLink>Change password</button>
       <ng-template ngbNavContent>
-        <app-change-password [user]="currentUser"></app-change-password>
+        <app-change-password [user]="user"></app-change-password>
       </ng-template>
     </li>
     <li [ngbNavItem]="3">
       <button ngbNavLink>Change avatar</button>
       <ng-template ngbNavContent>
-        <app-change-avatar [user]="currentUser"></app-change-avatar>
+        <app-change-avatar [user]="user"></app-change-avatar>
       </ng-template>
     </li>
-  
   </ul>
 
   <div [ngbNavOutlet]="nav" class="mt-2"></div>
-
 </ng-container>  
