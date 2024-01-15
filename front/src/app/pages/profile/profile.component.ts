@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { config } from '@app/core/app-config';
 import { UsersService } from '@app/services/users.service';
 import { UserEditRequest } from '@app/shared/models/user';
 import { UserStoreService } from '@app/shared/stores/user.store.service';
@@ -24,6 +25,8 @@ export class ProfileComponent {
     password: ['', [Validators.required]],
     repeatPassword: ['', [Validators.required]],
   }, { validators: passwordMatchingValidator() })
+
+  public avatarSrc: string = `${config.BACKEND_URL}${this.userStore.currentUser.getValue()?.avatar.path}`
 
   constructor(
     private readonly formBuilder: FormBuilder,

@@ -5,6 +5,7 @@ const DEFAULTS = {
     name: 'dev',
     production: false,
     apiUrl: 'http://localhost:8000/api',
+    backendUrl: 'http://localhost:8000',
     version: 'dev',
   };
   

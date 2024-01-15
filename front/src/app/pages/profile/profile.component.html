@@ -1,6 +1,11 @@
 <form [formGroup]="profileForm" (ngSubmit)="onSubmit()" class="form">
   <!-- Email Field -->
   <div class="form-group">
+    <img [src]="avatarSrc"/>
+  </div>
+
+  <!-- Email Field -->
+  <div class="form-group">
     <label for="email">Email</label>
     <input id="email" type="email" formControlName="email" class="form-control form-control-plaintext" readonly
       [ngClass]="{ 'is-invalid': controls.email.touched && controls.email.invalid }">
