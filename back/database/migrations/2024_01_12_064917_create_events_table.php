@@ -12,7 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('events', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
+            $table->string('title');
+            $table->string('tag_line');
+            $table->string('description');
+            $table->dateTime('time');
+            $table->string('location'); //possibly relation, google geocoding API to get address from latitude and longitude
+            $table->foreignUuid('user_id')->references('id')->on('users');
             $table->timestamps();
         });
     }
