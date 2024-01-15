@@ -41,7 +41,8 @@ export class AuthenticationService {
 
   public logout() {
     this.clearTokens();
-    this.userStore.storeCurrentUser(null);
+    this.userStore.storeCurrentUser(new class {} as User);
+    this.userStore.isStored.next(false);
     this._router.navigate(['']);
     return this._http
       .post(this.logoutUrl, {})

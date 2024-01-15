@@ -20,9 +20,9 @@ export class UsersService {
       .get<PaginatedResponse<User>>(`${this.usersUrl}${page ? '?page=' + page : ''}`);
   }
 
-  public getUser(id: string): Observable<User> {
+  public getUser(id: string): Observable<{user: User}> {
     return this._http
-      .get<User>(`${this.usersUrl}/${id}`);
+      .get<{user: User}>(`${this.usersUrl}/${id}`);
   }
 
   public postUser(userReq: UserRequest): Observable<User> {

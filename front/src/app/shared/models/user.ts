@@ -14,9 +14,9 @@ export interface UserRequest {
 }
 
 export interface UserEditRequest {
-  name: string;
-  password: string;
-  repeatPassword: string;
+  name?: string;
+  password?: string;
+  repeatPassword?: string;
 }
 
 export interface Avatar {
