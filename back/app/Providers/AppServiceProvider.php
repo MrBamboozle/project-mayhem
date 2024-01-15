@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Models\PersonalAccessToken;
 use App\Services\ModelService;
 use App\Services\TokenGenerateService\TokenGeneration;
+use App\Services\UserService;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Sanctum\Sanctum;
@@ -21,6 +22,9 @@ class AppServiceProvider extends ServiceProvider
         });
         $this->app->singleton(ModelService::class, function (Application $app) {
             return new ModelService();
+        });
+        $this->app->singleton(UserService::class, function (Application $app) {
+            return new UserService();
         });
     }
 

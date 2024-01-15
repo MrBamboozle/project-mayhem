@@ -4,22 +4,27 @@ namespace App\Http\Controllers;
 
 use App\Enums\JsonFieldNames;
 use App\Exceptions\BaseException;
+use App\Exceptions\Exceptions\FailToAddAvatarException;
+use App\Exceptions\Exceptions\FailToDeleteCurrentAvatar;
 use App\Exceptions\Exceptions\InvalidCredentialsException;
 use App\Exceptions\Exceptions\InvalidTokenGeneration\MalformedRefreshTokenException;
 use App\Exceptions\Exceptions\InvalidTokenGeneration\UnableToGenerateTokenPairsException;
 use App\Exceptions\Exceptions\NonMatchingPasswordsException;
 use App\Http\Requests\AuthenticateRequest;
 use App\Http\Requests\RegisterRequest;
+use App\Models\Avatar;
 use App\Models\PersonalAccessToken;
 use App\Models\User;
 use App\Services\TokenGenerateService\TokenGeneration;
+use App\Services\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class Authenticate extends Controller
 {
     public function __construct(
-        protected TokenGeneration $tokenGenerationService
+        protected TokenGeneration $tokenGenerationService,
+        protected UserService $userService
     ){}
 
     /**
@@ -87,11 +92,15 @@ class Authenticate extends Controller
     }
 
     /**
+     * @param RegisterRequest $request
+     * @return array
      * @throws UnableToGenerateTokenPairsException
+     * @throws FailToAddAvatarException
+     * @throws FailToDeleteCurrentAvatar
      */
     public function register(RegisterRequest $request): array
     {
-        $user = User::factory()->createOne($request->validated());
+        $user = $this->userService->createUser($request->validated());
         $tokenPair = $this->tokenGenerationService->generateTokenPair($user);
 
         return [

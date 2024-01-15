@@ -40,7 +40,13 @@ make composer_i
 ```
 This will `composer install` in the `php` service to install all packages.
 
-#### 4. Make sure you migrate and seed the db
+#### 4. Create storage symlink for file uploads
+Important to do this before you migrate since DatabaseSeeder uses names from default avatar images to write to DB.
+```
+make link
+```
+
+#### 5. Make sure you migrate and seed the db
 Migrate the DB
 ```
 make migrate
@@ -49,10 +55,7 @@ Seed with default data
 ```
 make seed
 ```
-Create storage symlink for file uploads
-```
-make link
-```
+
 If you get `[2002] Connection refused` error, wait a minute or two for db service to properly start, and then try to migrate again.
 Takes a bit of time on first run. 
 

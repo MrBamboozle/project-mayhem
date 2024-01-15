@@ -25,11 +25,15 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $avatars = [];
+        $i = 1;
 
-        foreach (self::AVATARS as $avatar) {
+        while ($i < 31) {
             $avatars[] = Avatar::factory()->create([
-                'path' => "avatars/$avatar"
+                'path' => "avatars/default$i.png",
+                'default' => true,
             ]);
+
+            $i++;
         }
 
         foreach (self::ADMIN_USERS as $user => $email) {
