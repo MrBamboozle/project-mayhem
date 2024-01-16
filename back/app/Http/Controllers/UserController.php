@@ -64,7 +64,7 @@ class UserController extends Controller
     {
         $user = $this->userService->createUser($request->validated());
 
-        return [JsonFieldNames::USER->value => $user];
+        return $user->toArray();
     }
 
     /**
@@ -79,7 +79,7 @@ class UserController extends Controller
             throw new ApiModelNotFoundException($id, User::class);
         }
 
-        return [JsonFieldNames::USER->value => $user];
+        return $user->toArray();
     }
 
     /**
@@ -98,7 +98,7 @@ class UserController extends Controller
 
         $user->update($data);
 
-        return [JsonFieldNames::USER->value => $user];
+        return $user->toArray();
     }
 
     /**
