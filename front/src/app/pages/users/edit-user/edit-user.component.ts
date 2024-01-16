@@ -47,15 +47,17 @@ export class EditUserComponent implements OnInit {
   fetchUser(): void {
     this.userService.getUser(this.uuid).subscribe(
       (data) => {
-        this.user = data.user;
+        this.user = data;
         this.fetchedUser.next(true);
       }
     )
   }
 
+  avatarChanged($event: User) {
+    this.user = $event
+  }
+
   onNavChange(event: NgbNavChangeEvent): void {
     console.log(event)
   }
-
-
 }

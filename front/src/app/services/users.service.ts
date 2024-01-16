@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { config } from '@app/core/app-config';
+import { MessageResponse } from '@app/shared/models/message';
 import { PaginatedResponse } from '@app/shared/models/paginated-response';
 import { User, UserRequest } from '@app/shared/models/user';
 import { Observable } from 'rxjs';
@@ -20,9 +21,9 @@ export class UsersService {
       .get<PaginatedResponse<User>>(`${this.usersUrl}${page ? '?page=' + page : ''}`);
   }
 
-  public getUser(id: string): Observable<{user: User}> {
+  public getUser(id: string): Observable<User> {
     return this._http
-      .get<{user: User}>(`${this.usersUrl}/${id}`);
+      .get<User>(`${this.usersUrl}/${id}`);
   }
 
   public postUser(userReq: UserRequest): Observable<User> {
@@ -39,5 +40,10 @@ export class UsersService {
   public deleteUser(id: string): Observable<User> {
     return this._http
       .delete<User>(`${this.usersUrl}/${id}`);
+  }
+
+  public chooseDefaultAvatar(userId: string, avatarId: string): Observable<User> {
+    return this._http
+      .post<User>(`${this.usersUrl}/${userId}/avatars/${avatarId}`, {});
   }
 }

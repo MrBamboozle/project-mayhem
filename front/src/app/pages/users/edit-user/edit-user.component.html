@@ -15,7 +15,7 @@
     <li [ngbNavItem]="3">
       <button ngbNavLink>Change avatar</button>
       <ng-template ngbNavContent>
-        <app-change-avatar [user]="user"></app-change-avatar>
+        <app-change-avatar [user]="user" (avatarChanged)="avatarChanged($event)"></app-change-avatar>
       </ng-template>
     </li>
   </ul>

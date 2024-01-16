@@ -1,1 +1,13 @@
-<p>change-avatar works!</p>
+<div class="d-flex justify-content-between">
+  <h2>Choose one of ours:</h2>
+  <button class="btn btn-link">Upload your own</button>
+</div>
+
+<div class="d-flex flex-wrap">
+  <div *ngFor="let avatar of defaultAvatars" class="avatar-picker-spacing">
+    <div class="avatar-container" [ngClass]="{'pickable': !isChosenAvatar(avatar.id)}" (click)="chooseAvatar(avatar.id)">
+      <img [src]="fullAvatarSrc(avatar.path)">
+      <span *ngIf="isChosenAvatar(avatar.id)">X</span>
+    </div>
+  </div>
+</div>

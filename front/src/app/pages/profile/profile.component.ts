@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { ChangeAvatarComponent } from '@app/shared/components/change-avatar/change-avatar.component';
 import { ChangePasswordComponent } from '@app/shared/components/change-password/change-password.component';
 import { GeneralDataComponent } from '@app/shared/components/general-data/general-data.component';
@@ -24,7 +24,7 @@ export class ProfileComponent {
   public currentUser: User = this.userStore.currentUser.getValue();
 
   constructor(
-    private readonly userStore: UserStoreService
+    private readonly userStore: UserStoreService,
   ) {
     this.currentUser = this.userStore.currentUser.getValue();
   } 
@@ -37,5 +37,10 @@ export class ProfileComponent {
 
   onNavChange(event: NgbNavChangeEvent): void {
     console.log(event)
+  }
+
+  avatarChanged($event: User) {
+    this.userStore.storeCurrentUser($event);
+    this.currentUser = this.userStore.currentUser.getValue();
   }
 }
