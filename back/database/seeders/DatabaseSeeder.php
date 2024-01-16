@@ -14,11 +14,6 @@ class DatabaseSeeder extends Seeder
         'Domagoj Bišćan' => 'd.biscan.stu@gmail.com'
     ];
 
-    const AVATARS = [
-        'default1.png',
-        'default2.png',
-    ];
-
     /**
      * Seed the application's database.
      */
