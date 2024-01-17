@@ -1,0 +1,19 @@
+<div class="modal-header">
+  <h4 class="modal-title">Crop image</h4>
+  <button type="button" class="btn-close" aria-label="Close" (click)="dismiss()"></button>
+</div>
+<div class="modal-body">
+  <!-- Image Cropper -->
+  <image-cropper
+    [imageBase64]="imageBase64"
+    [maintainAspectRatio]="true"
+    [aspectRatio]="aspectRatio"
+    (imageCropped)="imageCropped($event)"
+    format="jpeg">
+  </image-cropper>
+
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-link text-secondary" (click)="dismiss()">Close</button>
+  <button class="btn btn-link text-success" (click)="onCropFinished()">Crop</button>
+</div>

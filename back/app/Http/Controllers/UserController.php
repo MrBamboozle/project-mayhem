@@ -138,8 +138,6 @@ class UserController extends Controller
             throw new ApiModelNotFoundException($userId, User::class);
         }
 
-        $newAvatarUser = $this->userService->updateAvatar($user, $avatar, $request->file('avatar'));
-
-        return [JsonFieldNames::MESSAGE->value => $newAvatarUser->avatar->path];
+        return $this->userService->updateAvatar($user, $avatar, $request->file('avatar'))->toArray();
     }
 }

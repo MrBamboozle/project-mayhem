@@ -38,10 +38,17 @@ $spacers: (
   src: url('/assets/fonts/OldSchool.ttf') format('truetype');
 }
 
+@font-face {
+  font-family: 'Starz';
+  src: url('/assets/fonts/Starz2.ttf') format('truetype');
+}
+
 $font-primary: 'ModernTypewriter', Arial, sans-serif;
+$font-printed: 'OldSchool', Arial, sans-serif;
+$font-stars: 'Starz', Arial, sans-serif;
 
 .printed {
-  font-family: 'OldSchool', sans-serif;
+  font-family: $font-printed;
   color: $dark;
 }
 
@@ -57,6 +64,48 @@ body {
 	line-height: 1.8;
 	font-weight: normal;
 	color: lighten($black,50%);
+}
+
+.avatar-picker-spacing {
+  margin-right: 40px;
+  margin-top: 50px;
+}
+
+.avatar-container {
+  position: relative;
+
+  &.pickable {
+    cursor: pointer;
+  }
+
+  img {
+    width: 150px;
+    height: 150px;
+
+    box-shadow: -3px 3px 6px rgba(0, 0, 0, 0.5);
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: -50px;
+    left: 50px;
+    background-image: url(./assets/images/tape-piece.png);
+    background-size: cover;
+    width: 50px;
+    height: 100px;
+    z-index: 1;
+  }
+
+  span {
+    font-family: $font-stars;
+    color: green;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 50px;
+    line-height: 50px;
+  }
 }
 
 a {
