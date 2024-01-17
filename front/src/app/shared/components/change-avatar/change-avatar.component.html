@@ -1,31 +1,11 @@
-<div class="d-flex justify-content-between">
+<div class="d-flex justify-content-between mb-4">
   <h2>Choose one of ours:</h2>
-  <button class="btn btn-link">Upload your own</button>
-</div>
-
-<div>
-    <!-- Image Input -->
-  <input type="file" accept="image/*" (change)="onFileChange($event)">
-
-  <!-- Image Cropper -->
-  <image-cropper
-      [imageChangedEvent]="imageChangedEvent"
-      [maintainAspectRatio]="true"
-      [aspectRatio]="1 / 1"
-      (imageCropped)="imageCropped($event)"
-      format="jpeg">
-  </image-cropper>
-
-  <button (click)="onCropFinished()">Crop Image</button>
-
-  <!-- Cropped Image Preview -->
-  <img [src]="compressedImage" >
-
+  <button class="btn btn-link" (click)="openUploadImageModal()">Upload your own</button>
 </div>
 
 <div class="d-flex flex-wrap">
   <div *ngFor="let avatar of defaultAvatars" class="avatar-picker-spacing">
-    <div class="avatar-container" [ngClass]="{'pickable': !isChosenAvatar(avatar.id)}" (click)="chooseAvatar(avatar.id)">
+    <div class="avatar-container" [ngClass]="{'pickable': !isChosenAvatar(avatar.id)}" (click)="selectedDefaultAvatar(avatar.id)">
       <img [src]="fullAvatarSrc(avatar.path)">
       <span *ngIf="isChosenAvatar(avatar.id)">X</span>
     </div>

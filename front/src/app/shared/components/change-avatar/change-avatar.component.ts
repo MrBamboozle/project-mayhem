@@ -1,11 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { config } from '@app/core/app-config';
 import { AvatarsService } from '@app/services/avatars.service';
 import { UsersService } from '@app/services/users.service';
 import { Avatar, User } from '@app/shared/models/user';
 import { ImageCroppedEvent, ImageCropperModule } from 'ngx-image-cropper';
 import Compressor from 'compressorjs';
+import { ModalHelperService } from '@app/shared/services/modal-helper.service';
 
 @Component({
   selector: 'app-change-avatar',
@@ -25,9 +26,9 @@ export class ChangeAvatarComponent {
   @Output() avatarChanged = new EventEmitter<User>();
 
   constructor(
-    private readonly avatarService: AvatarsService,
+    private readonly avatarsService: AvatarsService,
     private readonly userService: UsersService,
-    private cdr: ChangeDetectorRef
+    private readonly modalService: ModalHelperService
   ) {}
 
   ngOnInit(): void {
@@ -44,7 +45,21 @@ export class ChangeAvatarComponent {
     return id === this.avatarId;
   }
 
-  chooseAvatar(id: string): void {
+  selectedDefaultAvatar(id: string): void {
+    if(!this.defaultAvatars.some((avatar: Avatar) => avatar.id === this.user.avatar.id)) {
+      this.modalService.openCofirmModal(
+        'Override custom avatar?',
+        'Choosing a default avatar will override your custom avatar. Are you sure you want to do this?',
+        () => {
+          this.chooseDefaultAvatar(id);
+        })
+    } else {
+      this.chooseDefaultAvatar(id);
+    }
+    
+  }
+
+  chooseDefaultAvatar(id: string): void {
     this.userService.chooseDefaultAvatar(this.user.id, id).subscribe(
       (data) => {
         this.avatarChanged.emit(data);
@@ -53,58 +68,40 @@ export class ChangeAvatarComponent {
     )
   }
 
-  fetchAvatars() {
-    this.avatarService.getAvatars().subscribe(
+  fetchAvatars(): void {
+    this.avatarsService.getAvatars().subscribe(
       (data) => {
         this.defaultAvatars = data;
       }
     )
   }
 
-  imageChangedEvent: any = '';
-  croppedImage: any = '';
-  compressedImage: any = '';
-  imageCroppedEvent!: ImageCroppedEvent;
+  openUploadImageModal(): void {
+    this.modalService.openImageUploadModal(true, (uploadedImage) => {
+      this.modalService.openImageCropAndCompressModal(
+        uploadedImage,
+        (croppedImage) => {
 
-  onFileChange(event: any): void {
-    this.imageChangedEvent = event;
+          const fileReader = new FileReader();
+          fileReader.onload = (e) => {
+            this.modalService.openImagePreviewModal(
+              e.target?.result as string,
+              () => {
+                this.uploadImage(croppedImage);
+              }
+            );
+          };
+          fileReader.readAsDataURL(croppedImage);
+        })
+    })
   }
 
-  imageCropped(event: ImageCroppedEvent) {
-    console.log(event)
-    this.imageCroppedEvent = event;
-  }
+  uploadImage(image: Blob): void {
 
-  onCropFinished() {
-    // The user has finished cropping the image
-    this.croppedImage = this.imageCroppedEvent.blob;
-    this.compressImage(this.croppedImage, 0.8, 102400*3); // Initial quality and target size (100KB multiplied by a factor)
-  }
-
-  compressImage(imageSrc: any, quality: number, targetSize: number, minQuality = 0.4) {
-    new Compressor(imageSrc, {
-      quality: quality,
-      success: (compressedImage) => {
-        if (compressedImage.size > targetSize && quality > minQuality) {
-          console.warn('bigger', compressedImage.size, targetSize, quality, compressedImage);
-          const newQuality = quality - 0.1 > minQuality ? quality - 0.1 : minQuality;
-          this.compressImage(imageSrc, newQuality, targetSize, minQuality);
-        } else {
-          // Handle the compressed image
-          console.log('Final Image Size:', compressedImage.size);
-          this.uploadImage(compressedImage); // Call your upload function
-        }
-      },
-      error: (err) => {
-        console.error(err.message);
-      }
-    });
-  }
-
-  uploadImage(image: Blob) {
-    console.log('great success!!!', URL.createObjectURL(image))
-    this.compressedImage = URL.createObjectURL(image);
-    this.cdr.detectChanges();
-    // Code to upload the image to your server
+    this.userService.uploadCustomAvatar(this.user.id, image).subscribe(
+      (data) => {
+        this.avatarChanged.emit(data);
+        this.avatarId = data.avatar.id;      }
+    )
   }
 }

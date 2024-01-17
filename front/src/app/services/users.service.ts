@@ -46,4 +46,12 @@ export class UsersService {
     return this._http
       .post<User>(`${this.usersUrl}/${userId}/avatars/${avatarId}`, {});
   }
+
+  public uploadCustomAvatar(userId: string, avatar: Blob): Observable<User> {
+    const formData = new FormData();
+    formData.append('avatar', avatar);
+
+    return this._http
+      .post<User>(`${this.usersUrl}/${userId}/avatars`, formData);
+  }
 }
