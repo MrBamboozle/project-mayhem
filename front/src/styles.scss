@@ -78,6 +78,16 @@ body {
     cursor: pointer;
   }
 
+  &__big {
+    width: fit-content;
+    img {
+      width: 200px;
+      height: 200px;
+
+      box-shadow: -4px 4px 8px rgba(0, 0, 0, 0.5);
+    }
+  }
+
   img {
     width: 150px;
     height: 150px;
@@ -89,8 +99,9 @@ body {
     content: "";
     position: absolute;
     top: -50px;
-    left: 50px;
-    background-image: url(./assets/images/tape-piece.png);
+    left: 50%;
+    transform: translateX(-50%);
+    background-image: url('./assets/images/tape-piece-transparent.png');
     background-size: cover;
     width: 50px;
     height: 100px;
@@ -108,6 +119,83 @@ body {
   }
 }
 
+.nav-tabs {
+  border: none!important;
+  overflow: hidden;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  li {
+    border: none!important;
+    float: left;
+    margin: 0 .5em 0 0;
+
+    button {
+      border: none!important;
+      position: relative;
+      background-color: #c79f6c;
+      background-image: linear-gradient(to bottom, #c79f6c, #a38661);
+      padding: 5px 15px;
+      float: left;
+      text-decoration: none;
+      color: #444;
+      // text-shadow: 0 1px 0 rgba(255,255,255,.8);
+      border-radius: 5px 0 0 0;
+      box-shadow: 0 2px 2px rgba(0,0,0,.4);
+
+      &:hover, &:hover::after, &:focus, &:focus::after {
+        background-color: #c79f6c;
+      }
+
+      &:focus {
+        outline: 0;
+      }
+      
+      &::after {
+        content:'';
+        position:absolute;
+        z-index: 1;
+        top: 0;
+        right: -.5em;
+        bottom: 0;
+        width: 1em;
+        background: #c79f6c;
+        background-image: linear-gradient(to bottom, #c79f6c, #a38661);
+        box-shadow: 2px 2px 2px rgba(0,0,0,.4);
+        transform: skew(10deg);
+        border-radius: 0 5px 0 0;
+      }
+
+      &.active, &.active::after {
+        background-color: #c79f6c!important;
+        background-image: none;
+        z-index: 3;
+      }
+    }
+  }
+}
+
+.tab-content {
+  background: #c79f6c;
+  padding: 2em;
+  min-height: 220px;
+  position: relative;
+  z-index: 2;
+  border-radius: 0 5px 5px 5px;
+  box-shadow: 0 -2px 3px -2px rgba(0, 0, 0, .5);
+}
+
+.tab-pane {
+  background-image: url('./assets/images/regular-paper-1.jpg');
+  background-repeat: repeat; /* This will make the texture repeat */
+  background-size: auto; /* Keep the texture's original size */
+  background-attachment: fixed; /* Optional: makes the background fixed during scroll */
+  background-position: center; /* Optional: positions the background image */
+  padding: 20px;
+}
+
 a {
 	transition: .3s all ease;
 	color: $primary;
@@ -117,55 +205,13 @@ a {
 		box-shadow: none;
 	}
 }
-// button {
-// 	transition: .3s all ease;
-// 	&:hover, &:focus {
-// 		text-decoration: none !important;
-// 		outline: none !important;
-// 		box-shadow: none !important;
-// 	}
-// }
+
 h1, h2, h3, h4, h5,
 .h1, .h2, .h3, .h4, .h5 {
 	line-height: 1.5;
 	font-weight: 400;
 	font-family: $font-primary;
 	color: $black;
-}
-
-
-.ftco-section{
-	padding: 7em 0;
-}
-
-.ftco-no-pt{
-	padding-top: 0;
-}
-.ftco-no-pb{
-	padding-bottom: 0;
-}
-//HEADING SECTION
-.heading-section{
-	font-size: 28px;
-	color: $black;
-	small{
-		font-size: 18px;
-	}
-}
-
-//COVER BG
-.img{
-	background-size: cover;
-	background-repeat: no-repeat;
-	background-position: center center;
-}
-
-
-
-
-
-a[data-toggle="collapse"] {
-    position: relative;
 }
 
 #sidebarCollapse{
@@ -182,15 +228,12 @@ a[data-toggle="collapse"] {
   min-height: 100vh;
 }
 
-
-
 #content {
   width: 100%;
   padding: 0;
   min-height: 100vh;
   transition: all 0.3s;
 }
-
 
 .btn{
 	&.btn-primary{
@@ -202,14 +245,6 @@ a[data-toggle="collapse"] {
 		}
 	}
 }
-
-.footer{
-	p{
-		color: rgba(255,255,255,.5);
-	}
-}
-
-
 
 .form-control {
 	height: 40px!important;
@@ -233,12 +268,5 @@ a[data-toggle="collapse"] {
 	}
 	&:-moz-placeholder { /* Firefox 18- */
 	  color: rgba(255,255,255,.5);
-	}
-}
-
-
-.subscribe-form{
-	.form-control{
-		background: lighten($primary,5%);
 	}
 }

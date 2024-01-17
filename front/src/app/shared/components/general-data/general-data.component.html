@@ -1,40 +1,42 @@
-<form [formGroup]="profileForm" (ngSubmit)="onSubmit()" class="form">
-  <!-- Email Field -->
-  <div class="form-group">
+<div class="d-flex flex-row mt-2">
+  <div class="avatar-container avatar-container__big me-5 mt-2">
     <img [src]="avatarSrc"/>
   </div>
-
-  <!-- Email Field -->
-  <div class="form-group">
-    <label for="email">Email</label>
-    <input id="email" type="email" formControlName="email" class="form-control form-control-plaintext" readonly
-      [ngClass]="{ 'is-invalid': controls.email.touched && controls.email.invalid }">
-    <div *ngIf="controls.email.touched && controls.email.invalid" class="text-danger">
-      <small *ngIf="controls.email.errors?.required">Email is required.</small>
-      <small *ngIf="controls.email.errors?.email">Email is invalid.</small>
-    </div>
-  </div>
-
-  <!-- Alias Field -->
-  <div class="form-group">
-    <label for="alias">Alias</label>
-    <input id="name" type="text" formControlName="name" class="form-control" [readonly]="!isEditMode"
-      [ngClass]="{ 'is-invalid': controls.name.touched && controls.name.invalid, 'form-control-plaintext': !isEditMode }">
-    <div *ngIf="controls.name.touched && controls.name.invalid" class="text-danger">
-      <small *ngIf="controls.name.errors?.required">Alias is required.</small>
-      <small *ngIf="controls.name.errors?.maxlength">Alias must be less than 16 characters.</small>
-      <small *ngIf="controls.name.errors?.invalidUsername">Alias cannot contain an ampersand (&), equals sign (=), underscore (_), apostrophe ('), dash (-), plus sign (+), comma (,), brackets (&lt;,>), or more than one period (.)</small>
-      <!-- Add any other specific validation messages for the alias here -->
-    </div>
-  </div>
   
-  <!-- Submit Button -->
-  <div class="form-group" *ngIf="!isEditMode">
-    <button (click)="enableEditing()" class="btn btn-success">Edit data</button>
-  </div>
-  <div class="form-group" *ngIf="isEditMode">
-    <button type="submit" class="btn btn-success">Save</button>
-    <button (click)="disableEditing()" class="btn btn-warn">Cancel</button>
-  </div>
-</form>
+  <form [formGroup]="profileForm" (ngSubmit)="onSubmit()" class="form">
+    <!-- Email Field -->
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input id="email" type="email" formControlName="email" class="form-control form-control-plaintext" readonly
+        [ngClass]="{ 'is-invalid': controls.email.touched && controls.email.invalid }">
+      <div *ngIf="controls.email.touched && controls.email.invalid" class="text-danger">
+        <small *ngIf="controls.email.errors?.required">Email is required.</small>
+        <small *ngIf="controls.email.errors?.email">Email is invalid.</small>
+      </div>
+    </div>
+  
+    <!-- Alias Field -->
+    <div class="form-group">
+      <label for="alias">Alias</label>
+      <input id="name" type="text" formControlName="name" class="form-control" [readonly]="!isEditMode"
+        [ngClass]="{ 'is-invalid': controls.name.touched && controls.name.invalid, 'form-control-plaintext': !isEditMode }">
+      <div *ngIf="controls.name.touched && controls.name.invalid" class="text-danger">
+        <small *ngIf="controls.name.errors?.required">Alias is required.</small>
+        <small *ngIf="controls.name.errors?.maxlength">Alias must be less than 16 characters.</small>
+        <small *ngIf="controls.name.errors?.invalidUsername">Alias cannot contain an ampersand (&), equals sign (=), underscore (_), apostrophe ('), dash (-), plus sign (+), comma (,), brackets (&lt;,>), or more than one period (.)</small>
+        <!-- Add any other specific validation messages for the alias here -->
+      </div>
+    </div>
+    
+    <!-- Submit Button -->
+    <div class="form-group" *ngIf="!isEditMode">
+      <button (click)="enableEditing()" class="btn btn-success">Edit data</button>
+    </div>
+    <div class="form-group" *ngIf="isEditMode">
+      <button type="submit" class="btn btn-success">Save</button>
+      <button (click)="disableEditing()" class="btn btn-warn">Cancel</button>
+    </div>
+  </form>
+</div>
+
 
