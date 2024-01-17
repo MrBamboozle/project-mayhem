@@ -70,6 +70,11 @@ class User extends Authenticatable
         return $this->belongsTo(Avatar::class, 'avatar_id', 'id');
     }
 
+    public function city(): BelongsTo
+    {
+        return $this->belongsTo(City::class, 'city_id', 'id');
+    }
+
     /**
      * Create a new personal access token for the user.
      *

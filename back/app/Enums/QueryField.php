@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-enum AllowedParams: string
+enum QueryField: string
 {
     case FILTER = 'filter';
     case SORT = 'sort';

@@ -2,18 +2,32 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\QueryField;
 use App\Http\Requests\StoreEventRequest;
 use App\Http\Requests\UpdateEventRequest;
 use App\Models\Event;
+use App\Services\ModelService;
+use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class EventController extends Controller
 {
+    public function __construct(
+        private readonly ModelService $modelService
+    )
+    {}
+
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request): LengthAwarePaginator
     {
-        //
+        $query = Event::query();
+
+        $query = $this->modelService->applyFilters($query, $request->query(QueryField::FILTER->value));
+        $query = $this->modelService->applySorts($query, $request->query(QueryField::SORT->value));
+
+        return $query->paginate(5);
     }
 
     /**

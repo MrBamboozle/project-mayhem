@@ -17,7 +17,13 @@ class EventFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'title' => $this->faker->title,
+            'tag_line' => $this->faker->text,
+            'description' => $this->faker->text,
+            'time' => $this->faker->dateTime,
+            'location' => $this->faker->localCoordinates,
+            'user_id' => null,
+            'city_id' => null,
         ];
     }
 }
