@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Models\PersonalAccessToken;
 use App\Services\ModelService;
 use App\Services\TokenGenerateService\TokenGeneration;
+use App\Services\UrlQueryService\UrlQueryService;
 use App\Services\UserService;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
@@ -25,6 +26,9 @@ class AppServiceProvider extends ServiceProvider
         });
         $this->app->singleton(UserService::class, function (Application $app) {
             return new UserService();
+        });
+        $this->app->singleton(UrlQueryService::class, function (Application $app) {
+            return new UrlQueryService();
         });
     }
 

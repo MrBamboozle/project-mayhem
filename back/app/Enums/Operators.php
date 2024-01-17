@@ -10,12 +10,20 @@ enum Operators: string
     case DESCENDING = 'desc';
     case UNDEFINED = 'undefined';
 
-    public static function getDirection(string $direction): self
+    public static function create(string $value): self
     {
-        return match ($direction) {
-            self::ASCENDING->value => self::ASCENDING,
-            self::DESCENDING->value => self::DESCENDING,
-            default => self::UNDEFINED
+        try {
+            return self::from($value);
+        } catch (\ValueError) {
+            return self::UNDEFINED;
+        }
+    }
+
+    public function isValidSortOperator(): bool
+    {
+        return match ($this) {
+            self::ASCENDING, self::DESCENDING => true,
+            default => false
         };
     }
 

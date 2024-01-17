@@ -17,8 +17,9 @@ return new class extends Migration
             $table->string('tag_line');
             $table->string('description');
             $table->dateTime('time');
-            $table->string('location'); //possibly relation, google geocoding API to get address from latitude and longitude
+            $table->string('location');
             $table->foreignUuid('user_id')->references('id')->on('users');
+            $table->foreignUuid('city_id')->references('id')->on('cities');
             $table->timestamps();
         });
     }

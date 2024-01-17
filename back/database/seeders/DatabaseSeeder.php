@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use App\Models\Avatar;
+use App\Models\City;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 
@@ -31,12 +31,19 @@ class DatabaseSeeder extends Seeder
             $i++;
         }
 
+        $city = City::factory()->create(['name' => 'Zagreb']);
+
         foreach (self::ADMIN_USERS as $user => $email) {
             User::factory()->create([
                 'name' => $user,
                 'email' => $email,
-                'avatar_id' => $avatars[0]->id
+                'avatar_id' => $avatars[0]->id,
+                'city_id' => $city->id
             ]);
         }
+
+        $this->call(
+            CategorySeeder::class,
+        );
     }
 }

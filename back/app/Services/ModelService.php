@@ -2,55 +2,45 @@
 
 namespace App\Services;
 
-use App\Enums\FilterableSortableModels;
 use App\Enums\Operators;
 use App\Interfaces\ModelFields;
+use App\Services\UrlQueryService\UrlFilter;
+use App\Services\UrlQueryService\UrlSort;
 use Illuminate\Database\Eloquent\Builder;
 
 class ModelService
 {
-    public function applyFilters(Builder $query, Operators $operator, ?array $filters, FilterableSortableModels $model): Builder
+    public function applyFilters(Builder $query, ?array $filters): Builder
     {
         if (empty($filters)) {
             return $query;
         }
 
-        foreach ($filters as $field => $filter) {
-            $name = $model->getFilterableFieldEnum($field);
-
-            if ($name->isUndefined() || $operator->isUndefined()) {
+        /** @var UrlFilter $filter */
+        foreach ($filters as $filter) {
+            if ($filter->operator->isUndefined()) {
                 continue;
             }
 
-            if (!$name->isAll() && count($filters) > 2) {
-                $query->where($name->value, $operator->value, "%$filter%");
-            }
-
-            $cases = $name::cases();
-
-            foreach ($cases as $case) {
-                if (!$case->isAll() && !$case->isUndefined()) {
-                    $query->orWhere($case->value, $operator->value, "%$filter%");
-                }
+            if ($filter->orWhere) {
+                $query->orWhere($filter->fieldName, $filter->operator->value, "%$filter->fieldValue%");
+            } else {
+                $query->where($filter->fieldName, $filter->operator->value, "%$filter->fieldValue%");
             }
         }
 
         return $query;
     }
 
-    public function applySorts(Builder $query, ?array $sorts, FilterableSortableModels $model): Builder
+    public function applySorts(Builder $query, ?array $sorts): Builder
     {
-        if (!empty($sorts)) {
-            foreach ($sorts as $sort => $value) {
-                $direction = Operators::getDirection($value);
-                $name = $model->getFilterableFieldEnum($sort);
+        if (empty($sorts)) {
+            return $query;
+        }
 
-                if ($name->isUndefined() || $name->isAll() ||$direction->isUndefined()) {
-                    continue;
-                }
-
-                $query->orderBy($name->value, $direction->value);
-            }
+        /** @var UrlSort $sort */
+        foreach ($sorts as $sort) {
+            $query->orderBy($sort->fieldName, $sort->value->value);
         }
 
         return $query;

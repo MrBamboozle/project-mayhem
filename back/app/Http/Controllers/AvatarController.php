@@ -8,11 +8,8 @@ use App\Models\Avatar;
 
 class AvatarController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function __invoke(): array
     {
-        return Avatar::where('default', 1)->get();
+        return Avatar::where('default', 1)->get()->toArray();
     }
 }
