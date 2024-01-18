@@ -50,6 +50,20 @@ $font-stars: 'Starz', Arial, sans-serif;
 .printed {
   font-family: $font-printed;
   color: $dark;
+
+  th.sortable {
+    cursor: pointer;
+    span {
+      display: inline-block;
+      transition: .3s all ease;
+      &.rotate-desc {
+        transform: rotate(90deg);
+      }
+      &.rotate-asc {
+        transform: rotate(-90deg);
+      }
+    }
+  }
 }
 
 body {

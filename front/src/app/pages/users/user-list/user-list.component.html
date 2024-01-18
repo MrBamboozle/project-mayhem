@@ -1,9 +1,13 @@
+<!-- Search Input -->
+<label for="search">Search</label>
+<input id="search" type="text" class="form-control" placeholder="Search..." [(ngModel)]="searchTerm" (keyup)="onSearchChange()">
+
 <table class="table">
   <thead>
     <tr class="printed">
       <th>#</th>
-      <th>Name</th>
-      <th>Email</th>
+      <th class="sortable" (click)="sort('name')">Name <span [ngClass]="getSortIcon('name')">></span></th>
+      <th class="sortable" (click)="sort('email')">Email <span [ngClass]="getSortIcon('email')">></span></th>
       <th>Actions</th>
       <!-- Add other user attributes here -->
     </tr>
