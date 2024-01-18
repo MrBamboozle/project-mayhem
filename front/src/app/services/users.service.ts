@@ -16,9 +16,9 @@ export class UsersService {
     private readonly _http: HttpClient,
   ) { }
 
-  public getUsers(page?: number): Observable<PaginatedResponse<User>> {
+  public getUsers(queryParams: string = ''): Observable<PaginatedResponse<User>> {
     return this._http
-      .get<PaginatedResponse<User>>(`${this.usersUrl}${page ? '?page=' + page : ''}`);
+      .get<PaginatedResponse<User>>(`${this.usersUrl}${queryParams}`);
   }
 
   public getUser(id: string): Observable<User> {
