@@ -90,6 +90,7 @@
 }
 
 #header {
+  position: relative;
   width: 100%;
   min-height: 100px;
   background-color: rgba(0,0,0,0);
@@ -108,6 +109,11 @@
       margin: 0;
       color: $dark;
     }
+  }
+
+  .user-button-container {
+    position: absolute;
+    right: 10px;
   }
 
   .dropdown-toggle::after {
@@ -151,4 +157,15 @@
 #content {
   background-color: #fff;
   box-shadow: -5px -5px 20px rgba(0, 0, 0, 0.5);
+
+  // background-image: url('/assets/images/wood-texture-2.jpg'); /* Path to your texture image */
+  // background-repeat: repeat; /* This will make the texture repeat */
+  // background-size: auto; /* Keep the texture's original size */
+  // // background-attachment: fixed; /* Optional: makes the background fixed during scroll */
+  // background-position: center; /* Optional: positions the background image */
+  // border-radius: 70px;
+
+  // .paper-bg {
+  //   background-image: url('/assets/images/paper-stack.jpg'); /* Path to your texture image */
+  // }
 }
