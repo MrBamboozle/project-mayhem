@@ -14,13 +14,13 @@
 
   <div id="body">
       <!-- Header  -->
-    <div id="header" class="d-flex align-items-center pe-3">
+    <div id="header" class="d-flex align-items-center">
       <div class="d-flex justify-content-center flex-grow-1">
         <div class="title-container d-flex justify-content-center align-items-end">
           <h1>{{ title }}</h1>
         </div>
       </div>
-      <div>
+      <div class="user-button-container">
         <button type="button" class="pokerchip-button text" *ngIf="(userStore.isStored | async) === false; else userMenu" (click)="openSignInModal()">Sign<br>in</button>
         <ng-template #userMenu>
           <div ngbDropdown>
@@ -37,7 +37,9 @@
     </div>
       <!-- Page Content  -->
     <div id="content" class="pt-7 px-5">
-      <router-outlet></router-outlet>
+      <div class="paper-bg">
+        <router-outlet></router-outlet>
+      </div>
     </div>
   </div>
 
