@@ -43,4 +43,9 @@ export class ProfileComponent {
     this.userStore.storeCurrentUser($event);
     this.currentUser = this.userStore.currentUser.getValue();
   }
+
+  userDataChanged($event: User) {
+    this.userStore.storeCurrentUser($event);
+    this.currentUser = this.userStore.currentUser.getValue();
+  }
 }

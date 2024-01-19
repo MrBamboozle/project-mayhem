@@ -54,7 +54,11 @@ export class EditUserComponent implements OnInit {
   }
 
   avatarChanged($event: User) {
-    this.user = $event
+    this.user = $event;
+  }
+
+  userDataChanged($event: User) {
+    this.user = $event;
   }
 
   onNavChange(event: NgbNavChangeEvent): void {
