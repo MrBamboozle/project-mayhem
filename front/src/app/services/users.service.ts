@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { config } from '@app/core/app-config';
 import { MessageResponse } from '@app/shared/models/message';
 import { PaginatedResponse } from '@app/shared/models/paginated-response';
-import { User, UserRequest } from '@app/shared/models/user';
+import { User, UserEditRequest, UserRequest } from '@app/shared/models/user';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -31,7 +31,7 @@ export class UsersService {
       .post<User>(this.usersUrl, userReq);
   }
 
-  public patchEvent(id: string, userReq: UserRequest): Observable<User> {
+  public patchUser(id: string, userReq: UserEditRequest): Observable<User> {
     return this._http
       .patch<User>(`${this.usersUrl}/${id}`, userReq);
   }

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { config } from '@app/core/app-config';
 import { UsersService } from '@app/services/users.service';
@@ -27,9 +27,11 @@ export class GeneralDataComponent {
 
   public avatarSrc: string = '';
 
+  @Output() userDataChanged = new EventEmitter<User>();
+
+
   constructor(
     private readonly formBuilder: FormBuilder,
-    private readonly userStore: UserStoreService,
     private readonly userService: UsersService,
   ) {}
 
@@ -61,18 +63,12 @@ export class GeneralDataComponent {
       name: this.profileForm.value.name
     }
 
-
-    // this.authService
-    //   .login(request)
-    //   .subscribe({
-    //     next: (data: LoginResponse) => {
-    //       this.userStore.storeCurrentUser(data.user);
-    //       this.authService.storeAccessToken(data.token)
-    //       this.onSignedIn.emit(true);
-    //     },
-    //     error: (e) => console.error(e),
-    //     complete: () => console.info('complete') 
-    //   })
+    this.userService.patchUser(this.user.id, request).subscribe(
+      (data) => {
+        this.userDataChanged.emit(data);
+        this.isEditMode = false;
+      }
+    )
   }
 
 }

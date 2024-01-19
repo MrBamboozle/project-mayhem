@@ -5,7 +5,7 @@
     <li [ngbNavItem]="1">
       <button ngbNavLink>User data</button>
       <ng-template ngbNavContent>
-        <app-general-data [user]="currentUser"></app-general-data>
+        <app-general-data [user]="currentUser" (userDataChanged)="userDataChanged($event)"></app-general-data>
       </ng-template>
     </li>
     <li [ngbNavItem]="2">
