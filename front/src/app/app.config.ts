@@ -7,6 +7,7 @@ import { AuthInterceptor } from './core/interceptors/auth-interceptor';
 import { UserStoreService } from './shared/stores/user.store.service';
 import { Observable, catchError, of, tap } from 'rxjs';
 import { config } from './core/app-config';
+import { ToastInterceptor } from './core/interceptors/toast-interceptor';
 
 function initializeAppFactory(httpClient: HttpClient, userStore: UserStoreService): () => Observable<any> {
   return () => httpClient.get(`${config.API_URL}/me`)
@@ -32,6 +33,11 @@ export const appConfig: ApplicationConfig = {
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ToastInterceptor,
       multi: true
     },
     provideRouter(routes),

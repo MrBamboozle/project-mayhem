@@ -1,19 +1,19 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
-import { NgbDropdownModule, NgbModal, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDropdownModule, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { SignInModalComponent } from './shared/modals/sign-in.modal/sign-in.modal.component';
 import { ModalHelperService } from './shared/services/modal-helper.service';
 import { HttpClientModule } from '@angular/common/http';
 import { UserStoreService } from './shared/stores/user.store.service';
 import { AuthenticationService } from './services/authentication.service';
-import { User } from './shared/models/user';
 import { config } from './core/app-config';
+import { ToastsContainer } from './core/components/toast-container.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, RouterLink, RouterLinkActive, NgbDropdownModule, NgbModalModule, HttpClientModule],
+  imports: [CommonModule, RouterOutlet, RouterLink, RouterLinkActive, NgbDropdownModule, NgbModalModule, HttpClientModule, ToastsContainer],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
@@ -28,7 +28,7 @@ export class AppComponent {
   constructor(
     private readonly modalService: ModalHelperService,
     private readonly authService: AuthenticationService,
-    public readonly userStore: UserStoreService
+    public readonly userStore: UserStoreService,
   ) {}
 
   public toggleSidebar(): void {
