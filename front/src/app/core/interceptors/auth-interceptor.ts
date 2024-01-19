@@ -9,7 +9,7 @@ import {
 import { catchError, tap, switchMap } from 'rxjs/operators';
 import { Observable, of, Subject, throwError } from 'rxjs';
 import { AuthenticationService } from '@app/services/authentication.service';
-import { RefreshTokenResponse } from '@app/shared/models/login';
+import { ToastService } from '@app/shared/services/toaster.service';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
@@ -96,7 +96,7 @@ export class AuthInterceptor implements HttpInterceptor {
           if (e.status !== 401) {
             return this.handleResponseError(e);
           } else {
-            // Show message
+            // this.toastService.showError(e);
             this.authService.logout();
             return of(e);
           }
