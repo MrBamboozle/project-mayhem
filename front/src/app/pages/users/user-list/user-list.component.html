@@ -1,6 +1,10 @@
 <!-- Search Input -->
-<label for="search">Search</label>
-<input id="search" type="text" class="form-control" placeholder="Search..." [(ngModel)]="searchTerm" (keyup)="onSearchChange()">
+<div class="printed-form">
+  <div class="form-group">
+    <label for="search">Search</label>
+    <input id="search" type="text" class="form-control" placeholder="Search..." [(ngModel)]="searchTerm" (keyup)="onSearchChange()">
+  </div>
+</div>
 
 <table class="table">
   <thead>

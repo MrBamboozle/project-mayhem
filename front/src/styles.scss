@@ -260,27 +260,94 @@ h1, h2, h3, h4, h5,
 	}
 }
 
-.form-control {
-	height: 40px!important;
-	background: $white;
-	color: $black;
-	font-size: 13px;
-	border-radius: 4px;
-	box-shadow: none !important;
-	border: transparent;
-	&:focus, &:active {
-		border-color: $black;
-	}
-	&::-webkit-input-placeholder { /* Chrome/Opera/Safari */
-	  color: rgba(255,255,255,.5);
-	}
-	&::-moz-placeholder { /* Firefox 19+ */
-	  color: rgba(255,255,255,.5);
-	}
-	&:-ms-input-placeholder { /* IE 10+ */
-	  color: rgba(255,255,255,.5);
-	}
-	&:-moz-placeholder { /* Firefox 18- */
-	  color: rgba(255,255,255,.5);
-	}
+.printed-form {
+  width: 100%;
+
+  .form-group {
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+
+    margin-bottom: 20px;
+  
+    label {
+      // flex: 0 0 auto; // Don't grow, don't shrink, and be automatically sized
+      margin-right: 1rem; // Adjust as needed
+      white-space: nowrap; // Prevents the label from breaking into multiple lines
+  
+      font-family: $font-printed;
+      color: $dark;
+      font-weight: bold;
+      line-height: 1;
+    }
+  
+    .form-control {
+      flex-grow: 1; // Allows the input field to take up the remaining space
+      flex-basis: 50%; // Minimum initial width for input
+ 
+      background-color: transparent; // Removes the default background
+      border: none; // Removes the default border
+
+      background-image: linear-gradient(to right, rgba(0,0,0,0.6) 80%, transparent 20%);
+      background-size: 8px 2px; // Adjust the size to control the dash thickness and spacing
+      background-repeat: repeat-x;
+      background-position: bottom;
+      border-bottom: none; // Remove the border as the background simulates the line
+  
+      border-radius: 0;
+      padding: 0 0 4px 15px;
+      line-height: 21px;
+      height: 20px;
+
+      color: #3d4473;
+  
+      &:focus {
+          outline: none; // Removes the default focus outline
+          box-shadow: none;
+      }
+
+      &[readonly] {
+        color: $gray-900;
+      }
+    }
+
+    .text-danger {
+      width: 100%;
+      order: 3;
+
+      flex-basis: 100%; // Take full width
+
+    }
+  }
+
+  .form-buttons {
+    margin-top: 50px;
+  }
+
 }
+
+// .form-control {
+// 	height: 40px!important;
+// 	background: $white;
+// 	color: $black;
+// 	font-size: 13px;
+// 	border-radius: 4px;
+// 	box-shadow: none !important;
+// 	border: transparent;
+// 	&:focus, &:active {
+// 		border-color: $black;
+// 	}
+// 	&::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+// 	  color: rgba(255,255,255,.5);
+// 	}
+// 	&::-moz-placeholder { /* Firefox 19+ */
+// 	  color: rgba(255,255,255,.5);
+// 	}
+// 	&:-ms-input-placeholder { /* IE 10+ */
+// 	  color: rgba(255,255,255,.5);
+// 	}
+// 	&:-moz-placeholder { /* Firefox 18- */
+// 	  color: rgba(255,255,255,.5);
+// 	}
+// }
