@@ -13,8 +13,53 @@ $spacers: (
   9: ($spacer * 7.5),    //120px
   10: ($spacer * 9.375)  //150px
 );
+
+/* SCSS HEX */
+$hunyadi-yellow: #edae49ff;
+$amaranth: #d1495bff;
+$caribbean-current: #00798cff;
+$lapis-lazuli: #30638eff;
+$indigo-dye: #003d5bff;
+
+/* SCSS HSL */
+$hunyadi-yellow: hsla(37, 82%, 61%, 1);
+$amaranth: hsla(352, 60%, 55%, 1);
+$caribbean-current: hsla(188, 100%, 27%, 1);
+$lapis-lazuli: hsla(207, 49%, 37%, 1);
+$indigo-dye: hsla(200, 100%, 18%, 1);
+
+/* SCSS RGB */
+$hunyadi-yellow: rgba(237, 174, 73, 1);
+$amaranth: rgba(209, 73, 91, 1);
+$caribbean-current: rgba(0, 121, 140, 1);
+$lapis-lazuli: rgba(48, 99, 142, 1);
+$indigo-dye: rgba(0, 61, 91, 1);
+
+/* SCSS Gradient */
+$gradient-top: linear-gradient(0deg, #edae49ff, #d1495bff, #00798cff, #30638eff, #003d5bff);
+$gradient-right: linear-gradient(90deg, #edae49ff, #d1495bff, #00798cff, #30638eff, #003d5bff);
+$gradient-bottom: linear-gradient(180deg, #edae49ff, #d1495bff, #00798cff, #30638eff, #003d5bff);
+$gradient-left: linear-gradient(270deg, #edae49ff, #d1495bff, #00798cff, #30638eff, #003d5bff);
+$gradient-top-right: linear-gradient(45deg, #edae49ff, #d1495bff, #00798cff, #30638eff, #003d5bff);
+$gradient-bottom-right: linear-gradient(135deg, #edae49ff, #d1495bff, #00798cff, #30638eff, #003d5bff);
+$gradient-top-left: linear-gradient(225deg, #edae49ff, #d1495bff, #00798cff, #30638eff, #003d5bff);
+$gradient-bottom-left: linear-gradient(315deg, #edae49ff, #d1495bff, #00798cff, #30638eff, #003d5bff);
+$gradient-radial: radial-gradient(#edae49ff, #d1495bff, #00798cff, #30638eff, #003d5bff);
+
 /* Importing Bootstrap SCSS file. */
 @import 'bootstrap/scss/bootstrap';
+
+.btn-link {
+  color: $lapis-lazuli!important;
+}
+
+.text-danger {
+  color: $amaranth!important;
+}
+
+.text-success {
+  color: $caribbean-current!important;
+}
 
 .show-modal .modal {
   display: contents !important;
@@ -47,20 +92,140 @@ $font-primary: 'ModernTypewriter', Arial, sans-serif;
 $font-printed: 'OldSchool', Arial, sans-serif;
 $font-stars: 'Starz', Arial, sans-serif;
 
+$aged-ink: #a29485;
+$blueish-ink: #3d4473;
+
+@mixin paper-bg {
+  background-color: #f5deb3;
+  background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.2) 5%, rgba(0, 0, 0, 0.1) 100%);
+  // Add a box-shadow to simulate the scuffed look on the edges
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
+}
+
+.table-pagination-container {
+  position: relative;
+
+  ngb-pagination {
+    position: absolute;
+    bottom: -57px;
+    left: 20px;
+    
+  }
+
+  // Custom Pagination Styles
+  .pagination {
+    // Override default pagination background and text color
+    background-color: #f5deb3; // Old paper color
+    color: $lapis-lazuli; // Aged ink color
+
+    @include paper-bg;
+
+    // Remove default border radius
+    border-radius: 0;
+
+    // Custom border to match the table
+    border: none;
+
+    .page-item {
+      // Hover state
+      &:hover {
+        text-decoration: none;
+        background-color: rgba(255, 255, 224, 0.3); // Light old paper color for hover
+      }
+      // Active state
+      &.active {
+        background-color: rgba(255, 255, 224, 0.6); // Slightly darker paper color for active state
+        color: $aged-ink;
+      }
+    }    
+
+    // Pagination inner content
+    .page-link {
+      // Text color
+      color: $dark; // Aged ink color
+      background-color: transparent;
+      border: none; // Remove individual borders
+
+      &:focus {
+        box-shadow: none;
+      }
+    }
+
+    // Override border radius for first and last page-link
+    .page-item:first-child .page-link {
+      border-top-left-radius: 0; // Square top left corner
+      border-bottom-left-radius: 5px; // Rounded bottom left corner
+    }
+
+    .page-item:last-child .page-link {
+      border-top-right-radius: 0; // Square top right corner
+      border-bottom-right-radius: 5px; // Rounded bottom right corner
+    }
+  }
+}
+
+.printed-table-container {
+  @include paper-bg;
+  padding: 20px;
+
+  position: relative;
+
+  z-index: 2;
+  
+  .printed-table {
+    // Use a base color to simulate the yellowish paper
+  
+    // Add a linear gradient to simulate the uneven color of old paper
+    border-collapse: collapse;
+    width: 100%;
+  
+    color: $indigo-dye;
+
+    
+    th, td {
+      border: 1px solid $aged-ink; // A color that looks like aged ink
+      padding: 10px;
+      text-align: left;
+      
+      &:first-child {
+        border-left: none;
+      }
+      &:last-child {
+        border-right: none;
+      }
+      // You can also add a text-shadow to simulate the ink bleed effect
+      // text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
+    }
+    
+    th {
+      border-top: 2px solid $aged-ink;
+      // border-bottom: 2px solid $aged-ink;
+    }
+    // Use nth-child to simulate the alternating row styles if necessary
+    // tr:nth-child(odd) {
+    //   background-color: rgba(255, 255, 224, 0.3);
+    // }
+  }
+
+}
+
+
 .printed {
   font-family: $font-printed;
-  color: $dark;
+  color: $dark!important;
 
-  th.sortable {
-    cursor: pointer;
-    span {
-      display: inline-block;
-      transition: .3s all ease;
-      &.rotate-desc {
-        transform: rotate(90deg);
-      }
-      &.rotate-asc {
-        transform: rotate(-90deg);
+  th{
+    &.sortable {
+      cursor: pointer;
+      span {
+        display: inline-block;
+        transition: .3s all ease;
+        &.rotate-desc {
+          transform: rotate(90deg);
+        }
+        &.rotate-asc {
+          transform: rotate(-90deg);
+        }
       }
     }
   }
@@ -77,7 +242,7 @@ body {
 	font-size: 14px;
 	line-height: 1.8;
 	font-weight: normal;
-	color: lighten($black,50%);
+	color: $indigo-dye;
 }
 
 .avatar-picker-spacing {
@@ -202,11 +367,7 @@ body {
 }
 
 .tab-pane {
-  background-image: url('./assets/images/regular-paper-1.jpg');
-  // background-repeat: repeat; /* This will make the texture repeat */
-  background-size: cover; /* Keep the texture's original size */
-  // background-attachment: fixed; /* Optional: makes the background fixed during scroll */
-  background-position: center; /* Optional: positions the background image */
+  @include paper-bg;
   padding: 20px;
 }
 
@@ -260,27 +421,123 @@ h1, h2, h3, h4, h5,
 	}
 }
 
-.form-control {
-	height: 40px!important;
-	background: $white;
-	color: $black;
-	font-size: 13px;
-	border-radius: 4px;
-	box-shadow: none !important;
-	border: transparent;
-	&:focus, &:active {
-		border-color: $black;
-	}
-	&::-webkit-input-placeholder { /* Chrome/Opera/Safari */
-	  color: rgba(255,255,255,.5);
-	}
-	&::-moz-placeholder { /* Firefox 19+ */
-	  color: rgba(255,255,255,.5);
-	}
-	&:-ms-input-placeholder { /* IE 10+ */
-	  color: rgba(255,255,255,.5);
-	}
-	&:-moz-placeholder { /* Firefox 18- */
-	  color: rgba(255,255,255,.5);
-	}
+.printed-form {
+  width: 100%;
+
+  .form-group {
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+
+    margin-bottom: 20px;
+  
+    label {
+      // flex: 0 0 auto; // Don't grow, don't shrink, and be automatically sized
+      margin-right: 1rem; // Adjust as needed
+      white-space: nowrap; // Prevents the label from breaking into multiple lines
+  
+      font-family: $font-printed;
+      color: $dark;
+      font-weight: bold;
+      line-height: 1;
+    }
+  
+    .form-control {
+      flex-grow: 1; // Allows the input field to take up the remaining space
+      flex-basis: 50%; // Minimum initial width for input
+ 
+      background-color: transparent; // Removes the default background
+      border: none; // Removes the default border
+      border-bottom: 2px dashed rgba(0, 0, 0, .5);
+
+      // background-image: linear-gradient(to right, rgba(0,0,0,0.6) 80%, transparent 20%);
+      // background-size: 8px 2px; // Adjust the size to control the dash thickness and spacing
+      // background-repeat: repeat-x;
+      // background-position: bottom;
+      // border-bottom: none; // Remove the border as the background simulates the line
+  
+      border-radius: 0;
+      padding: 0 0 4px 15px;
+      line-height: 21px;
+      height: 20px;
+
+      color: $indigo-dye;
+
+      /* Target autofilled input fields */
+      &:-webkit-autofill {
+        /* Apply your custom styles here */
+        background-color: transparent!important; // Removes the default background
+        background-image: linear-gradient(to right, rgba(0,0,0,0.6) 80%, transparent 20%)!important;
+        color: $indigo-dye!important;
+      }
+
+      &:-webkit-autofill {
+        -webkit-background-clip: text !important;
+        border-bottom: 2px dashed rgba(0, 0, 0, .5);
+        -webkit-text-fill-color: $indigo-dye;
+      }
+      
+      &:-webkit-autofill:focus {
+        -webkit-background-clip: text !important;
+        -webkit-text-fill-color: $indigo-dye;
+      } 
+
+      &:focus {
+          outline: none; // Removes the default focus outline
+          box-shadow: none;
+      }
+
+      &[readonly] {
+        color: $gray-900;
+      }
+
+      &::placeholder {
+        color: $indigo-dye;
+        opacity: 1; /* Firefox */
+      }
+      
+      &::-ms-input-placeholder { /* Edge 12 -18 */
+        color: $indigo-dye;
+      }
+    }
+
+    .text-danger {
+      width: 100%;
+      order: 3;
+
+      flex-basis: 100%; // Take full width
+
+    }
+  }
+
+  .form-buttons {
+    margin-top: 50px;
+  }
+
 }
+
+// .form-control {
+// 	height: 40px!important;
+// 	background: $white;
+// 	color: $black;
+// 	font-size: 13px;
+// 	border-radius: 4px;
+// 	box-shadow: none !important;
+// 	border: transparent;
+// 	&:focus, &:active {
+// 		border-color: $black;
+// 	}
+// 	&::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+// 	  color: rgba(255,255,255,.5);
+// 	}
+// 	&::-moz-placeholder { /* Firefox 19+ */
+// 	  color: rgba(255,255,255,.5);
+// 	}
+// 	&:-ms-input-placeholder { /* IE 10+ */
+// 	  color: rgba(255,255,255,.5);
+// 	}
+// 	&:-moz-placeholder { /* Firefox 18- */
+// 	  color: rgba(255,255,255,.5);
+// 	}
+// }
