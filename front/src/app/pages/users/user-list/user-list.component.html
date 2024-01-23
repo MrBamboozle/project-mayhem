@@ -1,42 +1,46 @@
-<!-- Search Input -->
-<div class="printed-form">
-  <div class="form-group">
-    <label for="search">Search</label>
-    <input id="search" type="text" class="form-control" placeholder="Search..." [(ngModel)]="searchTerm" (keyup)="onSearchChange()">
+<div class="table-pagination-container">
+
+  <div class="printed-table-container paper-bg">
+    <!-- Search Input -->
+    <div class="printed-form">
+      <div class="form-group">
+        <label for="search">Search</label>
+        <input id="search" type="text" class="form-control" placeholder="Search..." [(ngModel)]="searchTerm" (keyup)="onSearchChange()">
+      </div>
+    </div>
+    
+    <table class="printed-table">
+      <thead>
+        <tr class="printed">
+          <th>#</th>
+          <th class="sortable" (click)="sort('name')">Name <span [ngClass]="getSortIcon('name')">></span></th>
+          <th class="sortable" (click)="sort('email')">Email <span [ngClass]="getSortIcon('email')">></span></th>
+          <th>Actions</th>
+          <!-- Add other user attributes here -->
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of users; let i = index">
+          <td class="printed">{{ (currentPage - 1) * pageSize + i + 1 }}</td>
+          <td>{{ user.name }}</td>
+          <td>{{ user.email }}</td>
+          <td>
+            <button class="btn btn-sm btn-link" (click)="editUser(user.id)">
+              Edit
+            </button>
+            <button class="btn btn-sm btn-link text-danger" (click)="deleteUser(user.id)">
+              Delete
+            </button>
+          </td>
+          <!-- Display other user attributes here -->
+        </tr>
+      </tbody>
+    </table>
   </div>
+  <ngb-pagination 
+    [collectionSize]="collectionSize" 
+    [(page)]="currentPage" 
+    [pageSize]="pageSize"
+    (pageChange)="onPageChange($event)"
+    aria-label="Default pagination"></ngb-pagination>  
 </div>
-
-<table class="table">
-  <thead>
-    <tr class="printed">
-      <th>#</th>
-      <th class="sortable" (click)="sort('name')">Name <span [ngClass]="getSortIcon('name')">></span></th>
-      <th class="sortable" (click)="sort('email')">Email <span [ngClass]="getSortIcon('email')">></span></th>
-      <th>Actions</th>
-      <!-- Add other user attributes here -->
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let user of users; let i = index">
-      <td class="printed">{{ (currentPage - 1) * pageSize + i + 1 }}</td>
-      <td>{{ user.name }}</td>
-      <td>{{ user.email }}</td>
-      <td>
-        <button class="btn btn-sm btn-link" (click)="editUser(user.id)">
-          Edit
-        </button>
-        <button class="btn btn-sm btn-link text-danger" (click)="deleteUser(user.id)">
-          Delete
-        </button>
-      </td>
-      <!-- Display other user attributes here -->
-    </tr>
-  </tbody>
-</table>
-
-<ngb-pagination 
-  [collectionSize]="collectionSize" 
-  [(page)]="currentPage" 
-  [pageSize]="pageSize"
-  (pageChange)="onPageChange($event)"
-  aria-label="Default pagination"></ngb-pagination>
