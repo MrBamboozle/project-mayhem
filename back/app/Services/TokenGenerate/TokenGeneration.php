@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\TokenGenerateService;
+namespace App\Services\TokenGenerate;
 
 use App\Enums\TokenAbility;
 use App\Exceptions\Exceptions\InvalidTokenGeneration\UnableToGenerateTokenPairsException;

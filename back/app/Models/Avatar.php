@@ -9,11 +9,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Storage;
 
-/**
- * @property string $id
- * @property string $path
- * @property boolean $default
- */
 class Avatar extends Model
 {
     use HasFactory, HasUuids;

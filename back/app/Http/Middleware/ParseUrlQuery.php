@@ -4,7 +4,7 @@ namespace App\Http\Middleware;
 
 use App\Enums\QueryField;
 use App\Enums\Route;
-use App\Services\UrlQueryService\UrlQueryService;
+use App\Services\UrlQuery\UrlQueryService;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;

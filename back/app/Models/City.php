@@ -9,14 +9,15 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-/**
- * @property string $id
- * @property Event[] $events
- * @property User[] $users
- */
 class City extends Model
 {
     use HasFactory, HasUuids;
+
+    protected $fillable = [
+        'id',
+        'name',
+        'country_subdivision_id',
+    ];
 
     public function events(): HasMany
     {

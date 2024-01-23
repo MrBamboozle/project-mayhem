@@ -1,9 +1,11 @@
 <?php
 
-namespace App\Services\UrlQueryService;
+namespace App\Services\UrlQuery;
 
 use App\Enums\Operators;
 use App\Enums\Route;
+use App\Services\UrlQuery\UrlQueries\UrlFilter;
+use App\Services\UrlQuery\UrlQueries\UrlSort;
 
 class UrlQueryService
 {
