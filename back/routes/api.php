@@ -7,6 +7,7 @@ use App\Http\Controllers\AvatarController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CityController;
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\LocationController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -36,15 +37,21 @@ Route::middleware(['auth:sanctum', 'ability:' . TokenAbility::ACCESS_API->value]
     Route::get(RouteEnum::USERS->path() . '/{id}', [UserController::class, 'show']);
     Route::patch(RouteEnum::USERS->path() . '/{id}', [UserController::class, 'update']);
     Route::delete(RouteEnum::USERS->path() . '/{id}', [UserController::class, 'destroy']);
-    Route::post(RouteEnum::USERS->path() . '/{userId}/avatars/{avatarId?}', [UserController::class, 'addAvatar']);
+    Route::post(
+        RouteEnum::USERS->path() . '/{userId}' . RouteEnum::AVATARS->path() . '/{avatarId?}',
+        [UserController::class, 'addAvatar']
+    );
 
     //Avatar api
     Route::get(RouteEnum::AVATARS->path(), AvatarController::class);
 
+    //Location api
+    Route::post(RouteEnum::LOCATION->path(), LocationController::class);
+
     //Event api
-    Route::get('/events', [EventController::class, 'index']);
-    Route::get('/events/{eventId}', [EventController::class, 'show']);
-    Route::post('/events', [EventController::class, 'store']);
+    Route::get(RouteEnum::EVENTS->path(), [EventController::class, 'index']);
+    Route::get(RouteEnum::EVENTS->path() . '/{eventId}', [EventController::class, 'show']);
+    Route::post(RouteEnum::EVENTS->path(), [EventController::class, 'store']);
 });
 
 Route::get(RouteEnum::REFRESH->path(),[Authenticate::class, 'refreshAccessToken'])

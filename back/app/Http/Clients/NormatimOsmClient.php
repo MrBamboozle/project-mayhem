@@ -4,6 +4,7 @@ namespace App\Http\Clients;
 
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Str;
 
 class NormatimOsmClient
 {
@@ -36,6 +37,30 @@ class NormatimOsmClient
 
     public function getOsmAddress(string $parameters): array
     {
-        return $this->reverseSearch($parameters)->json('address');
+        return $this->serializeAddress($this->reverseSearch($parameters)->json('address'));
     }
+
+    private function serializeAddress(array $address): array
+    {
+        $serializedAddress = ['city' => null];
+
+        foreach ($address as $fieldName => $value) {
+            if (Str::contains($fieldName, 'ISO3166')) {
+                $serializedAddress['countrySubdivisionId'] = $value;
+
+                continue;
+            }
+
+            if ($fieldName === 'town') {
+                $serializedAddress['city'] = $value;
+
+                continue;
+            }
+
+            $serializedAddress[Str::camel($fieldName)] = $value;
+        }
+
+        return $serializedAddress;
+    }
+
 }

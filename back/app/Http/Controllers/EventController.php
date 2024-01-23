@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Enums\QueryField;
 use App\Exceptions\Exceptions\ApiModelNotFoundException;
-use App\Http\Clients\NormatimOsmClient;
 use App\Http\Requests\StoreEventRequest;
 use App\Http\Requests\UpdateEventRequest;
 use App\Models\Event;
@@ -19,7 +18,7 @@ class EventController extends Controller
 {
     public function __construct(
         private readonly ModelService $modelService,
-        private readonly EventService$eventService,
+        private readonly EventService $eventService,
     ) {}
 
     /**
@@ -65,15 +64,5 @@ class EventController extends Controller
     public function destroy(Event $event)
     {
         //
-    }
-
-    public function testNormatim(Request $request)
-    {
-        $httpClient = new NormatimOsmClient();
-
-        $location = $request->get('location');
-
-        $response = $httpClient->reverseSearch($location);
-        return json_decode($response->body());
     }
 }
