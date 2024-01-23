@@ -30,7 +30,7 @@ class StoreEventRequest extends FormRequest
             'location' => 'required | string',
             'user_id' => 'prohibited',
             'city_id ' => 'prohibited',
-            'categories' => 'required | string',
+            'categories' => 'array', //custom validation, usually required
         ];
     }
 }
