@@ -17,6 +17,7 @@ enum JsonFieldNames: string
     case CREDENTIALS = 'credentials';
     case SYSTEM_MESSAGE = 'systemMessage';
     case ID = 'id';
+    case LOCATION = 'location';
 
     public function snakeCase(): string
     {

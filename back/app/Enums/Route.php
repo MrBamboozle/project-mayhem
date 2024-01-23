@@ -12,6 +12,8 @@ enum Route: string
 	case ME = 'me';
 	case USERS = 'users';
 	case AVATARS = 'avatars';
+	case LOCATION = 'location';
+	case EVENTS = 'events';
 	case REFRESH = 'refresh-token';
     case UNDEFINED = 'undefined';
 

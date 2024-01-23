@@ -31,36 +31,18 @@ class EventService
             'user_id' => Auth::user()->id,
         ]);
 
-        $address = $this->serializeAddress($this->osmClient->getOsmAddress($data['location']));
+        $address = $data['address'] ?? null;
+
+        if (empty($address)) {
+            $address = $this->osmClient->getOsmAddress($data['location']);
+        }
+
         $event->address = json_encode($address);
         $city = $this->getCity($address['city'], $address['countrySubdivisionId']);
         $event->city_id = $city?->id;
         $event->save();
 
         return $event;
-    }
-
-    private function serializeAddress(array $address): array
-    {
-        $serializedAddress = ['city' => null];
-
-        foreach ($address as $fieldName => $value) {
-            if (Str::contains($fieldName, 'ISO3166')) {
-                $serializedAddress['countrySubdivisionId'] = $value;
-
-                continue;
-            }
-
-            if ($fieldName === 'town') {
-                $serializedAddress['city'] = $value;
-
-                continue;
-            }
-
-            $serializedAddress[Str::camel($fieldName)] = $value;
-        }
-
-        return $serializedAddress;
     }
 
     private function getCity(?string $cityName, string $subdivisionId): City|null
