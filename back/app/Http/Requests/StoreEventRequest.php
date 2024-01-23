@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\OsmAddressRule;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -29,8 +30,9 @@ class StoreEventRequest extends FormRequest
             'time' => 'required | Date',
             'location' => 'required | string',
             'user_id' => 'prohibited',
-            'city_id ' => 'prohibited',
+            'city_id' => 'prohibited',
             'categories' => 'array', //custom validation, usually required
+            'address' => new OsmAddressRule, //custom validation, usually required
         ];
     }
 }
