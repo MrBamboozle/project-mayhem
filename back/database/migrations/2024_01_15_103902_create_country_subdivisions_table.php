@@ -11,16 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('cities', function (Blueprint $table) {
-            $table->uuid('id')->primary();
-            $table->string('name')->unique();
-            $table->char('country_subdivision_id', 6);
+        Schema::create('country_subdivisions', function (Blueprint $table) {
+            $table->char('id', 6)->primary();
+            $table->string('name');
+            $table->char('country_id', 2);
             $table->timestamps();
 
-            $table->foreign('country_subdivision_id')
-                ->references('id')
-                ->on('country_subdivisions')
-            ;
+            $table->foreign('country_id')->references('id')->on('countries');
         });
     }
 
@@ -29,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('cities');
+        Schema::dropIfExists('country_subdivisions');
     }
 };

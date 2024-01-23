@@ -2,10 +2,8 @@
 
 namespace App\Services;
 
-use App\Enums\Operators;
-use App\Interfaces\ModelFields;
-use App\Services\UrlQueryService\UrlFilter;
-use App\Services\UrlQueryService\UrlSort;
+use App\Services\UrlQuery\UrlQueries\UrlFilter;
+use App\Services\UrlQuery\UrlQueries\UrlSort;
 use Illuminate\Database\Eloquent\Builder;
 
 class ModelService

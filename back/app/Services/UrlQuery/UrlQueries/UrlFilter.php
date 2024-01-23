@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\UrlQueryService;
+namespace App\Services\UrlQuery\UrlQueries;
 
 use App\Enums\Operators;
 

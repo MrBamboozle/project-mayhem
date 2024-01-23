@@ -30,6 +30,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        $this->call([
+            CategorySeeder::class,
+            CitySeeder::class,
+        ]);
+
         $avatars = [];
         $i = 1;
 
@@ -42,19 +47,13 @@ class DatabaseSeeder extends Seeder
             $i++;
         }
 
-        $city = City::factory()->create(['name' => 'Zagreb']);
-
         foreach (self::ADMIN_USERS as $user => $email) {
             User::factory()->create([
                 'name' => $user,
                 'email' => $email,
                 'avatar_id' => $avatars[0]->id,
-                'city_id' => $city->id
+                'city_id' => City::first()->id
             ]);
         }
-
-        $this->call(
-            CategorySeeder::class,
-        );
     }
 }

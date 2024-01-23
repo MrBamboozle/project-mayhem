@@ -19,9 +19,6 @@ return [
     | any other location as required by the application or its packages.
     |
     */
-    //first check if fields are in global
-    //if not i global, does Model::class key exist
-    //if so, does it contain the field
     'applyToAllKey' => 'all',
 
     Route::USERS->value => [

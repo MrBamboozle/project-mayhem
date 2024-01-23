@@ -15,7 +15,7 @@ use App\Http\Requests\RegisterRequest;
 use App\Models\Avatar;
 use App\Models\PersonalAccessToken;
 use App\Models\User;
-use App\Services\TokenGenerateService\TokenGeneration;
+use App\Services\TokenGenerate\TokenGeneration;
 use App\Services\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;

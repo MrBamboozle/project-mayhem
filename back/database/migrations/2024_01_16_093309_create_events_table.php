@@ -18,8 +18,9 @@ return new class extends Migration
             $table->string('description');
             $table->dateTime('time');
             $table->string('location');
+            $table->json('address');
             $table->foreignUuid('user_id')->references('id')->on('users');
-            $table->foreignUuid('city_id')->references('id')->on('cities');
+            $table->foreignUuid('city_id')->nullable()->references('id')->on('cities');
             $table->timestamps();
         });
     }

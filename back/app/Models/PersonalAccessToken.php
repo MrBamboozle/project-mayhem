@@ -9,13 +9,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use \Laravel\Sanctum\PersonalAccessToken as SanctumToken;
 
-/**
- * @property string $id
- * @property int $parent_id
- * @property PersonalAccessToken $parentToken
- * @property PersonalAccessToken $childToken
- * @property DateTimeInterface $expires_at
- */
 class PersonalAccessToken extends SanctumToken
 {
     use HasFactory, HasUuids;

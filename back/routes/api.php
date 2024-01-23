@@ -6,6 +6,7 @@ use App\Http\Controllers\Authenticate;
 use App\Http\Controllers\AvatarController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CityController;
+use App\Http\Controllers\EventController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -39,6 +40,9 @@ Route::middleware(['auth:sanctum', 'ability:' . TokenAbility::ACCESS_API->value]
 
     //Avatar api
     Route::get(RouteEnum::AVATARS->path(), AvatarController::class);
+
+    //Event api
+    Route::post('/events', [EventController::class, 'store']);
 });
 
 Route::get(RouteEnum::REFRESH->path(),[Authenticate::class, 'refreshAccessToken'])
@@ -46,3 +50,5 @@ Route::get(RouteEnum::REFRESH->path(),[Authenticate::class, 'refreshAccessToken'
         'auth:sanctum',
         'ability:' . TokenAbility::ISSUE_ACCESS_TOKEN->value
     ]);
+
+Route::get('/normatim', [EventController::class, 'testNormatim']);

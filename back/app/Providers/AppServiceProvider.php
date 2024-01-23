@@ -2,10 +2,12 @@
 
 namespace App\Providers;
 
+use App\Http\Clients\NormatimOsmClient;
 use App\Models\PersonalAccessToken;
+use App\Services\EventService;
 use App\Services\ModelService;
-use App\Services\TokenGenerateService\TokenGeneration;
-use App\Services\UrlQueryService\UrlQueryService;
+use App\Services\TokenGenerate\TokenGeneration;
+use App\Services\UrlQuery\UrlQueryService;
 use App\Services\UserService;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
@@ -18,18 +20,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->singleton(TokenGeneration::class, function (Application $app) {
-            return new TokenGeneration();
-        });
-        $this->app->singleton(ModelService::class, function (Application $app) {
-            return new ModelService();
-        });
-        $this->app->singleton(UserService::class, function (Application $app) {
-            return new UserService();
-        });
-        $this->app->singleton(UrlQueryService::class, function (Application $app) {
-            return new UrlQueryService();
-        });
+        $this->app->singleton(TokenGeneration::class, fn(Application $app) => new TokenGeneration());
+        $this->app->singleton(ModelService::class, fn(Application $app) => new ModelService());
+        $this->app->singleton(UserService::class, fn(Application $app) => new UserService());
+        $this->app->singleton(UrlQueryService::class, fn(Application $app) => new UrlQueryService());
+        $this->app->singleton(EventService::class, fn(Application $app) => new EventService(new NormatimOsmClient()));
     }
 
     /**

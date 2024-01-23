@@ -9,22 +9,13 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-/**
- * @property string $id
- * @property string $title
- * @property string $tag_line
- * @property string $description
- * @property DateTime $time
- * @property string $location
- * @property string $user_id
- * @property string $city_id
- * @property User $creator
- * @property City $city
- * @property Category[] $categories
- */
 class Event extends Model
 {
     use HasFactory, HasUuids;
+
+    protected $fillable = [
+        'city_id'
+    ];
 
     public function categories(): BelongsToMany
     {

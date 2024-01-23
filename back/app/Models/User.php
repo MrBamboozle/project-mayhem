@@ -14,15 +14,6 @@ use Illuminate\Support\Facades\Storage;
 use Laravel\Sanctum\HasApiTokens;
 use Laravel\Sanctum\NewAccessToken;
 
-/**
- * @mixin Builder
- * @property PersonalAccessToken[] $tokens
- * @property int $id
- * @property string $name
- * @property string $email
- * @property string $avatar_id
- * @property Avatar $avatar
- */
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable, HasUuids;
