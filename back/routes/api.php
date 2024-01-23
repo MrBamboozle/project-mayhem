@@ -42,6 +42,8 @@ Route::middleware(['auth:sanctum', 'ability:' . TokenAbility::ACCESS_API->value]
     Route::get(RouteEnum::AVATARS->path(), AvatarController::class);
 
     //Event api
+    Route::get('/events', [EventController::class, 'index']);
+    Route::get('/events/{eventId}', [EventController::class, 'show']);
     Route::post('/events', [EventController::class, 'store']);
 });
 

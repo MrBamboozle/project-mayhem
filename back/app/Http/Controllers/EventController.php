@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\QueryField;
+use App\Exceptions\Exceptions\ApiModelNotFoundException;
 use App\Http\Clients\NormatimOsmClient;
 use App\Http\Requests\StoreEventRequest;
 use App\Http\Requests\UpdateEventRequest;
@@ -10,6 +11,7 @@ use App\Models\Event;
 use App\Services\EventService;
 use App\Services\ModelService;
 use Exception;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 
@@ -44,34 +46,27 @@ class EventController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     * @return void
+     * @throws ApiModelNotFoundException
      */
-    public function show(Event $event)
+    public function show(string $eventId): array
     {
-        //
+        try {
+            return Event::findOrFail($eventId)->toArray();
+        } catch (ModelNotFoundException) {
+            throw new ApiModelNotFoundException($eventId, Event::class);
+        }
     }
 
-    /**
-     * Update the specified resource in storage.
-     * @return void
-     */
     public function update(UpdateEventRequest $request, Event $event)
     {
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     * @return void
-     */
     public function destroy(Event $event)
     {
         //
     }
-    /**
-     * @return mixed
-     */
+
     public function testNormatim(Request $request)
     {
         $httpClient = new NormatimOsmClient();
