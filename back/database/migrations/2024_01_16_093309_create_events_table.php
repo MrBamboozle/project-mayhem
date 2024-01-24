@@ -16,7 +16,8 @@ return new class extends Migration
             $table->string('title');
             $table->string('tag_line');
             $table->string('description');
-            $table->dateTime('time');
+            $table->dateTime('start_time');
+            $table->dateTime('end_time');
             $table->string('location');
             $table->json('address');
             $table->foreignUuid('user_id')->references('id')->on('users');
