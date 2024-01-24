@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\JsonFieldNames;
+use App\Enums\RequestRules;
 use App\Rules\OsmAddressRule;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
@@ -24,15 +26,31 @@ class StoreEventRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => 'required | string',
-            'tag_line' => 'string',
-            'description' => 'required | string',
-            'time' => 'required | Date',
-            'location' => 'required | string',
-            'user_id' => 'prohibited',
-            'city_id' => 'prohibited',
-            'categories' => 'array', //custom validation, usually required
-            'address' => new OsmAddressRule, //custom validation, usually required
+            JsonFieldNames::TITLE->value => [
+                RequestRules::REQUIRED->value,
+                RequestRules::STRING->value
+            ],
+            JsonFieldNames::TAG_LINE->value => [RequestRules::STRING->value],
+            JsonFieldNames::DESCRIPTION->value => [
+                RequestRules::REQUIRED->value,
+                RequestRules::STRING->value
+            ],
+            JsonFieldNames::START_TIME->value => [
+                RequestRules::REQUIRED->value,
+                RequestRules::DATE->value
+            ],
+            JsonFieldNames::END_TIME->value => [
+                RequestRules::REQUIRED->value,
+                RequestRules::DATE->value
+             ],
+            JsonFieldNames::LOCATION->value => [
+                RequestRules::REQUIRED->value,
+                RequestRules::STRING->value
+            ],
+            JsonFieldNames::USER_ID->value => [RequestRules::PROHIBITED->value],
+            JsonFieldNames::CITY_ID->value => [RequestRules::PROHIBITED->value],
+            JsonFieldNames::CATEGORIES->value => [RequestRules::ARRAY->value], //custom validation, usually required
+            JsonFieldNames::ADDRESS->value => [new OsmAddressRule],
         ];
     }
 }

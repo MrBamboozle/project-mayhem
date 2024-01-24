@@ -41,7 +41,7 @@ class EventController extends Controller
      */
     public function store(StoreEventRequest $request): array
     {
-        return $this->eventService->createEvent($request->validated())->toArray();
+        return $this->eventService->createEvent($request->validated())->toCamelCaseArray();
     }
 
     /**

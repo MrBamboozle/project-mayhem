@@ -18,6 +18,20 @@ enum JsonFieldNames: string
     case SYSTEM_MESSAGE = 'systemMessage';
     case ID = 'id';
     case LOCATION = 'location';
+    case TITLE = 'title';
+    case TAG_LINE = 'tagLine';
+    case DESCRIPTION = 'description';
+    case START_TIME = 'startTime';
+    case END_TIME = 'endTime';
+    case USER_ID = 'userId';
+    case COUNTRY_SUBDIVISION_ID = 'countrySubdivisionId';
+    case CITY = 'city';
+
+    case CITY_ID = 'cityId';
+
+    case CATEGORIES = 'categories';
+
+    case ADDRESS = 'address';
 
     public function snakeCase(): string
     {
