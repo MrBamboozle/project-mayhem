@@ -12,10 +12,13 @@ export interface Event {
   location: string;
 }
 
-export interface EventRequest {
+export interface CreateEventRequest {
   title: string;
-  tagline: string;
+  tagline?: string;
   description: string;
-  time: string;
+  dateFrom: string;
+  dateTo: string;
   location: string;
+  address?: any;
+  categories?: string[];
 }

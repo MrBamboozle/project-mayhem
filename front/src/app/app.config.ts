@@ -8,6 +8,7 @@ import { UserStoreService } from './shared/stores/user.store.service';
 import { Observable, catchError, of, tap } from 'rxjs';
 import { config } from './core/app-config';
 import { ToastInterceptor } from './core/interceptors/toast-interceptor';
+import { provideAnimations } from '@angular/platform-browser/animations';
 
 function initializeAppFactory(httpClient: HttpClient, userStore: UserStoreService): () => Observable<any> {
   return () => httpClient.get(`${config.API_URL}/me`)
@@ -48,6 +49,7 @@ export const appConfig: ApplicationConfig = {
       multi: true,
       deps: [HttpClient, UserStoreService],
     },
+    provideAnimations()
   ]
 };
 
