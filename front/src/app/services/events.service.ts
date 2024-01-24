@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { config } from '@app/core/app-config';
-import { Event, EventRequest } from '@app/shared/models/event';
+import { CreateEventRequest, Event } from '@app/shared/models/event';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -24,12 +24,12 @@ export class EventsService {
       .get<Event>(`${this.eventsUrl}/${id}`);
   }
 
-  public postEvent(eventReq: EventRequest): Observable<Event> {
+  public postEvent(eventReq: CreateEventRequest): Observable<Event> {
     return this._http
       .post<Event>(this.eventsUrl, eventReq);
   }
 
-  public patchEvent(id: string, eventReq: EventRequest): Observable<Event> {
+  public patchEvent(id: string, eventReq: CreateEventRequest): Observable<Event> {
     return this._http
       .patch<Event>(`${this.eventsUrl}/${id}`, eventReq);
   }

@@ -8,6 +8,7 @@ import { UserListComponent } from './pages/users/user-list/user-list.component';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { EditUserComponent } from './pages/users/edit-user/edit-user.component';
+import { CreateEventComponent } from './pages/events/create-event/create-event.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent, },
@@ -16,6 +17,7 @@ export const routes: Routes = [
     children: [
       { path: '', component: EventListComponent },
       { path: 'list', component: EventListComponent },
+      { path: 'create', component: CreateEventComponent },
     ],
   },
   {

@@ -1,0 +1,152 @@
+<mat-horizontal-stepper [linear]="true" #stepper>
+  <!-- Step 1 -->
+  <mat-step [stepControl]="createEventFormFirst">
+    <form [formGroup]="createEventFormFirst" class="printed-form">
+      <ng-template matStepLabel>Event Details</ng-template>
+      
+      <!-- Title Field -->
+      <div class="form-group">
+        <label for="title">Title*</label>
+        <input id="title" type="text" formControlName="title" class="form-control"
+              [ngClass]="{ 'is-invalid': controlsFirst.title.touched && controlsFirst.title.invalid }">
+        <div *ngIf="controlsFirst.title.touched && controlsFirst.title.invalid" class="text-danger">
+          <small *ngIf="controlsFirst.title.errors?.required">Title is required.</small>
+        </div>
+      </div>
+
+      <!-- Tagline Field -->
+      <div class="form-group">
+        <label for="tagline">Tagline</label>
+        <input id="tagline" type="text" formControlName="tagline" class="form-control">
+        <!-- No validation errors for tagline as it's optional -->
+      </div>
+
+      <!-- Description Field -->
+      <div class="form-group">
+        <label for="description">Description*</label>
+        <textarea id="description" formControlName="description" class="form-control"
+                  [ngClass]="{ 'is-invalid': controlsFirst.description.touched && controlsFirst.description.invalid }"></textarea>
+        <div *ngIf="controlsFirst.description.touched && controlsFirst.description.invalid" class="text-danger">
+          <small *ngIf="controlsFirst.description.errors?.required">Description is required.</small>
+        </div>
+      </div>
+
+      <!-- Categories Field -->
+      <div class="form-group">
+        <label for="categories">Categories</label>
+        <select id="categories" formControlName="categories" multiple class="form-control">
+          <!-- Options should be added dynamically from the component -->
+        </select>
+        <!-- Assuming categories are optional, so no validation errors -->
+      </div>
+
+      <button class="btn btn-link text-success" (click)="onNextStep(stepper, createEventFormFirst)">Next</button>
+    </form>
+  </mat-step>
+
+  <!-- Step 2 -->
+  <mat-step [stepControl]="createEventFormSecond">
+    <form [formGroup]="createEventFormSecond" class="printed-form">
+      <ng-template matStepLabel>Date</ng-template>
+      
+      <!-- Date From Field -->
+      <div class="form-group">
+        <label for="dateFrom">Date From*</label>
+        <input id="dateFrom" type="datetime-local" formControlName="dateFrom" class="form-control"
+              [ngClass]="{ 'is-invalid': controlsSecond.dateFrom.touched && controlsSecond.dateFrom.invalid }">
+        <div *ngIf="controlsSecond.dateFrom.touched && controlsSecond.dateFrom.invalid" class="text-danger">
+          <small *ngIf="controlsSecond.dateFrom.errors?.required">Start date and time are required.</small>
+          <small *ngIf="controlsSecond.dateFrom.errors?.invalidDate">Please enter a valid start date and time.</small>
+        </div>
+      </div>
+
+      <!-- Date To Field -->
+      <div class="form-group">
+        <label for="dateTo">Date To*</label>
+        <input id="dateTo" type="datetime-local" formControlName="dateTo" class="form-control"
+              [ngClass]="{ 'is-invalid': controlsSecond.dateTo.touched && controlsSecond.dateTo.invalid }">
+        <div *ngIf="controlsSecond.dateTo.touched && controlsSecond.dateTo.invalid" class="text-danger">
+          <small *ngIf="controlsSecond.dateTo.errors?.required">End date and time are required.</small>
+          <small *ngIf="controlsSecond.dateTo.errors?.invalidDate">Please enter a valid end date and time.</small>
+        </div>
+      </div>
+
+      <div *ngIf="createEventFormSecond.hasError('dateRangeInvalid')" class="text-danger">
+        <small>The start date must be earlier than the end date.</small>
+      </div>
+
+      <button class="btn btn-link text-danger" matStepperPrevious>Back</button>
+      <button class="btn btn-link text-success" matStepperNext (click)="onNextStep(stepper, createEventFormSecond)">Next</button>
+    </form>
+  </mat-step>
+
+  <!-- Step 3 -->
+  <mat-step [stepControl]="createEventFormThird">
+    <form [formGroup]="createEventFormThird" class="printed-form">
+      <ng-template matStepLabel>Location</ng-template>
+
+      <div id="map" style="height: 400px;"></div>
+      <p *ngIf="!fetchingAddress && formattedAddress">Address: <span>{{formattedAddress}}</span></p>
+
+      <div *ngIf="controlsThird.location.touched && controlsThird.location.invalid" class="text-danger">
+        <small *ngIf="controlsThird.location.errors?.required">Location is required.</small>
+      </div>
+      
+
+      <button class="btn btn-link text-danger" matStepperPrevious>Back</button>
+      <button class="btn btn-link text-success" matStepperNext (click)="onNextStep(stepper, createEventFormThird)">Next</button>
+    </form>
+  </mat-step>
+
+  <!-- Step 4 -->
+  <mat-step>
+    <ng-template matStepLabel>Review and Submit</ng-template>
+    
+    <div class="printed-form">
+
+      <!-- Title Review -->
+      <div class="form-group">
+        <label for="review-title">Title</label>
+        <input id="review-title" type="text" class="form-control" readonly
+              [value]="createEventFormFirst.get('title')?.value">
+      </div>
+  
+      <!-- Tagline Review -->
+      <div class="form-group">
+        <label for="review-tagline">Tagline</label>
+        <input id="review-tagline" type="text" class="form-control" readonly
+              [value]="createEventFormFirst.get('tagline')?.value">
+      </div>
+  
+      <!-- Description Review -->
+      <div class="form-group">
+        <label for="review-description">Description</label>
+        <textarea id="review-description" class="form-control" readonly>{{ createEventFormFirst.get('description')?.value }}</textarea>
+      </div>
+  
+      <!-- Date From Review -->
+      <div class="form-group">
+        <label for="review-dateFrom">Date From</label>
+        <input id="review-dateFrom" type="text" class="form-control" readonly
+              [value]="createEventFormSecond.get('dateFrom')?.value">
+      </div>
+  
+      <!-- Date To Review -->
+      <div class="form-group">
+        <label for="review-dateTo">Date To</label>
+        <input id="review-dateTo" type="text" class="form-control" readonly
+              [value]="createEventFormSecond.get('dateTo')?.value">
+      </div>
+  
+      <!-- Location Review -->
+      <div class="form-group">
+        <label for="review-location">Address</label>
+        <input id="review-location" type="text" class="form-control" readonly
+              [value]="formattedAddress">
+      </div>
+    </div>
+
+    <button class="btn btn-link text-danger" matStepperPrevious>Back</button>
+    <button class="btn btn-link text-success" (click)="submitEvent()">Submit</button>
+  </mat-step>
+</mat-horizontal-stepper>
