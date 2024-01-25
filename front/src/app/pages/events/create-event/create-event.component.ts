@@ -20,7 +20,9 @@ import { LocationRequest } from '@app/shared/models/location';
 })
 export class CreateEventComponent {
   private map: any;
+  private reviewMap: any;
   private marker: any;
+  private reviewMarker: any;
 
   public fetchingAddress: boolean = false;
 
@@ -49,15 +51,19 @@ export class CreateEventComponent {
   ) {}
 
   ngAfterViewInit(): void {
-    this.initMap();
+    this.initMaps();
   }
 
-  private initMap(): void {
+  private initMaps(): void {
     this.map = L.map('map');
+    this.reviewMap = L.map('review-map');
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 19,
     }).addTo(this.map);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+    }).addTo(this.reviewMap);
 
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {
@@ -78,12 +84,14 @@ export class CreateEventComponent {
       const locationString = `${coord.lat},${coord.lng}`;
       this.fetchingAddress = true;
       
+      this.controlsThird.location.setValue(locationString);
+      this.addMarker(coord);
+
+      this.reviewMap.setView(coord, 15);
+      
       const request: LocationRequest = {
         location: locationString
       };
-
-      this.controlsThird.location.setValue(locationString);
-      this.addMarker(coord);
       
       this.locationService.postLocation(request).subscribe(
         (data) => {
@@ -110,8 +118,10 @@ export class CreateEventComponent {
 
     if (this.marker) {
       this.map.removeLayer(this.marker);
+      this.reviewMap.removeLayer(this.reviewMarker);
     }
     this.marker = L.marker([coord.lat, coord.lng], { icon: customIcon }).addTo(this.map);
+    this.reviewMarker = L.marker([coord.lat, coord.lng], { icon: customIcon }).addTo(this.reviewMap);
   }
 
   get controlsFirst(): { [p: string]: AbstractControl } {
