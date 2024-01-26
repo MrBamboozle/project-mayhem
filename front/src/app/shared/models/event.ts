@@ -1,5 +1,4 @@
 import { User } from "./user";
-
 export interface Event {
   id: string;
   createdBy: User;
@@ -10,6 +9,7 @@ export interface Event {
   description: string;
   time: string;
   location: string;
+  address: any;
 }
 
 export interface CreateEventRequest {

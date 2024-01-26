@@ -1,0 +1,34 @@
+.events-pagination-container {
+  /* Styles for the overall container */
+}
+
+.printed-form {
+  margin-bottom: 20px; /* Space between search and cards */
+}
+
+.events-cards-container {
+  /* Styles for the cards container */
+}
+
+.event-card {
+  border: 1px solid #ddd; /* Style as needed */
+  margin-bottom: 10px; /* Space between cards */
+  border-radius: 5px; /* Rounded corners */
+}
+
+.card-header {
+  padding: 10px;
+  background-color: #f5f5f5; /* Light background for the header */
+  cursor: pointer; /* Indicates this is clickable */
+  border-bottom: 1px solid #ddd; /* Separate from body */
+}
+
+.card-body {
+  padding: 10px;
+  /* Style as needed for the body */
+}
+
+.event-location {
+  margin-top: 10px;
+  /* Additional styles for location section */
+}
