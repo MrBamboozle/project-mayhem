@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Enums\TokenAbility;
 use App\Http\Clients\NormatimOsmClient;
 use App\Models\PersonalAccessToken;
 use App\Services\EventService;
@@ -33,5 +34,13 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Sanctum::usePersonalAccessTokenModel(PersonalAccessToken::class);
+
+        Sanctum::authenticateAccessTokensUsing(function (PersonalAccessToken $accessToken, bool $is_valid):bool {
+            if (!$accessToken->can(TokenAbility::ISSUE_ACCESS_TOKEN->value)) {
+                return $is_valid;
+            }
+
+            return !$accessToken->expires_at?->isPast() ?? false;
+        });
     }
 }
