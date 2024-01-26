@@ -8,18 +8,17 @@ use Illuminate\Database\Seeder;
 
 class CategorySeeder extends Seeder
 {
-    const EVENT_CATEGORY_NAMES = [
-        'Tes',
-        'Test',
-        'Test',
-        'Test',
-        'Test',
-        'Test',
-        'Test',
-        'Test',
-        'Test',
-        'Test',
-        'Tes',
+    private const CATEGORIES = [
+        "Sports",
+        "Music",
+        "Arts & Culture",
+        "Technology",
+        "Education",
+        "Food & Drink",
+        "Health & Wellness",
+        "Business & Networking",
+        "Charity & Causes",
+        "Outdoor & Adventure"
     ];
 
     /**
@@ -27,7 +26,8 @@ class CategorySeeder extends Seeder
      */
     public function run(): void
     {
-        foreach (self::EVENT_CATEGORY_NAMES as $key => $name)
-        Category::factory()->create(['name' => $name.$key]);
+        foreach (self::CATEGORIES as $category) {
+            Category::factory()->create(['name' => $category]);
+        }
     }
 }
