@@ -54,10 +54,9 @@ Route::middleware(['auth:sanctum', 'ability:' . TokenAbility::ACCESS_API->value]
     Route::post(RouteEnum::EVENTS->path(), [EventController::class, 'store']);
 });
 
-Route::get(RouteEnum::REFRESH->path(),[Authenticate::class, 'refreshAccessToken'])
-    ->middleware([
-        'auth:sanctum',
-        'ability:' . TokenAbility::ISSUE_ACCESS_TOKEN->value
-    ]);
+Route::middleware(['auth:sanctum','ability:' . TokenAbility::ISSUE_ACCESS_TOKEN->value])->group(function () {
+    // get new access_token|refresh_token pair
+    Route::get(RouteEnum::REFRESH->path(),[Authenticate::class, 'refreshAccessToken']);
+});
 
 Route::get('/normatim', [EventController::class, 'testNormatim']);
