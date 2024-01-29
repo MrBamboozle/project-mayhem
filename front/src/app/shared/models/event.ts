@@ -5,7 +5,7 @@ export interface Event {
   createdAt: string;
   updatedAt: string;
   title: string;
-  tagline: string;
+  tagLine: string;
   description: string;
   time: string;
   location: string;

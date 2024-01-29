@@ -12,33 +12,40 @@
     <!-- Add filters here if needed -->
   </div>
 
-  <!-- Events Cards -->
-  <div class="events-cards-container">
-    <div *ngFor="let event of eventList" class="event-card paper-bg">
-      <!-- Card Header (Always visible) -->
-      <div class="card-header" (click)="toggleExpand(event)">
-        <h5>{{ event.title }}</h5>
-        <p>{{ event.tagline }}</p>
-      </div>
+  <!-- Events List -->
+  <mat-accordion multi="true">
+    <mat-expansion-panel *ngFor="let event of eventList; let i = index">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          {{ event.title }}
+        </mat-panel-title>
+        <mat-panel-description>
+          {{ event.tagLine }}
+        </mat-panel-description>
+      </mat-expansion-panel-header>
 
-      <!-- Card Body (Visible when expanded) -->
-      <div class="card-body" *ngIf="event.isExpanded">
-        <p>{{ event.description }}</p>
-        <div class="event-location">
-          <span>{{ event.address }}</span>
-          <!-- Embed Map here -->
+      <div class="event-details">
+        <p><strong>Description:</strong> {{ event.description }}</p>
+        <p><strong>Address:</strong> {{ event.address }}</p>
+
+        <!-- Map Container -->
+        <div class="map-container">
+          <!-- Map implementation here -->
         </div>
-        <!-- Add more event details here -->
-      </div>
-    </div>
-  </div>
 
+        <!-- Additional Event Details -->
+        <!-- ... -->
+      </div>
+    </mat-expansion-panel>
+  </mat-accordion>
+
+  <!-- Pagination -->
   <!-- Pagination -->
   <ngb-pagination 
     [collectionSize]="collectionSize" 
     [(page)]="currentPage" 
     [pageSize]="pageSize"
     (pageChange)="onPageChange($event)"
-    aria-label="Events pagination"></ngb-pagination>  
-
+    aria-label="Events pagination">
+  </ngb-pagination>  
 </div>

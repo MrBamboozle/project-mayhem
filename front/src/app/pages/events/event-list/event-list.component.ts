@@ -7,21 +7,18 @@ import { Event } from '@app/shared/models/event';
 import { PaginatedResponse } from '@app/shared/models/paginated-response';
 import { NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
 import { Subject } from 'rxjs';
-
-interface ExpandableEvent extends Event {
-  isExpanded: boolean;
-}
+import { MatExpansionModule } from '@angular/material/expansion';
 
 @Component({
   selector: 'app-event-list',
   standalone: true,
-  imports: [RouterLink, CommonModule, NgbPaginationModule, FormsModule],
+  imports: [RouterLink, CommonModule, NgbPaginationModule, FormsModule, MatExpansionModule],
   templateUrl: './event-list.component.html',
   styleUrl: './event-list.component.scss'
 })
 export class EventListComponent {
 
-  public eventList: ExpandableEvent[] = [];
+  public eventList: Event[] = [];
 
   public currentPage: number = 1;
   public pageSize: number = 10; // Set the number of items per page
@@ -57,7 +54,7 @@ export class EventListComponent {
 
     this.eventsService.getEvents(queryParams).subscribe(
       (paginatedData) => {
-        this.eventList = paginatedData.data.map((event: Event) => {return {isExpanded: false, ...event}});
+        this.eventList = paginatedData.data;
         this.currentPage = paginatedData.current_page;
         this.pageSize = paginatedData.per_page;
         this.collectionSize = paginatedData.total;
@@ -73,10 +70,5 @@ export class EventListComponent {
     this.currentPage = page;
     this.fetchEvents(page);
   }
-
-  toggleExpand(event: any): void {
-    event.isExpanded = !event.isExpanded;
-  }
-
 
 }
