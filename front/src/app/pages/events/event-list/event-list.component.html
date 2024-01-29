@@ -1,45 +1,25 @@
-<button class="btn btn-link" [routerLink]="['create']">Create Event</button>
 
-<div class="events-pagination-container">
-
-  <!-- Search and Filter Area -->
-  <div class="printed-form">
-    <div class="form-group">
-      <label for="searchEvents">Search Events</label>
-      <input id="searchEvents" type="text" class="form-control" placeholder="Search events..." 
-        [(ngModel)]="searchTerm" (keyup)="onSearchChange()">
+<div class="pagination-container">
+  <div class="events-container">
+    <button class="btn btn-link" [routerLink]="['create']">Create Event</button>
+    <!-- Search and Filter Area -->
+    <div class="printed-form">
+      <div class="form-group">
+        <label for="searchEvents">Search Events</label>
+        <input id="searchEvents" type="text" class="form-control" placeholder="Search events..." 
+          [(ngModel)]="searchTerm" (keyup)="onSearchChange()">
+      </div>
+      <!-- Add filters here if needed -->
     </div>
-    <!-- Add filters here if needed -->
+
+    <ng-container *ngFor="let event of eventList">
+      <app-expandable-folder [event]="event"></app-expandable-folder>
+    </ng-container>
+  
+
+  
   </div>
 
-  <!-- Events List -->
-  <mat-accordion multi="true">
-    <mat-expansion-panel *ngFor="let event of eventList; let i = index">
-      <mat-expansion-panel-header>
-        <mat-panel-title>
-          {{ event.title }}
-        </mat-panel-title>
-        <mat-panel-description>
-          {{ event.tagLine }}
-        </mat-panel-description>
-      </mat-expansion-panel-header>
-
-      <div class="event-details">
-        <p><strong>Description:</strong> {{ event.description }}</p>
-        <p><strong>Address:</strong> {{ event.address }}</p>
-
-        <!-- Map Container -->
-        <div class="map-container">
-          <!-- Map implementation here -->
-        </div>
-
-        <!-- Additional Event Details -->
-        <!-- ... -->
-      </div>
-    </mat-expansion-panel>
-  </mat-accordion>
-
-  <!-- Pagination -->
   <!-- Pagination -->
   <ngb-pagination 
     [collectionSize]="collectionSize" 

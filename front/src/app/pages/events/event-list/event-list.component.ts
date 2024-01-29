@@ -1,20 +1,19 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { EventsService } from '@app/services/events.service';
 import { Event } from '@app/shared/models/event';
-import { PaginatedResponse } from '@app/shared/models/paginated-response';
 import { NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
 import { Subject } from 'rxjs';
-import { MatExpansionModule } from '@angular/material/expansion';
+import { ExpandableFolderComponent } from './components/expandable-folder/expandable-folder.component';
 
 @Component({
   selector: 'app-event-list',
   standalone: true,
-  imports: [RouterLink, CommonModule, NgbPaginationModule, FormsModule, MatExpansionModule],
+  imports: [RouterLink, CommonModule, NgbPaginationModule, FormsModule, ExpandableFolderComponent],
   templateUrl: './event-list.component.html',
-  styleUrl: './event-list.component.scss'
+  styleUrl: './event-list.component.scss',
 })
 export class EventListComponent {
 
