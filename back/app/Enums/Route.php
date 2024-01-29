@@ -62,11 +62,6 @@ enum Route: string
         return $this->config()['allowAll'] ?? false;
     }
 
-    public function orWhereConfig(): bool
-    {
-        return $this->config()['orWhere'] ?? false;
-    }
-
     public function sortConfig(): array|null {
         return $this->config()['sorts'] ?? null;
     }
