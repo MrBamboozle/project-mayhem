@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Traits\ToCamelCaseArray;
+use Auth;
 use DateTimeInterface;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -97,6 +98,19 @@ class User extends Authenticatable
 
     public function toArray(): array
     {
-        return $this->toCamelCaseArray();
+        $data = parent::toArray();
+        $loggedInUser = Auth::user();
+
+        if (!$loggedInUser?->isAdmin() && $loggedInUser?->id !== $this->id) {
+            unset($data['email']);
+        }
+
+        return $this->camelize($data);
+    }
+
+    public function isAdmin(): bool
+    {
+        // replace with user role enum
+        return false;
     }
 }

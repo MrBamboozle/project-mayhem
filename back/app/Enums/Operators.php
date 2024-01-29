@@ -9,6 +9,9 @@ enum Operators: string
     case ASCENDING = 'asc';
     case DESCENDING = 'desc';
     case UNDEFINED = 'undefined';
+    case EQUALS = '=';
+
+    case LARGER = '>';
 
     public static function create(string $value): self
     {
@@ -17,6 +20,11 @@ enum Operators: string
         } catch (\ValueError) {
             return self::UNDEFINED;
         }
+    }
+
+    public function isLike(): bool
+    {
+        return $this === self::LIKE;
     }
 
     public function isValidSortOperator(): bool

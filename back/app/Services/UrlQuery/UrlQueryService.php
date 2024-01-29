@@ -17,10 +17,10 @@ class UrlQueryService
 
         $filters = [];
 
-        foreach ($routeEnum->filterConfig() as $fieldName => $operator) {
+        foreach ($routeEnum->filterConfig() as $fieldName => $fieldConfig) {
             $value = $incomingFilters[$fieldName] ?? null;
 
-            if (key_exists('all', $incomingFilters) && $routeEnum->allowAllFilter()) {
+            if (key_exists('all', $incomingFilters) && $routeEnum->allowAllFilter() && $fieldConfig['orWhere']) {
                 $value = $incomingFilters['all'];
             }
 
@@ -28,12 +28,25 @@ class UrlQueryService
                 continue;
             }
 
-            $filters[] = new UrlFilter(
-                $fieldName,
-                $operator,
-                $value,
-                $routeEnum->orWhereConfig(),
-            );
+            $isRelation = $fieldConfig['isRelation'];
+            /** @var Operators $operator */
+            $operator = $fieldConfig['operator'];
+
+            $data = [
+                'fieldName' => $fieldConfig['key'],
+                'operator' => $operator,
+                'fieldValue' => $operator->isLike() ? "%$value%" : $value,
+                'isRelation' => $isRelation,
+                'relationName' => $isRelation ? $fieldName : null,
+            ];
+
+            if ($fieldConfig['orWhere']) {
+                $filters['orWhere'][] = new UrlFilter(...$data);
+
+                continue;
+            }
+
+            $filters[$fieldName] = new UrlFilter(...$data);
         }
 
         return $filters;
