@@ -36,4 +36,9 @@ class Event extends Model
     {
         return $this->belongsTo(City::class, 'city_id', 'id');
     }
+
+    public function toArray(): array
+    {
+        return $this->toCamelCaseArray();
+    }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\AttemptLogin;
 use App\Http\Middleware\ParseUrlQuery;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 use Illuminate\Routing\Middleware\SubstituteBindings;
@@ -72,5 +73,6 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'abilities' => CheckAbilities::class,
         'ability' => CheckForAnyAbility::class,
+        'attempt.login' => AttemptLogin::class,
     ];
 }

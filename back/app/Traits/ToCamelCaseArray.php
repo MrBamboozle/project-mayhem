@@ -17,7 +17,7 @@ trait ToCamelCaseArray
             throw new CannotImplementThisMethodException('toCamelCaseArray', $this::class);
         }
 
-        return $this->camelize($this->toArray());
+        return $this->camelize(parent::toArray());
     }
 
     private function camelize(array $data): array
