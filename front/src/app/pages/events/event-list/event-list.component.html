@@ -1,1 +1,31 @@
-<button class="btn btn-link" [routerLink]="['create']">Create Event</button>
+
+<div class="pagination-container">
+  <div class="events-container">
+    <button class="btn btn-link" [routerLink]="['create']">Create Event</button>
+    <!-- Search and Filter Area -->
+    <div class="printed-form">
+      <div class="form-group">
+        <label for="searchEvents">Search Events</label>
+        <input id="searchEvents" type="text" class="form-control" placeholder="Search events..." 
+          [(ngModel)]="searchTerm" (keyup)="onSearchChange()">
+      </div>
+      <!-- Add filters here if needed -->
+    </div>
+
+    <ng-container *ngFor="let event of eventList">
+      <app-expandable-folder [event]="event"></app-expandable-folder>
+    </ng-container>
+  
+
+  
+  </div>
+
+  <!-- Pagination -->
+  <ngb-pagination 
+    [collectionSize]="collectionSize" 
+    [(page)]="currentPage" 
+    [pageSize]="pageSize"
+    (pageChange)="onPageChange($event)"
+    aria-label="Events pagination">
+  </ngb-pagination>  
+</div>

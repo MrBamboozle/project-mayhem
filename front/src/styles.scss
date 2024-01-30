@@ -9,6 +9,30 @@
 // Be sure that you only ever include this mixin once!
 @include mat.core();
 
+// Define the palettes for your theme using the Material Design palettes available in palette.scss
+// (imported above). For each palette, you can optionally specify a default, lighter, and darker
+// hue. Available color palettes: https://material.io/design/color/
+$front-primary: mat.define-palette(mat.$indigo-palette);
+$front-accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
+
+// The warn palette is optional (defaults to red).
+$front-warn: mat.define-palette(mat.$red-palette);
+
+// Create the theme object. A theme consists of configurations for individual
+// theming systems such as "color" or "typography".
+$front-theme: mat.define-light-theme((
+  color: (
+    primary: $front-primary,
+    accent: $front-accent,
+    warn: $front-warn,
+  )
+));
+
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+@include mat.all-component-themes($front-theme);
+
 /* You can add global styles to this file, and also import other style files */
 $spacer: 1rem;
 $spacers: (
@@ -99,6 +123,11 @@ $gradient-radial: radial-gradient(#edae49ff, #d1495bff, #00798cff, #30638eff, #0
   src: url('/assets/fonts/Starz2.ttf') format('truetype');
 }
 
+@font-face {
+  font-family: 'TopSecret';
+  src: url('/assets/fonts/TopSecret.ttf') format('truetype');
+}
+
 $font-primary: 'ModernTypewriter', Arial, sans-serif;
 $font-printed: 'OldSchool', Arial, sans-serif;
 $font-stars: 'Starz', Arial, sans-serif;
@@ -112,8 +141,13 @@ $blueish-ink: #3d4473;
   // Add a box-shadow to simulate the scuffed look on the edges
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
 }
+@mixin paginated-content {
+  padding: 20px;
+  position: relative;
+  z-index: 2;
+}
 
-.table-pagination-container {
+.pagination-container {
   position: relative;
 
   ngb-pagination {
@@ -177,16 +211,16 @@ $blueish-ink: #3d4473;
 
 .events-container {
   @include paper-bg;
-  padding: 20px;
+  @include paginated-content;
+
+  .event-content {
+    @include paper-bg;
+  }
 }
 
 .printed-table-container {
   @include paper-bg;
-  padding: 20px;
-
-  position: relative;
-
-  z-index: 2;
+  @include paginated-content;
   
   .printed-table {
     // Use a base color to simulate the yellowish paper
@@ -629,4 +663,182 @@ h1, h2, h3, h4, h5,
 
 .mat-horizontal-content-container {
   padding-top: 50px!important;
+}
+
+.folder {
+  position: relative;
+  perspective: 2500px;
+  margin-bottom: 20px;
+  margin-top: 35px;
+
+  // min-height: 220px;
+  border-radius: 5px 5px 5px 5px;
+  // box-shadow: 0px -7px 3px -4px rgba(0, 0, 0, 0.5);
+
+  display: inline-block;
+  width: -webkit-fill-available;
+
+  &.open {
+    min-height: 370px;
+  }
+
+  .back {
+    height: 160px;
+    border-radius: 5px 0 5px 5px;
+    position: relative;
+    margin: 0 auto;
+    background: #c79f6c;
+    padding: 20px;
+    box-shadow: 0px -2px 3px -1px rgba(0, 0, 0, 0.4);
+    // overflow: hidden;
+
+    button {
+      position: absolute;
+      top: -35px;
+      right: 0;
+      z-index: 2;
+    }
+
+    .event-content {
+      overflow: hidden;
+      box-shadow: none;
+
+      padding: 20px;
+
+      h2 {
+        font-family: 'TopSecret', sans-serif;
+        color: darkred;
+        text-align: center
+      }
+
+      .tagline {
+        text-align: center;
+      }
+
+      .tagline, .address {
+        color: $dark;
+        font-size: 18px;
+        font-weight: bold;
+        margin-top: 20px;
+      }
+
+      .description {
+        font-size: 14px;
+        font-weight: normal;
+      }
+
+      .taped {
+        margin-top: 50px;
+      }
+    }
+
+    &.show-content {
+      z-index: 6;
+      overflow: visible; 
+
+      .event-content {
+        overflow: hidden;
+        box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.5);
+      }
+    }
+
+    &.enable-close {
+      &::after, &::before {
+        background-image: linear-gradient(to bottom, #c79f6c, #c79f6c);
+      }
+    }
+
+    &::after, &::before {
+      content:'';
+      position:absolute;
+      height: 30px;
+      background: #c79f6c;
+      top: -30px;
+      background-image: linear-gradient(to bottom, #c79f6c, #a38661);
+    }
+
+    &::after {
+      width: 60px;
+      border-radius: 0 5px 0 0;
+      box-shadow: -2px -2px 3px rgba(0, 0, 0, 0.4);
+      right: 0;
+    }
+    &::before {
+      right: 55px;
+      width: 10px;
+      transform: skew(-10deg);
+      border-radius: 5px 0 0 0;
+      box-shadow: -3px -1px 3px -2px rgba(0, 0, 0, 0.4);
+      z-index: 1;
+    }
+  }
+
+  .cover, .under-cover {
+    height: 160px;
+    border-radius: 0 5px 5px 5px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 5;
+    margin: 0 auto;
+
+    background: #c79f6c;
+
+    transform-origin: 0 100%;
+    -webkit-backface-visibility: hidden;
+    -moz-backface-visibility: hidden;    
+    backface-visibility: hidden; 
+
+    .event-preview {
+      padding: 20px;
+
+      h2 {
+        font-family: 'TopSecret', sans-serif;
+        color: darkred;
+      }
+
+      p {
+        color: $dark;
+        font-size: 18px;
+        font-weight: bold;
+      }
+    }
+
+    button {
+      position: absolute;
+      top: -35px;
+      z-index: inherit;
+    }
+
+    &::after, &::before {
+      content:'';
+      position:absolute;
+      height: 30px;
+      background: #c79f6c;
+      top: -30px;
+    }
+
+    &::after {
+      width: 60px;
+      border-radius: 5px 0 0 0;
+      box-shadow: 2px -2px 3px rgba(0, 0, 0, 0.4);
+      left: 0;
+    }
+    &::before {
+      left: 55px;
+      width: 10px;
+      transform: skew(10deg);
+      border-radius: 0 5px 0 0;
+      box-shadow: 3px -1px 3px -2px rgba(0, 0, 0, 0.4);
+      z-index: 1;
+    }
+  }
+
+  .under-cover {
+    -webkit-backface-visibility: visible;
+    -moz-backface-visibility: visible;    
+    backface-visibility: visible; 
+    box-shadow: 0px -2px 3px -1px rgba(0, 0, 0, 0.4);
+  }
 }

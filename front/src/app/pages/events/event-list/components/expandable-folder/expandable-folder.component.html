@@ -1,0 +1,25 @@
+<div class="folder" [ngClass]="{'open': closeButtonStyle === 'front'}">
+  <div class="back" [ngClass]="{'open': folderState === 'open', 'closed': folderState === 'closed', 'show-content': overflowStyle === 'visible', 'enable-close': closeButtonStyle === 'front'}">
+    <button class="btn btn-link text-warning" (click)="toggleFolder()" [disabled]="folderState === 'closed'">Close</button>
+    <!-- TODO: Refactor this display -->
+    <div class="event-content" [@contentHeight]="folderState">
+      <h2>{{ formattedTitle }}</h2>
+      <p class="tagline">{{ event.tagLine }}</p>
+      <p class="dates">{{ formattedDates }}</p>
+      <p class="description">{{ event.description }}</p>
+      <div class="taped double-taped">
+        <div [id]="'preview-map-' + event.id" style="height: 400px;"></div>
+      </div>
+      <p class="address">{{ formattedAddress }}</p>
+      <!-- More content as needed -->
+    </div>
+  </div>
+  <div class="under-cover" [@folderState]="folderState"></div>
+  <div class="cover" [@folderState]="folderState">
+    <button class="btn btn-link text-warning" (click)="toggleFolder()" [disabled]="folderState === 'open'">Open</button>
+    <div class="event-preview">
+      <h2>{{ formattedTitle }}</h2>
+      <p>{{ event.tagLine }}</p>
+    </div>
+  </div>
+</div>
