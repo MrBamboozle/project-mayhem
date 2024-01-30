@@ -47,12 +47,14 @@ Route::middleware(['auth:sanctum', 'ability:' . TokenAbility::ACCESS_API->value]
 
     //User api
     Route::post(RouteEnum::USERS->path(), [UserController::class, 'store']);
+    Route::patch(RouteEnum::USERS->path() . '/password-change', [UserController::class, 'changePassword']);
     Route::patch(RouteEnum::USERS->path() . '/{id}', [UserController::class, 'update']);
     Route::delete(RouteEnum::USERS->path() . '/{id}', [UserController::class, 'destroy']);
     Route::post(
         RouteEnum::USERS->path() . '/{userId}' . RouteEnum::AVATARS->path() . '/{avatarId?}',
         [UserController::class, 'addAvatar']
     );
+
 
     //Avatar api
     Route::get(RouteEnum::AVATARS->path(), AvatarController::class);

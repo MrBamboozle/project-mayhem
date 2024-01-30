@@ -7,6 +7,8 @@ use App\Enums\JsonFieldNames;
 use App\Exceptions\Exceptions\ApiModelNotFoundException;
 use App\Exceptions\Exceptions\FailToAddAvatarException;
 use App\Exceptions\Exceptions\FailToDeleteCurrentAvatar;
+use App\Exceptions\Exceptions\NonMatchingPasswordsException;
+use App\Http\Requests\ChangePasswordRequest;
 use App\Http\Requests\UserStoreRequest;
 use App\Http\Requests\UserUpdateRequest;
 use App\Models\Avatar;
@@ -15,6 +17,8 @@ use App\Services\ModelService;use App\Services\UserService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
 class UserController extends Controller
@@ -127,5 +131,25 @@ class UserController extends Controller
         }
 
         return $this->userService->updateAvatar($user, $avatar, $request->file('avatar'))->toArray();
+    }
+
+    /**
+     * @throws NonMatchingPasswordsException
+     */
+    public function changePassword(ChangePasswordRequest $request): array
+    {
+        $passwords = $request->validated();
+        $user = Auth::user();
+
+        if (!Hash::check($passwords[JsonFieldNames::PASSWORD->value . 'Old'], $user->password)) {
+            throw new NonMatchingPasswordsException('Unable to change password, wrong old password provided');
+        }
+
+        $user->password = Hash::make($passwords[JsonFieldNames::PASSWORD->value]);
+        $user->save();
+
+        return [
+            JsonFieldNames::MESSAGE->value => 'Password changed successfully'
+        ];
     }
 }
