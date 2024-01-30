@@ -24,7 +24,7 @@ class Event extends Model
             'category_event',
             'event_id',
             'category_id',
-        );
+        )->using(CategoryEvent::class);
     }
 
     public function creator(): BelongsTo
