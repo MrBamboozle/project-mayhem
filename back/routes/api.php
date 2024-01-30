@@ -61,6 +61,8 @@ Route::middleware(['auth:sanctum', 'ability:' . TokenAbility::ACCESS_API->value]
 
     //Event api
     Route::post(RouteEnum::EVENTS->path(), [EventController::class, 'store']);
+    Route::patch(RouteEnum::EVENTS->path() . '/{eventId}', [EventController::class, 'update']);
+    Route::delete(RouteEnum::EVENTS->path() . '/{eventId}', [EventController::class, 'destroy']);
 });
 
 Route::middleware(['auth:sanctum','ability:' . TokenAbility::ISSUE_ACCESS_TOKEN->value])->group(function () {

@@ -9,4 +9,6 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
 class CategoryEvent extends Pivot
 {
     use HasUuids;
+
+    public $incrementing = true;
 }
