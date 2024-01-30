@@ -26,7 +26,7 @@ class EventController extends Controller
      */
     public function index(Request $request): LengthAwarePaginator
     {
-        $query = Event::query();
+        $query = Event::query()->with(['categories']);
 
         $query = $this->modelService->applyFilters($query, $request->query(QueryField::FILTER->value));
         $query = $this->modelService->applySorts($query, $request->query(QueryField::SORT->value));
@@ -41,7 +41,7 @@ class EventController extends Controller
      */
     public function store(StoreEventRequest $request): array
     {
-        return $this->eventService->createEvent($request->validated())->toCamelCaseArray();
+        return $this->eventService->createEvent($request->validated())->load(['categories'])->toCamelCaseArray();
     }
 
     /**

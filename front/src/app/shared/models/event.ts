@@ -10,6 +10,9 @@ export interface Event {
   time: string;
   location: string;
   address: any;
+  startTime: string;
+  endTime: string;
+  categories: any[]; //TODO: Category object model
 }
 
 export interface CreateEventRequest {
