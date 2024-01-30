@@ -47,12 +47,14 @@ Route::middleware(['auth:sanctum', 'ability:' . TokenAbility::ACCESS_API->value]
 
     //User api
     Route::post(RouteEnum::USERS->path(), [UserController::class, 'store']);
+    Route::patch(RouteEnum::USERS->path() . '/password-change', [UserController::class, 'changePassword']);
     Route::patch(RouteEnum::USERS->path() . '/{id}', [UserController::class, 'update']);
     Route::delete(RouteEnum::USERS->path() . '/{id}', [UserController::class, 'destroy']);
     Route::post(
         RouteEnum::USERS->path() . '/{userId}' . RouteEnum::AVATARS->path() . '/{avatarId?}',
         [UserController::class, 'addAvatar']
     );
+
 
     //Avatar api
     Route::get(RouteEnum::AVATARS->path(), AvatarController::class);
@@ -61,6 +63,8 @@ Route::middleware(['auth:sanctum', 'ability:' . TokenAbility::ACCESS_API->value]
 
     //Event api
     Route::post(RouteEnum::EVENTS->path(), [EventController::class, 'store']);
+    Route::patch(RouteEnum::EVENTS->path() . '/{eventId}', [EventController::class, 'update']);
+    Route::delete(RouteEnum::EVENTS->path() . '/{eventId}', [EventController::class, 'destroy']);
 });
 
 Route::middleware(['auth:sanctum','ability:' . TokenAbility::ISSUE_ACCESS_TOKEN->value])->group(function () {

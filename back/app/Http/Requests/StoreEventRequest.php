@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use App\Enums\JsonFieldNames;
 use App\Enums\RequestRules;
+use App\Rules\EventCategoriesRule;
 use App\Rules\OsmAddressRule;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
@@ -28,12 +29,13 @@ class StoreEventRequest extends FormRequest
         return [
             JsonFieldNames::TITLE->value => [
                 RequestRules::REQUIRED->value,
-                RequestRules::STRING->value
+                RequestRules::STRING->value,
+                'max:40'
             ],
-            JsonFieldNames::TAG_LINE->value => [RequestRules::STRING->value],
+            JsonFieldNames::TAG_LINE->value => [RequestRules::STRING->value, 'max:140'],
             JsonFieldNames::DESCRIPTION->value => [
                 RequestRules::REQUIRED->value,
-                RequestRules::STRING->value
+                RequestRules::STRING->value,
             ],
             JsonFieldNames::START_TIME->value => [
                 RequestRules::REQUIRED->value,
@@ -49,7 +51,7 @@ class StoreEventRequest extends FormRequest
             ],
             JsonFieldNames::USER_ID->value => [RequestRules::PROHIBITED->value],
             JsonFieldNames::CITY_ID->value => [RequestRules::PROHIBITED->value],
-            JsonFieldNames::CATEGORIES->value => [RequestRules::ARRAY->value], //custom validation, usually required
+            JsonFieldNames::CATEGORIES->value => [new EventCategoriesRule],
             JsonFieldNames::ADDRESS->value => [new OsmAddressRule],
         ];
     }
