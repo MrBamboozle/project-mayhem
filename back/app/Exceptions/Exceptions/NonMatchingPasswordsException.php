@@ -7,11 +7,11 @@ use App\Exceptions\BaseException;
 
 class NonMatchingPasswordsException extends BaseException
 {
-    public function __construct()
+    public function __construct(string $message)
     {
         parent::__construct(
-            'Invalid registration',
-            [JsonFieldNames::PASSWORD->value => 'Password and repeat password do not match'],
+            'Invalid authentication',
+            [JsonFieldNames::PASSWORD->value => $message],
             401
         );
     }

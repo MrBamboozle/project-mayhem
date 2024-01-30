@@ -32,7 +32,7 @@ class EventService
         try {
             $event = Event::factory()->make([
                 JsonFieldNames::TITLE->value => $data[JsonFieldNames::TITLE->value],
-                JsonFieldNames::TAG_LINE->snakeCase() => $data[JsonFieldNames::TAG_LINE->value],
+                JsonFieldNames::TAG_LINE->snakeCase() => $data[JsonFieldNames::TAG_LINE->value] ?? null,
                 JsonFieldNames::DESCRIPTION->value => $data[JsonFieldNames::DESCRIPTION->value],
                 JsonFieldNames::START_TIME->snakeCase() => new DateTime($data[JsonFieldNames::START_TIME->value]),
                 JsonFieldNames::END_TIME->snakeCase() => new DateTime($data[JsonFieldNames::END_TIME->value]),

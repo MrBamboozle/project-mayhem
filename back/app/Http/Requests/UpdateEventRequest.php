@@ -28,9 +28,10 @@ class UpdateEventRequest extends FormRequest
     {
         return [
             JsonFieldNames::TITLE->value => [
-                RequestRules::STRING->value
+                RequestRules::STRING->value,
+                'max:40'
             ],
-            JsonFieldNames::TAG_LINE->value => [RequestRules::STRING->value],
+            JsonFieldNames::TAG_LINE->value => [RequestRules::STRING->value, 'max:140'],
             JsonFieldNames::DESCRIPTION->value => [
                 RequestRules::STRING->value
             ],

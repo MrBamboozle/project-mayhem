@@ -29,12 +29,13 @@ class StoreEventRequest extends FormRequest
         return [
             JsonFieldNames::TITLE->value => [
                 RequestRules::REQUIRED->value,
-                RequestRules::STRING->value
+                RequestRules::STRING->value,
+                'max:40'
             ],
-            JsonFieldNames::TAG_LINE->value => [RequestRules::STRING->value],
+            JsonFieldNames::TAG_LINE->value => [RequestRules::STRING->value, 'max:140'],
             JsonFieldNames::DESCRIPTION->value => [
                 RequestRules::REQUIRED->value,
-                RequestRules::STRING->value
+                RequestRules::STRING->value,
             ],
             JsonFieldNames::START_TIME->value => [
                 RequestRules::REQUIRED->value,
