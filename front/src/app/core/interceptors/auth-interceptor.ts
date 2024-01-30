@@ -10,6 +10,7 @@ import { catchError, tap, switchMap } from 'rxjs/operators';
 import { Observable, of, Subject, throwError } from 'rxjs';
 import { AuthenticationService } from '@app/services/authentication.service';
 import { ToastService } from '@app/shared/services/toaster.service';
+import { RefreshTokenResponse } from '@app/shared/models/login';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
@@ -19,13 +20,13 @@ export class AuthInterceptor implements HttpInterceptor {
 
   constructor(
     private readonly authService: AuthenticationService,
+    private readonly toastService: ToastService,
   ) {}
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<any> {
     if (request.url.endsWith('/login') || request.url.endsWith('/refresh-token')) {
       return next.handle(request);
     }
-    console.log('caught by interceptor')
 
     // Handle request
     request = this.addAuthHeader(request);
@@ -62,9 +63,11 @@ export class AuthInterceptor implements HttpInterceptor {
       this.refreshTokenInProgress = true;
 
       return this.authService.getRefreshToken().pipe(
-        tap((data: any) => {
-          this.authService.storeAccessToken(data?.token);
-          this.authService.storeRefreshToken(data?.refresh_token);
+        tap((data: RefreshTokenResponse | null) => {
+          if(data) {
+            this.authService.storeAccessToken(data?.token);
+            this.authService.storeRefreshToken(data?.refreshToken);
+          }
           this.refreshTokenInProgress = false;
           this.tokenRefreshedSource.next(true);
         }),
@@ -96,7 +99,7 @@ export class AuthInterceptor implements HttpInterceptor {
           if (e.status !== 401) {
             return this.handleResponseError(e);
           } else {
-            // this.toastService.showError(e);
+            this.toastService.showError(e);
             this.authService.logout();
             return of(e);
           }

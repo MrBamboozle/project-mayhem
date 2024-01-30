@@ -19,8 +19,13 @@ export class ToastInterceptor implements HttpInterceptor {
         }
       }),
       catchError((error: HttpErrorResponse) => {
-        console.log(error)
-        this.toastService.showError(error);
+        if (error.status !== 401) {
+          console.error(error); // Log error if it's not a 401
+          this.toastService.showError(error); // Show error toast for errors other than 401
+        }
+        // Handle 401 error differently or do nothing
+        // You can redirect to the login page or perform any other action as needed
+
         return throwError(() => error);
       })
     );
