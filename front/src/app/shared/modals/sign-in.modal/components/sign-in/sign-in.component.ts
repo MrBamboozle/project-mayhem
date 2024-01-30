@@ -49,7 +49,7 @@ export class SignInComponent {
         next: (data: LoginResponse) => {
           this.userStore.storeCurrentUser(data.user);
           this.authService.storeAccessToken(data.token)
-          this.authService.storeRefreshToken(data.refresh_token)
+          this.authService.storeRefreshToken(data.refreshToken)
           this.onSignedIn.emit(true);
         },
         error: (e) => console.error(e),

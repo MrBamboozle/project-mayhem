@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Output } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthenticationService } from '@app/services/authentication.service';
-import { RegisterRequest } from '@app/shared/models/login';
+import { LoginResponse, RegisterRequest } from '@app/shared/models/login';
 import { UserStoreService } from '@app/shared/stores/user.store.service';
 import { passwordMatchingValidator } from '@app/shared/validators/password-matching.validator';
 import { usernameValidator } from '@app/shared/validators/username.validator';
@@ -50,9 +50,10 @@ export class RegisterComponent {
     this.authService
       .register(request)
       .subscribe({
-        next: (data: any) => {
+        next: (data: LoginResponse) => {
           this.userStore.storeCurrentUser(data.user);
-          this.authService.storeAccessToken(data.token)
+          this.authService.storeAccessToken(data.token);
+          this.authService.storeRefreshToken(data.refreshToken);
           this.onRegistered.emit(true);
         },
         error: (e) => console.error(e),
