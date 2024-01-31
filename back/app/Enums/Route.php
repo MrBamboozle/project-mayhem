@@ -14,16 +14,26 @@ enum Route: string
 	case AVATARS = 'avatars';
 	case LOCATION = 'location';
 	case EVENTS = 'events';
+	case EVENTS_PRIVATE = 'events/private';
 	case REFRESH = 'refresh-token';
     case UNDEFINED = 'undefined';
 
     public static function create(string $value): self
     {
         try {
-            return self::from($value);
+            return self::from(
+                collect(explode('/', $value))
+                    ->filter(fn (string $part) => $part !== 'api')
+                    ->implode('/')
+            );
         } catch (\ValueError) {
             return self::UNDEFINED;
         }
+    }
+
+    public function isEventPrivate():bool
+    {
+        return $this === self::EVENTS_PRIVATE;
     }
 
     public function isUndefined(): bool

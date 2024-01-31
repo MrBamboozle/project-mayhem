@@ -26,6 +26,7 @@ class UserStoreRequest extends FormRequest
             'email' => 'string | required | unique:users',
             'password' => 'string | required',
             'name' => 'string | required | unique:users',
+            'city_id' => 'uuid | required',
         ];
     }
 }

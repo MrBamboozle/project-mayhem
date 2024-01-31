@@ -2,29 +2,42 @@
 
 namespace Database\Seeders;
 
+use App\Enums\RoleEnum;
 use App\Models\Avatar;
 use App\Models\City;
+use App\Models\Event;
+use App\Models\Permission;
+use App\Models\Role;
+use App\Models\RouteConfiguration;
 use App\Models\User;
+use Database\Factories\RoleFactory;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
-    const ADMIN_USERS = [
+    const GOD_MODE_USERS = [
         'Filip Petrina' => 'filippetrina92@gmail.com',
         'Domagoj Bišćan' => 'd.biscan.stu@gmail.com',
-        'Dodo' => 'dodo@bobo.com',
-        'Tester 1' => 'test1@gmail.com',
-        'Tester 2' => 'test2@gmail.com',
-        'Tester 3' => 'test3@gmail.com',
-        'Tester 4' => 'test4@gmail.com',
-        'Tester 5' => 'test5@gmail.com',
-        'Tester 6' => 'test6@gmail.com',
-        'Tester 7' => 'test7@gmail.com',
-        'Tester 8' => 'test8@gmail.com',
-        'Tester 9' => 'test9@gmail.com',
-        'Tester 10' => 'test10@gmail.com',
     ];
 
+    const ADMINS = [
+        'Mycho' => 'Mycho@mycho.com',
+    ];
+
+    const PREMIUM_USERS = [
+        'Rando Premium' => 'rando.premium@gmail.com',
+    ];
+
+    const REGULAR_USERS = [
+        'xXPussy|DestroyerXx' => 'pussy.destroyer@gmail.com'
+    ];
+
+    const ROLES = [
+        'GODMODE',
+        'ADMIN',
+        'PREMIUM',
+        'REGULAR',
+    ];
     /**
      * Seed the application's database.
      */
@@ -47,12 +60,28 @@ class DatabaseSeeder extends Seeder
             $i++;
         }
 
-        foreach (self::ADMIN_USERS as $user => $email) {
+        //roles
+        $roles = collect(self::ROLES)->mapWithKeys(
+            fn (string $roleName) => [
+                $roleName => Role::factory()->create(['name' => $roleName])
+            ]
+        );
+
+        $this->createUsers(self::GOD_MODE_USERS, $avatars[0], $roles['GODMODE']);
+        $this->createUsers(self::ADMINS, $avatars[1], $roles['ADMIN']);
+        $this->createUsers(self::PREMIUM_USERS, $avatars[2], $roles['PREMIUM']);
+        $this->createUsers(self::REGULAR_USERS, $avatars[3], $roles['REGULAR']);
+    }
+
+    private function createUsers(array $users, Avatar $avatar, Role $role): void
+    {
+        foreach ($users as $user => $email) {
             User::factory()->create([
                 'name' => $user,
                 'email' => $email,
-                'avatar_id' => $avatars[0]->id,
-                'city_id' => City::first()->id
+                'avatar_id' => $avatar->id,
+                'city_id' => City::first()->id,
+                'role_id' => $role->id
             ]);
         }
     }

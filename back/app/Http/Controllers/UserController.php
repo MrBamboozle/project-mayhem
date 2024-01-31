@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Enums\QueryField;
 use App\Enums\JsonFieldNames;
-use App\Exceptions\Exceptions\ApiModelNotFoundException;
 use App\Exceptions\Exceptions\FailToAddAvatarException;
 use App\Exceptions\Exceptions\FailToDeleteCurrentAvatar;
 use App\Exceptions\Exceptions\NonMatchingPasswordsException;
@@ -14,12 +13,9 @@ use App\Http\Requests\UserUpdateRequest;
 use App\Models\Avatar;
 use App\Models\User;
 use App\Services\ModelService;use App\Services\UserService;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
@@ -53,93 +49,42 @@ class UserController extends Controller
      */
     public function store(UserStoreRequest $request): array
     {
-        $user = $this->userService->createUser($request->validated());
+        return $this->userService->createUser($request->validated())->toArray();
+    }
+
+    public function show(User $user): array
+    {
+        return $user->toArray();
+    }
+
+    public function update(UserUpdateRequest $request, User $user): array
+    {
+        $user->update($request->validated());
 
         return $user->toArray();
     }
 
-    /**
-     * Display the specified resource.
-     * @throws ApiModelNotFoundException
-     */
-    public function show(string $id): array
+    public function destroy(User $user): array
     {
-        try {
-            $user = User::findOrFail($id);
-        } catch (ModelNotFoundException) {
-            throw new ApiModelNotFoundException($id, User::class);
-        }
-
-        return $user->toArray();
-    }
-
-    /**
-     * Update the specified resource in storage.
-     * @throws ApiModelNotFoundException
-     */
-    public function update(UserUpdateRequest $request, string $id): array
-    {
-        $data = $request->validated();
-
-        try {
-            $user = User::findOrFail($id);
-        } catch (ModelNotFoundException) {
-            throw new ApiModelNotFoundException($id, User::class);
-        }
-
-        $user->update($data);
-
-        return $user->toArray();
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     * @throws ApiModelNotFoundException
-     */
-    public function destroy(string $id): array
-    {
-        try {
-            $user = User::findOrFail($id);
-        } catch (ModelNotFoundException) {
-            throw new ApiModelNotFoundException($id, User::class);
-        }
-
         $user->delete();
 
-        return [JsonFieldNames::MESSAGE->value => "User $user->name with id $id deleted"];
+        return [JsonFieldNames::MESSAGE->value => "User $user->name with id $user->id deleted"];
     }
 
     /**
-     * @throws ApiModelNotFoundException
      * @throws FailToAddAvatarException|FailToDeleteCurrentAvatar
      */
-    public function addAvatar(Request $request, string $userId, string $avatarId = null): array
+    public function addAvatar(Request $request, User $user, Avatar $avatar = null): array
     {
-        try {
-            $user = User::findOrFail($userId);
-            $avatar = null;
-
-            if (!empty($avatarId)) {
-                $avatar = Avatar::findOrFail($avatarId);
-            }
-        } catch (ModelNotFoundException $exception) {
-            if (Str::contains(($exception->getMessage()), Avatar::class)) {
-                throw new ApiModelNotFoundException($avatarId, Avatar::class);
-            }
-
-            throw new ApiModelNotFoundException($userId, User::class);
-        }
-
         return $this->userService->updateAvatar($user, $avatar, $request->file('avatar'))->toArray();
     }
 
     /**
      * @throws NonMatchingPasswordsException
      */
-    public function changePassword(ChangePasswordRequest $request): array
+    public function changePassword(ChangePasswordRequest $request, User $user): array
     {
         $passwords = $request->validated();
-        $user = Auth::user();
 
         if (!Hash::check($passwords[JsonFieldNames::PASSWORD->value . 'Old'], $user->password)) {
             throw new NonMatchingPasswordsException('Unable to change password, wrong old password provided');
