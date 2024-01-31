@@ -5,15 +5,20 @@ import { Injectable, TemplateRef } from '@angular/core';
 export class ToastService {
   toasts: any[] = [];
 
+
   show(textOrTpl: string | TemplateRef<any>, options: any = {}) {
     this.toasts = [{ textOrTpl, ...options }];
+  }
+
+  showError(textOrTpl: string | TemplateRef<any>) {
+    this.show(textOrTpl, { header: 'Error', classname: 'bg-danger text-light' });
   }
 
   remove(toast: any) {
     this.toasts = this.toasts.filter(t => t !== toast);
   }
 
-  showError(error: HttpErrorResponse): void {
+  showHttpError(error: HttpErrorResponse): void {
     let errorMessage = '';
     if (error.error instanceof ErrorEvent) {
       // Client-side error
@@ -28,6 +33,6 @@ export class ToastService {
         }
       }
     }
-    this.show(errorMessage, { header: 'Error', classname: 'bg-danger text-light' });
+    this.showError(errorMessage);
   }
 }
