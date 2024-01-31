@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { CommonModule } from '@angular/common';
 import { Event } from '@app/shared/models/event';
-import * as L from 'leaflet';
+import { MapWrapper } from '@app/shared/wrappers/map-wrapper';
 
 @Component({
   selector: 'app-expandable-folder',
@@ -40,39 +40,16 @@ export class ExpandableFolderComponent {
   overflowStyle = 'hidden';
   closeButtonStyle = 'back';
 
-  private previewMap: any;
-  private previewMarker: any;
+  private previewMap!: MapWrapper;
 
   ngAfterViewInit(): void {
     this.initMap();
   }
 
   private initMap(): void {
-    this.previewMap = L.map(`preview-map-${this.event.id}`);
-
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      maxZoom: 19,
-    }).addTo(this.previewMap);
-
-    const location = this.event.location.split(',');
-
-    const coord: any = {
-      lat: location[0],
-      lng: location[1],
-    }
-
-    
-    this.previewMap.setView(coord, 13); // Default location
-
-    const customIcon = L.icon({
-      iconUrl: 'assets/images/pin.png',
-      iconSize: [56, 48], // size of the icon
-      iconAnchor: [33, 30], // point of the icon which will correspond to marker's location
-      popupAnchor: [1, -34] // point from which the popup should open relative to the iconAnchor
-    });
-
-    this.previewMarker = L.marker([coord.lat, coord.lng], { icon: customIcon }).addTo(this.previewMap);
-      
+    this.previewMap = new MapWrapper(`preview-map-${this.event.id}`)
+      .setView(this.event.location)
+      .addMarker(this.event.location);
   }
 
   toggleFolder() {

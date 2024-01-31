@@ -3,13 +3,13 @@ import { Component } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { EventsService } from '@app/services/events.service';
 import { CreateEventRequest } from '@app/shared/models/event';
-import { UserStoreService } from '@app/shared/stores/user.store.service';
 import { dateTimeValidator } from '@app/shared/validators/date-time.validator';
 import { MatStepper, MatStepperModule } from '@angular/material/stepper';
 import { dateRangeValidator } from '@app/shared/validators/date-range.validator';
 import * as L from 'leaflet';
 import { LocationService } from '@app/services/location.service';
 import { LocationRequest } from '@app/shared/models/location';
+import { MapWrapper } from '@app/shared/wrappers/map-wrapper';
 
 @Component({
   selector: 'app-create-event',
@@ -19,10 +19,8 @@ import { LocationRequest } from '@app/shared/models/location';
   styleUrl: './create-event.component.scss'
 })
 export class CreateEventComponent {
-  private map: any;
-  private reviewMap: any;
-  private marker: any;
-  private reviewMarker: any;
+  private map!: MapWrapper;
+  private reviewMap!: MapWrapper;
 
   public fetchingAddress: boolean = false;
 
@@ -47,7 +45,6 @@ export class CreateEventComponent {
     private readonly formBuilder: FormBuilder,
     private readonly locationService: LocationService,
     private readonly eventsService: EventsService,
-    private readonly userStore: UserStoreService,
   ) {}
 
   ngAfterViewInit(): void {
@@ -55,44 +52,22 @@ export class CreateEventComponent {
   }
 
   private initMaps(): void {
-    this.map = L.map('map');
-    this.reviewMap = L.map('review-map');
+    this.map = new MapWrapper('map').setView();
+    this.reviewMap = new MapWrapper('review-map');
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      maxZoom: 19,
-    }).addTo(this.map);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      maxZoom: 19,
-    }).addTo(this.reviewMap);
-
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((position) => {
-        const coords = position.coords;
-        const latLng = L.latLng(coords.latitude, coords.longitude);
-        this.map.setView(latLng, 13);
-      }, () => {
-        console.log('Unable to retrieve your location');
-        this.map.setView([51.505, -0.09], 13); // Default location
-      });
-    } else {
-      console.log('Geolocation is not supported by this browser.');
-      this.map.setView([51.505, -0.09], 13); // Default location
-    }
-
-    this.map.on('click', (e: L.LeafletMouseEvent) => {
-      const coord = e.latlng;
-      const locationString = `${coord.lat},${coord.lng}`;
-      this.fetchingAddress = true;
+    this.map.onClick((e:L.LeafletMouseEvent) => {
+      const coords = e.latlng;
+      const locationString = `${coords.lat},${coords.lng}`;
       
       this.controlsThird.location.setValue(locationString);
-      this.addMarker(coord);
-
-      this.reviewMap.setView(coord, 15);
+      
+      this.reviewMap.setView(coords, 15).addMarker(coords);
       
       const request: LocationRequest = {
         location: locationString
       };
       
+      this.fetchingAddress = true;
       this.locationService.postLocation(request).subscribe(
         (data) => {
           this.fetchingAddress = false;
@@ -100,28 +75,12 @@ export class CreateEventComponent {
           this.controlsThird.address.setValue(data)
         }
       )
-    });
+    })
   }
 
   get formattedAddress(): string {
     const address = this.controlsThird.address.getRawValue();
     return address ? `${address?.road} ${address?.houseNumber}, ${address?.city}` : '';
-  }
-
-  private addMarker(coord: L.LatLng): void {
-    const customIcon = L.icon({
-      iconUrl: 'assets/images/pin.png',
-      iconSize: [56, 48], // size of the icon
-      iconAnchor: [33, 30], // point of the icon which will correspond to marker's location
-      popupAnchor: [1, -34] // point from which the popup should open relative to the iconAnchor
-    });
-
-    if (this.marker) {
-      this.map.removeLayer(this.marker);
-      this.reviewMap.removeLayer(this.reviewMarker);
-    }
-    this.marker = L.marker([coord.lat, coord.lng], { icon: customIcon }).addTo(this.map);
-    this.reviewMarker = L.marker([coord.lat, coord.lng], { icon: customIcon }).addTo(this.reviewMap);
   }
 
   get controlsFirst(): { [p: string]: AbstractControl } {
@@ -147,34 +106,6 @@ export class CreateEventComponent {
       control.markAsTouched();
     });
   }
-
-
-  // onSubmit() {
-  //   if (this.createEventForm.invalid) {
-  //     return;
-  //   }
-
-  //   const request: CreateEventRequest = {
-  //     title: this.createEventForm.value.title,
-  //     description: this.createEventForm.value.description,
-  //     dateFrom: this.createEventForm.value.dateFrom,
-  //     dateTo: this.createEventForm.value.dateTo,
-  //     location: this.createEventForm.value.location,
-  //   }
-
-  //   if(this.createEventForm.value.tagline) {
-  //     request.tagline = this.createEventForm.value.tagline;
-  //   }
-  //   if(this.createEventForm.value.address) {
-  //     request.address = this.createEventForm.value.address;
-  //   }
-
-  //   this.eventsService
-  //     .postEvent(request)
-  //     .subscribe((data: any) => {
-  //       console.log('event created!', data)
-  //     })
-  // }
 
   submitEvent() {
     if (this.createEventFormFirst.valid && this.createEventFormSecond.valid && this.createEventFormThird.valid) {

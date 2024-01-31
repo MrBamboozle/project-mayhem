@@ -15,7 +15,7 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->string('title');
             $table->string('tag_line')->nullable();
-            $table->string('description');
+            $table->text('description');
             $table->dateTime('start_time');
             $table->dateTime('end_time');
             $table->string('location');

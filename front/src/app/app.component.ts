@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Injector } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { NgbDropdownModule, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
@@ -9,6 +9,7 @@ import { UserStoreService } from './shared/stores/user.store.service';
 import { AuthenticationService } from './services/authentication.service';
 import { config } from './core/app-config';
 import { ToastsContainer } from './core/components/toast-container.component';
+import { AppInjector } from './core/service/app-injector.service';
 
 @Component({
   selector: 'app-root',
@@ -26,10 +27,13 @@ export class AppComponent {
   }
 
   constructor(
+    private readonly injector: Injector,
     private readonly modalService: ModalHelperService,
     private readonly authService: AuthenticationService,
     public readonly userStore: UserStoreService,
-  ) {}
+  ) {
+    AppInjector.setInjector(injector);
+  }
 
   public toggleSidebar(): void {
     this.isSidebarHidden = !this.isSidebarHidden;
