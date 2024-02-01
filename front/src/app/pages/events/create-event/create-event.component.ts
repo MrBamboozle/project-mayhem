@@ -27,8 +27,8 @@ export class CreateEventComponent {
   public isFetchingAddress: boolean = false;
 
   public createEventFormFirst: FormGroup  = this.formBuilder.group({
-    title: ['', [Validators.required]],
-    tagline: [''],
+    title: ['', [Validators.required, Validators.maxLength(40)]],
+    tagline: ['', [Validators.maxLength(140)]],
     description: ['', [Validators.required]],
     categories: [[]],
   })
