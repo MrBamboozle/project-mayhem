@@ -3,6 +3,7 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
 import { CommonModule } from '@angular/common';
 import { Event } from '@app/shared/models/event';
 import { MapWrapper } from '@app/shared/wrappers/map-wrapper';
+import { formatAddress, formatDateToLocale, formatTopSecretFontTitle } from '@app/shared/utils/formatters';
 
 @Component({
   selector: 'app-expandable-folder',
@@ -65,17 +66,18 @@ export class ExpandableFolderComponent {
   }
 
   get formattedTitle(): string {
-    return this.event.title.split(' ').map(word => `{${word}}`).join('');
+    return formatTopSecretFontTitle(this.event.title);
   }
 
   get formattedAddress(): string {
-    const address = JSON.parse(this.event.address);
-    return address ? `${address?.road} ${address?.houseNumber}, ${address?.city}` : ''; //TODO: Format address display better
+    return formatAddress(JSON.parse(this.event.address));
   }
 
-  get formattedDates(): string {
-    const startDate = new Date(this.event.startTime);
-    const endDate = new Date(this.event.endTime);
-    return `From: ${startDate.toLocaleString()}, To: ${endDate.toLocaleString()}`;
+  get formattedDateFrom(): string {
+    return formatDateToLocale(this.event.startTime);
+  }
+
+  get formattedDateTo(): string {
+    return formatDateToLocale(this.event.endTime);
   }
 }

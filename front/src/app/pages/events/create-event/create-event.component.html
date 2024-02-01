@@ -93,7 +93,7 @@
         <div class="taped double-taped">
           <div id="map" style="height: 400px;"></div>
         </div>
-        <p *ngIf="!fetchingAddress && formattedAddress">Address: <span>{{formattedAddress}}</span></p>
+        <p *ngIf="!isFetchingAddress && isLocationSelected">Address: <span>{{formattedAddress}}</span></p>
   
         <div *ngIf="controlsThird.location.touched && controlsThird.location.invalid" class="text-danger">
           <small *ngIf="controlsThird.location.errors?.required">Location is required.</small>
@@ -110,7 +110,7 @@
     <!-- Step 4 -->
     <mat-step>
       <ng-template matStepLabel>Review and Submit</ng-template>
-      <!-- TODO: Refactor this display -->
+      <!-- TODO: Refactor this display, oldschool document style -->
       
       <div class="printed-form form-review">
   
@@ -123,7 +123,7 @@
           <div class="form-group">
             <label for="review-title">Title</label>
             <input id="review-title" type="text" class="form-control" readonly
-                  [value]="createEventFormFirst.get('title')?.value">
+                  [value]="formattedTitle">
           </div>
       
           <!-- Tagline Review -->
@@ -143,14 +143,14 @@
           <div class="form-group">
             <label for="review-dateFrom">Date From</label>
             <input id="review-dateFrom" type="text" class="form-control" readonly
-                  [value]="createEventFormSecond.get('dateFrom')?.value">
+                  [value]="formattedDateFrom">
           </div>
       
           <!-- Date To Review -->
           <div class="form-group">
             <label for="review-dateTo">Date To</label>
             <input id="review-dateTo" type="text" class="form-control" readonly
-                  [value]="createEventFormSecond.get('dateTo')?.value">
+                  [value]="formattedDateTo">
           </div>
       
           <!-- Location Review -->

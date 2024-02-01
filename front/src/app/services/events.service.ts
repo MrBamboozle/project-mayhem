@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { config } from '@app/core/app-config';
 import { CreateEventRequest, Event } from '@app/shared/models/event';
+import { MessageResponse } from '@app/shared/models/message';
 import { PaginatedResponse } from '@app/shared/models/paginated-response';
 import { Observable } from 'rxjs';
 
@@ -35,9 +36,8 @@ export class EventsService {
       .patch<Event>(`${this.eventsUrl}/${id}`, eventReq);
   }
 
-  //TODO: delete response?
-  public deleteEvent(id: string): Observable<Event> {
+  public deleteEvent(id: string): Observable<MessageResponse> {
     return this._http
-      .delete<Event>(`${this.eventsUrl}/${id}`);
+      .delete<MessageResponse>(`${this.eventsUrl}/${id}`);
   }
 }

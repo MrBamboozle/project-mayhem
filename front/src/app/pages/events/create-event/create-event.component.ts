@@ -10,6 +10,7 @@ import * as L from 'leaflet';
 import { LocationService } from '@app/services/location.service';
 import { LocationRequest } from '@app/shared/models/location';
 import { MapWrapper } from '@app/shared/wrappers/map-wrapper';
+import { formatAddress, formatDateToLocale, formatTopSecretFontTitle } from '@app/shared/utils/formatters';
 
 @Component({
   selector: 'app-create-event',
@@ -22,7 +23,8 @@ export class CreateEventComponent {
   private map!: MapWrapper;
   private reviewMap!: MapWrapper;
 
-  public fetchingAddress: boolean = false;
+  public isLocationSelected: boolean = false;
+  public isFetchingAddress: boolean = false;
 
   public createEventFormFirst: FormGroup  = this.formBuilder.group({
     title: ['', [Validators.required]],
@@ -67,10 +69,11 @@ export class CreateEventComponent {
         location: locationString
       };
       
-      this.fetchingAddress = true;
+      this.isLocationSelected = true;
+      this.isFetchingAddress = true;
       this.locationService.postLocation(request).subscribe(
         (data) => {
-          this.fetchingAddress = false;
+          this.isFetchingAddress = false;
           
           this.controlsThird.address.setValue(data)
         }
@@ -78,9 +81,20 @@ export class CreateEventComponent {
     })
   }
 
+  get formattedTitle(): string {
+    return formatTopSecretFontTitle(this.createEventFormFirst.get('title')?.value);
+  }
+
   get formattedAddress(): string {
-    const address = this.controlsThird.address.getRawValue();
-    return address ? `${address?.road} ${address?.houseNumber}, ${address?.city}` : '';
+    return formatAddress(this.controlsThird.address.getRawValue());
+  }
+
+  get formattedDateFrom(): string {
+    return formatDateToLocale(this.createEventFormSecond.get('dateFrom')?.value);
+  }
+
+  get formattedDateTo(): string {
+    return formatDateToLocale(this.createEventFormSecond.get('dateTo')?.value);
   }
 
   get controlsFirst(): { [p: string]: AbstractControl } {
