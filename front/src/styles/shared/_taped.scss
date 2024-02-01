@@ -1,0 +1,44 @@
+.taped {
+  position: relative;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+  &.single-taped {
+    &::after {
+      content: "";
+      position: absolute;
+      top: -50px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-image: url('../../assets/images/tape-piece-transparent.png');
+      background-size: cover;
+      width: 50px;
+      height: 100px;
+      z-index: 999;
+    }
+  }
+  &.double-taped {
+    &::before {
+      content: "";
+      position: absolute;
+      top: -50px;
+      left: 20%;
+      transform: translateX(-50%);
+      background-image: url('../../assets/images/tape-piece-transparent.png');
+      background-size: cover;
+      width: 50px;
+      height: 100px;
+      z-index: 999;
+    }
+    &::after {
+      content: "";
+      position: absolute;
+      top: -50px;
+      left: 80%;
+      transform: translateX(-50%);
+      background-image: url('../../assets/images/tape-piece-transparent.png');
+      background-size: cover;
+      width: 50px;
+      height: 100px;
+      z-index: 999;
+    }
+  }
+}

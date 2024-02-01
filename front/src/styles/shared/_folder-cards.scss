@@ -1,0 +1,180 @@
+.folder {
+  position: relative;
+  perspective: 2500px;
+  margin-bottom: 20px;
+  margin-top: 35px;
+
+  // min-height: 220px;
+  border-radius: 5px 5px 5px 5px;
+  // box-shadow: 0px -7px 3px -4px rgba(0, 0, 0, 0.5);
+
+  display: inline-block;
+  width: 100%;
+  width: -moz-available;          /* WebKit-based browsers will ignore this. */
+  width: -webkit-fill-available;  /* Mozilla-based browsers will ignore this. */
+  width: fill-available;
+
+  &.open {
+    min-height: 370px;
+  }
+
+  .back {
+    height: 160px;
+    border-radius: 5px 0 5px 5px;
+    position: relative;
+    margin: 0 auto;
+    background: $folder-bg;
+    padding: 20px;
+    box-shadow: 0px -2px 3px -1px rgba(0, 0, 0, 0.4);
+    // overflow: hidden;
+
+    button {
+      position: absolute;
+      top: -35px;
+      right: 0;
+      z-index: 2;
+    }
+
+    .event-content {
+      overflow: hidden;
+      box-shadow: none;
+
+      padding: 20px;
+
+      h2 {
+        font-family: 'TopSecret', sans-serif;
+        color: darkred;
+        text-align: center
+      }
+
+      .tagline {
+        text-align: center;
+      }
+
+      .tagline, .address {
+        color: $dark;
+        font-size: 18px;
+        font-weight: bold;
+        margin-top: 20px;
+      }
+
+      .description {
+        font-size: 14px;
+        font-weight: normal;
+      }
+
+      .taped {
+        margin-top: 50px;
+      }
+    }
+
+    &.show-content {
+      z-index: 6;
+      overflow: visible; 
+
+      .event-content {
+        overflow-y: auto;
+        box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.5);
+      }
+    }
+
+    &.enable-close {
+      &::after, &::before {
+        background-image: linear-gradient(to bottom, $folder-bg, $folder-bg);
+      }
+    }
+
+    &::after, &::before {
+      content:'';
+      position:absolute;
+      height: 30px;
+      background: $folder-bg;
+      top: -30px;
+      background-image: linear-gradient(to bottom, $folder-bg, $folder-shade-bg);
+    }
+
+    &::after {
+      width: 60px;
+      border-radius: 0 5px 0 0;
+      box-shadow: -2px -2px 3px rgba(0, 0, 0, 0.4);
+      right: 0;
+    }
+    &::before {
+      right: 55px;
+      width: 10px;
+      transform: skew(-10deg);
+      border-radius: 5px 0 0 0;
+      box-shadow: -3px -1px 3px -2px rgba(0, 0, 0, 0.4);
+      z-index: 1;
+    }
+  }
+
+  .cover, .under-cover {
+    height: 160px;
+    border-radius: 0 5px 5px 5px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 5;
+    margin: 0 auto;
+
+    background: $folder-bg;
+
+    transform-origin: 0 100%;
+    -webkit-backface-visibility: hidden;
+    -moz-backface-visibility: hidden;    
+    backface-visibility: hidden; 
+
+    .event-preview {
+      padding: 20px;
+
+      h2 {
+        font-family: 'TopSecret', sans-serif;
+        color: darkred;
+      }
+
+      p {
+        color: $dark;
+        font-size: 18px;
+        font-weight: bold;
+      }
+    }
+
+    button {
+      position: absolute;
+      top: -35px;
+      z-index: inherit;
+    }
+
+    &::after, &::before {
+      content:'';
+      position:absolute;
+      height: 30px;
+      background: $folder-bg;
+      top: -30px;
+    }
+
+    &::after {
+      width: 60px;
+      border-radius: 5px 0 0 0;
+      box-shadow: 2px -2px 3px rgba(0, 0, 0, 0.4);
+      left: 0;
+    }
+    &::before {
+      left: 55px;
+      width: 10px;
+      transform: skew(10deg);
+      border-radius: 0 5px 0 0;
+      box-shadow: 3px -1px 3px -2px rgba(0, 0, 0, 0.4);
+      z-index: 1;
+    }
+  }
+
+  .under-cover {
+    -webkit-backface-visibility: visible;
+    -moz-backface-visibility: visible;    
+    backface-visibility: visible; 
+    box-shadow: 0px -2px 3px -1px rgba(0, 0, 0, 0.4);
+  }
+}

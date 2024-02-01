@@ -1,0 +1,53 @@
+
+.avatar-picker-spacing {
+  margin-right: 40px;
+  margin-top: 50px;
+}
+
+.avatar-container {
+  position: relative;
+
+  &.pickable {
+    cursor: pointer;
+  }
+
+  &__big {
+    width: fit-content;
+    img {
+      width: 200px;
+      height: 200px;
+
+      box-shadow: -4px 4px 8px rgba(0, 0, 0, 0.5);
+    }
+  }
+
+  img {
+    width: 150px;
+    height: 150px;
+
+    box-shadow: -3px 3px 6px rgba(0, 0, 0, 0.5);
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: -50px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-image: url('../../assets/images/tape-piece-transparent.png');
+    background-size: cover;
+    width: 50px;
+    height: 100px;
+    z-index: 1;
+  }
+
+  span {
+    font-family: $font-stars;
+    color: green;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 50px;
+    line-height: 50px;
+  }
+}

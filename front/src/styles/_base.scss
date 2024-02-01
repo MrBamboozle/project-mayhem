@@ -1,0 +1,31 @@
+body {
+  background-image: url('../assets/images/wood-texture.jpg'); /* Path to your texture image */
+  background-repeat: repeat; /* This will make the texture repeat */
+  background-size: auto; /* Keep the texture's original size */
+  background-attachment: fixed; /* Optional: makes the background fixed during scroll */
+  background-position: center; /* Optional: positions the background image */
+
+	font-family: $font-primary;
+	font-size: 14px;
+	line-height: 1.8;
+	font-weight: normal;
+	color: $indigo-dye;
+}
+
+a {
+	transition: .3s all ease;
+	color: $primary;
+	&:hover, &:focus {
+		text-decoration: none !important;
+		outline: none !important;
+		box-shadow: none;
+	}
+}
+
+h1, h2, h3, h4, h5,
+.h1, .h2, .h3, .h4, .h5 {
+	line-height: 1.5;
+	font-weight: 400;
+	font-family: $font-primary;
+	color: $black;
+}

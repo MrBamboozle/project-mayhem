@@ -1,0 +1,59 @@
+
+.printed-table-container {
+  @include paper-bg;
+  @include paginated-content;
+  
+  .printed-table {
+    // Use a base color to simulate the yellowish paper
+  
+    // Add a linear gradient to simulate the uneven color of old paper
+    border-collapse: collapse;
+    width: 100%;
+  
+    color: $indigo-dye;
+
+    
+    th, td {
+      border: 1px solid $aged-ink; // A color that looks like aged ink
+      padding: 10px;
+      text-align: left;
+      
+      &:first-child {
+        border-left: none;
+      }
+      &:last-child {
+        border-right: none;
+      }
+      // You can also add a text-shadow to simulate the ink bleed effect
+      // text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
+    }
+    
+    th {
+      border-top: 2px solid $aged-ink;
+      // border-bottom: 2px solid $aged-ink;
+    }
+  }
+
+}
+
+
+.printed {
+  font-family: $font-printed;
+  color: $dark!important;
+
+  th{
+    &.sortable {
+      cursor: pointer;
+      span {
+        display: inline-block;
+        transition: .3s all ease;
+        &.rotate-desc {
+          transform: rotate(90deg);
+        }
+        &.rotate-asc {
+          transform: rotate(-90deg);
+        }
+      }
+    }
+  }
+}

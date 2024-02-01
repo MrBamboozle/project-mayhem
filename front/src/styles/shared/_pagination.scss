@@ -1,0 +1,60 @@
+.pagination-container {
+  position: relative;
+
+  ngb-pagination {
+    position: absolute;
+    bottom: -57px;
+    left: 20px;
+    
+  }
+
+  // Custom Pagination Styles
+  .pagination {
+    // Override default pagination background and text color
+    color: $lapis-lazuli; // Aged ink color
+
+    @include paper-bg;
+
+    // Remove default border radius
+    border-radius: 0;
+
+    // Custom border to match the table
+    border: none;
+
+    .page-item {
+      // Hover state
+      &:hover {
+        text-decoration: none;
+        background-color: rgba(255, 255, 224, 0.3); // Light old paper color for hover
+      }
+      // Active state
+      &.active {
+        background-color: rgba(255, 255, 224, 0.6); // Slightly darker paper color for active state
+        color: $aged-ink;
+      }
+    }    
+
+    // Pagination inner content
+    .page-link {
+      // Text color
+      color: $dark; // Aged ink color
+      background-color: transparent;
+      border: none; // Remove individual borders
+
+      &:focus {
+        box-shadow: none;
+      }
+    }
+
+    // Override border radius for first and last page-link
+    .page-item:first-child .page-link {
+      border-top-left-radius: 0; // Square top left corner
+      border-bottom-left-radius: 5px; // Rounded bottom left corner
+    }
+
+    .page-item:last-child .page-link {
+      border-top-right-radius: 0; // Square top right corner
+      border-bottom-right-radius: 5px; // Rounded bottom right corner
+    }
+  }
+}
