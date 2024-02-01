@@ -12,6 +12,7 @@
                 [ngClass]="{ 'is-invalid': controlsFirst.title.touched && controlsFirst.title.invalid }">
           <div *ngIf="controlsFirst.title.touched && controlsFirst.title.invalid" class="text-danger">
             <small *ngIf="controlsFirst.title.errors?.required">Title is required.</small>
+            <small *ngIf="controlsFirst.title.errors?.maxlength">Title must be less than 40 characters.</small>
           </div>
         </div>
   
@@ -19,7 +20,9 @@
         <div class="form-group">
           <label for="tagline">Tagline</label>
           <input id="tagline" type="text" formControlName="tagline" class="form-control">
-          <!-- No validation errors for tagline as it's optional -->
+          <div *ngIf="controlsFirst.tagline.touched && controlsFirst.tagline.invalid" class="text-danger">
+            <small *ngIf="controlsFirst.tagline.errors?.maxlength">Tagline must be less than 140 characters.</small>
+          </div>
         </div>
   
         <!-- Description Field -->
