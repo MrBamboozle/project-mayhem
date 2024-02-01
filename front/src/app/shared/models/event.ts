@@ -12,7 +12,7 @@ export interface Event {
   address: any;
   startTime: string;
   endTime: string;
-  categories: any[]; //TODO: Category object model
+  categories: Category[];
 }
 
 export interface CreateEventRequest {
@@ -24,4 +24,9 @@ export interface CreateEventRequest {
   location: string;
   address?: any;
   categories?: string[];
+}
+
+export interface Category {
+  id: string;
+  name: string;
 }

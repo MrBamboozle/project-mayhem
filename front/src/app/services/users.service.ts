@@ -36,10 +36,9 @@ export class UsersService {
       .patch<User>(`${this.usersUrl}/${id}`, userReq);
   }
 
-  //TODO: delete response?
-  public deleteUser(id: string): Observable<User> {
+  public deleteUser(id: string): Observable<MessageResponse> {
     return this._http
-      .delete<User>(`${this.usersUrl}/${id}`);
+      .delete<MessageResponse>(`${this.usersUrl}/${id}`);
   }
 
   public chooseDefaultAvatar(userId: string, avatarId: string): Observable<User> {

@@ -1,11 +1,11 @@
 <div class="folder" [ngClass]="{'open': closeButtonStyle === 'front'}">
   <div class="back" [ngClass]="{'open': folderState === 'open', 'closed': folderState === 'closed', 'show-content': overflowStyle === 'visible', 'enable-close': closeButtonStyle === 'front'}">
     <button class="btn btn-link text-warning" (click)="toggleFolder()" [disabled]="folderState === 'closed'">Close</button>
-    <!-- TODO: Refactor this display -->
+    <!-- TODO: Refactor this display, oldschool document style -->
     <div class="event-content" [@contentHeight]="folderState">
       <h2>{{ formattedTitle }}</h2>
       <p class="tagline">{{ event.tagLine }}</p>
-      <p class="dates">{{ formattedDates }}</p>
+      <p class="dates">From: {{ formattedDateFrom }}, To: {{ formattedDateTo }}</p>
       <p class="description">{{ event.description }}</p>
       <div class="taped double-taped">
         <div [id]="'preview-map-' + event.id" style="height: 400px;"></div>
