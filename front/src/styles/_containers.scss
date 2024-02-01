@@ -1,0 +1,12 @@
+.create-event-container {
+  @include paper-bg;
+}
+
+.events-container {
+  @include paper-bg;
+  @include paginated-content;
+
+  .event-content {
+    @include paper-bg;
+  }
+}

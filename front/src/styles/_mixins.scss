@@ -1,0 +1,12 @@
+@mixin paper-bg {
+  background-color: $paper-bg;
+  background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.2) 5%, rgba(0, 0, 0, 0.1) 100%);
+  // Add a box-shadow to simulate the scuffed look on the edges
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
+}
+
+@mixin paginated-content {
+  padding: 20px;
+  position: relative;
+  z-index: 2;
+}
