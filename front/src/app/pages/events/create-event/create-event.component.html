@@ -185,6 +185,18 @@
             <input id="review-location" type="text" class="form-control" readonly
                   [value]="formattedAddress">
           </div>
+
+          <!-- Location Review -->
+          <div class="form-group category-picker">
+            <label for="review-location">Categories</label>
+            <div class="selected-categories">
+              <div class="badge-container" *ngFor="let category of selectedCategories">
+                <span class="badge">
+                  {{ category.name }}
+                </span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
   

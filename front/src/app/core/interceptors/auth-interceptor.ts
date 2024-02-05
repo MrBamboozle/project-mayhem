@@ -24,8 +24,17 @@ export class AuthInterceptor implements HttpInterceptor {
   ) {}
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<any> {
-    if (request.url.endsWith('/login') || request.url.endsWith('/refresh-token')) {
+    if (request.url.endsWith('/refresh-token')) {
       return next.handle(request);
+    }
+
+    if(request.url.endsWith('/login')) {
+      return next.handle(request).pipe(
+        catchError((error: HttpErrorResponse) => {
+          this.toastService.showHttpError(error);
+          return of(error);
+        })
+      );
     }
 
     // Handle request
