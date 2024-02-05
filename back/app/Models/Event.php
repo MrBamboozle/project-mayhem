@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Interfaces\OwnedModel;
 use App\Traits\ToCamelCaseArray;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -9,7 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-class Event extends Model
+class Event extends Model implements OwnedModel
 {
     use HasFactory, HasUuids, ToCamelCaseArray;
 
@@ -40,5 +41,10 @@ class Event extends Model
     public function toArray(): array
     {
         return $this->toCamelCaseArray();
+    }
+
+    public function owner(): User
+    {
+        return $this->creator;
     }
 }

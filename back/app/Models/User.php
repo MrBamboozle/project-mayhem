@@ -2,11 +2,10 @@
 
 namespace App\Models;
 
+use App\Models\Interfaces\OwnedModel;
 use App\Traits\ToCamelCaseArray;
 use Auth;
 use DateTimeInterface;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -15,7 +14,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Laravel\Sanctum\NewAccessToken;
 
-class User extends Authenticatable
+class User extends Authenticatable implements OwnedModel
 {
     use HasApiTokens, HasFactory, Notifiable, HasUuids, ToCamelCaseArray;
 
@@ -67,6 +66,11 @@ class User extends Authenticatable
         return $this->belongsTo(City::class, 'city_id', 'id');
     }
 
+    public function role(): BelongsTo
+    {
+        return $this->belongsTo(Role::class, 'role_id', 'id');
+    }
+
     /**
      * Create a new personal access token for the user.
      *
@@ -101,16 +105,15 @@ class User extends Authenticatable
         $data = parent::toArray();
         $loggedInUser = Auth::user();
 
-        if (!$loggedInUser?->isAdmin() && $loggedInUser?->id !== $this->id) {
+        if (!$loggedInUser?->role->enum()->isGodMode() && $loggedInUser?->id !== $this->id) {
             unset($data['email']);
         }
 
         return $this->camelize($data);
     }
 
-    public function isAdmin(): bool
+    public function owner(): User
     {
-        // replace with user role enum
-        return false;
+        return $this;// TODO: Implement owner() method.
     }
 }

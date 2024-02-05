@@ -7,8 +7,10 @@ use App\Enums\QueryField;
 use App\Exceptions\Exceptions\ApiModelNotFoundException;
 use App\Exceptions\Exceptions\FailActionOnModelException;
 use App\Http\Requests\StoreEventRequest;
+use App\Http\Requests\StorePrivateEventRequest;
 use App\Http\Requests\UpdateEventRequest;
 use App\Models\Event;
+use App\Models\User;
 use App\Services\EventService;
 use App\Services\ModelService;
 use Exception;
@@ -21,7 +23,8 @@ class EventController extends Controller
     public function __construct(
         private readonly ModelService $modelService,
         private readonly EventService $eventService,
-    ) {}
+    ) {
+    }
 
     /**
      * Display a listing of the resource.
@@ -47,45 +50,26 @@ class EventController extends Controller
         return $this->eventService->createEvent($request->validated())->load(['categories']);
     }
 
-    /**
-     * @throws ApiModelNotFoundException
-     */
-    public function show(string $eventId): Event
+    public function show(Event $event): Event
     {
-        try {
-            return Event::findOrFail($eventId)->load(['creator', 'city', 'categories']);
-        } catch (ModelNotFoundException) {
-            throw new ApiModelNotFoundException($eventId, Event::class);
-        }
+        return $event->load(['creator', 'city', 'categories']);
     }
 
     /**
-     * @throws ApiModelNotFoundException|FailActionOnModelException
+     * @throws FailActionOnModelException
      */
-    public function update(UpdateEventRequest $request, string $eventId): Event
+    public function update(UpdateEventRequest $request, Event $event): Event
     {
-        try {
-            $event = Event::findOrFail($eventId);
-        } catch (ModelNotFoundException) {
-            throw new ApiModelNotFoundException($eventId, Event::class);
-        }
-
         return $this->eventService->updateEvent($request->validated(), $event);
     }
 
     /**
-     * @throws ApiModelNotFoundException|FailActionOnModelException
+     * @throws FailActionOnModelException
      */
-    public function destroy(string $eventId)
+    public function destroy(Event $event)
     {
-        try {
-            $event = Event::findOrFail($eventId);
-        } catch (ModelNotFoundException) {
-            throw new ApiModelNotFoundException($eventId, Event::class);
-        }
-
         $this->eventService->deleteEvent($event);
 
-        return [JsonFieldNames::MESSAGE->value => "Deleted event with id: $eventId"];
+        return [JsonFieldNames::MESSAGE->value => "Deleted event with id: $event->id"];
     }
 }

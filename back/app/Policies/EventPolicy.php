@@ -2,65 +2,33 @@
 
 namespace App\Policies;
 
+use App\Enums\Route;
 use App\Models\Event;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
+use App\Traits\CheckUserAccess;
 
 class EventPolicy
 {
-    /**
-     * Determine whether the user can view any models.
-     */
-    public function viewAny(User $user): bool
-    {
-        //
-    }
+    use CheckUserAccess;
 
-    /**
-     * Determine whether the user can view the model.
-     */
-    public function view(User $user, Event $event): bool
-    {
-        //
-    }
-
-    /**
-     * Determine whether the user can create models.
-     */
     public function create(User $user): bool
     {
-        //
+        $userRoleEnum = $user->role->enum();
+
+        if ($userRoleEnum->isGodMode() || $userRoleEnum->isAdmin() || $userRoleEnum->isPremium()) {
+            return true;
+        }
+
+        return !Route::create(request()->path())->isEventPrivate();
     }
 
-    /**
-     * Determine whether the user can update the model.
-     */
     public function update(User $user, Event $event): bool
     {
-        //
+        return $this->userHasAccess($user, $event);
     }
 
-    /**
-     * Determine whether the user can delete the model.
-     */
-    public function delete(User $user, Event $event): bool
+   public function delete(User $user, Event $event): bool
     {
-        //
-    }
-
-    /**
-     * Determine whether the user can restore the model.
-     */
-    public function restore(User $user, Event $event): bool
-    {
-        //
-    }
-
-    /**
-     * Determine whether the user can permanently delete the model.
-     */
-    public function forceDelete(User $user, Event $event): bool
-    {
-        //
+        return $this->userHasAccess($user, $event);
     }
 }

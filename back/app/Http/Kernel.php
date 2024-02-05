@@ -4,6 +4,7 @@ namespace App\Http;
 
 use App\Http\Middleware\AttemptLogin;
 use App\Http\Middleware\ParseUrlQuery;
+use App\Http\Middleware\RouteAuthorization;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Routing\Middleware\ThrottleRequests;
@@ -48,7 +49,6 @@ class Kernel extends HttpKernel
             // \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
             ThrottleRequests::class.':api',
             SubstituteBindings::class,
-            ParseUrlQuery::class,
         ],
     ];
 
@@ -74,5 +74,6 @@ class Kernel extends HttpKernel
         'abilities' => CheckAbilities::class,
         'ability' => CheckForAnyAbility::class,
         'attempt.login' => AttemptLogin::class,
+        'parse.query' => ParseUrlQuery::class,
     ];
 }

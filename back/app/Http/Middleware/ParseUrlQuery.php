@@ -22,7 +22,7 @@ class ParseUrlQuery
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $routeEnum = Route::create(explode('/', $request->path())[1]);
+        $routeEnum = Route::create($request->path());
 
         if ($routeEnum->isUndefined()) {
             return $next($request);
