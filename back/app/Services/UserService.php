@@ -20,7 +20,7 @@ class UserService
      */
     public function createUser(array $data): User
     {
-        $user = User::factory($data)->make();
+        $user = User::factory($data)->unverified()->make();
 
         return  $this->updateAvatar($user, $this->getDefaultAvatar());
     }
