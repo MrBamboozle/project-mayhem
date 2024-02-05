@@ -4,7 +4,6 @@ namespace App\Services;
 
 use App\Enums\JsonFieldNames;
 use App\Exceptions\Exceptions\FailActionOnModelException;
-use App\Exceptions\Exceptions\FailToDeleteModelException;
 use App\Http\Clients\NormatimOsmClient;
 use App\Models\City;
 use App\Models\Event;
@@ -50,6 +49,11 @@ class EventService
             $city = $this->getCity($address[JsonFieldNames::CITY->value], $address[JsonFieldNames::COUNTRY_SUBDIVISION_ID->value]);
             $event->city_id = $city?->id;
             $event->save();
+            $categories = $data[JsonFieldNames::CATEGORIES->value] ?? null;
+
+            if (!empty($categories)) {
+                $event->categories()->sync($categories);
+            }
         } catch (Throwable $error) {
             DB::rollBack();
 
