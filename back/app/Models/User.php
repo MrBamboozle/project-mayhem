@@ -9,6 +9,8 @@ use DateTimeInterface;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -115,5 +117,15 @@ class User extends Authenticatable implements OwnedModel
     public function owner(): User
     {
         return $this;// TODO: Implement owner() method.
+    }
+
+    public function engagingEvents(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            Event::class,
+            'event_engagement',
+            'user_id',
+            'event_id'
+        )->using(EventEngagement::class);
     }
 }

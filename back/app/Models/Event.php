@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Event extends Model implements OwnedModel
 {
@@ -46,5 +47,30 @@ class Event extends Model implements OwnedModel
     public function owner(): User
     {
         return $this->creator;
+    }
+
+    public function engagingUsers(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            User::class,
+            'event_engagement',
+            'event_id',
+            'user_id'
+        )
+            ->using(EventEngagement::class)
+            ->withPivot([
+                'engagement_type',
+                'updated_at',
+                'created_at'
+            ]);
+    }
+
+    public function engagingUsersTypes(): HasMany
+    {
+        return $this->hasMany(
+            EventEngagement::class,
+            'event_id',
+            'id'
+        );
     }
 }

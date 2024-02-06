@@ -33,6 +33,10 @@ enum JsonFieldNames: string
 
     case ADDRESS = 'address';
 
+    case EVENT_ID = 'eventId';
+
+    case ENGAGEMENT_TYPE = 'engagementType';
+
     public function snakeCase(): string
     {
         return Str::snake($this->value);

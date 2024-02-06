@@ -18,6 +18,8 @@ enum Route: string
 	case REFRESH = 'refresh-token';
     case UNDEFINED = 'undefined';
 
+    case EVENTS_ENGAGE = 'events/engage';
+
     public static function create(string $value): self
     {
         try {

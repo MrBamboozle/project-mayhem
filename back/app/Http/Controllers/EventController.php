@@ -2,21 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\EventEngagementType;
 use App\Enums\JsonFieldNames;
 use App\Enums\QueryField;
-use App\Exceptions\Exceptions\ApiModelNotFoundException;
 use App\Exceptions\Exceptions\FailActionOnModelException;
+use App\Http\Requests\EventEngageRequest;
 use App\Http\Requests\StoreEventRequest;
-use App\Http\Requests\StorePrivateEventRequest;
 use App\Http\Requests\UpdateEventRequest;
 use App\Models\Event;
 use App\Models\User;
 use App\Services\EventService;
 use App\Services\ModelService;
 use Exception;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Auth;
 
 class EventController extends Controller
 {
@@ -66,10 +66,20 @@ class EventController extends Controller
     /**
      * @throws FailActionOnModelException
      */
-    public function destroy(Event $event)
+    public function destroy(Event $event): array
     {
         $this->eventService->deleteEvent($event);
 
         return [JsonFieldNames::MESSAGE->value => "Deleted event with id: $event->id"];
+    }
+
+    /**
+     * @throws FailActionOnModelException
+     */
+    public function engageEvent(EventEngageRequest $request, Event $event): Event
+    {
+        return $this->eventService
+            ->updateEventEngagement($event, $request->validated())
+            ->load('engagingUsersTypes.user');
     }
 }

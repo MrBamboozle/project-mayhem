@@ -2,11 +2,13 @@
 
 namespace App\Services;
 
+use App\Enums\EventEngagementType;
 use App\Enums\JsonFieldNames;
 use App\Exceptions\Exceptions\FailActionOnModelException;
 use App\Http\Clients\NormatimOsmClient;
 use App\Models\City;
 use App\Models\Event;
+use App\Models\User;
 use DateTime;
 use Exception;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -142,5 +144,63 @@ class EventService
             throw new FailActionOnModelException($error->getMessage(), 'delete', Event::class);
         }
         DB::commit();
+    }
+
+    /**
+     * @throws FailActionOnModelException
+     */
+    public function updateEventEngagement(Event $event, array $data): Event
+    {
+        $user = Auth::user();
+        $fieldName = JsonFieldNames::ENGAGEMENT_TYPE;
+        $engagementType = EventEngagementType::create($data[$fieldName->value]);
+
+        if ($engagementType->isUndefined()) {
+            throw new FailActionOnModelException(
+                'Invalid engagement ' . $data[$fieldName->value] . ' received',
+                'attach engagement',
+                Event::class
+            );
+        }
+
+        DB::beginTransaction();
+        try {
+            if ($engagementType->isDetach()) {
+                $event->engagingUsers()->detach($user->id);
+
+                DB::commit();
+
+                return $event;
+            }
+
+            $engagingUsers = $event->engagingUsers()->where('user_id', '=', $user->id)->get();
+
+            if ($engagingUsers->isEmpty()) {
+                $event->engagingUsers()
+                    ->withPivotValue($fieldName->snakeCase(), $data[$fieldName->value])
+                    ->attach($user->id);
+
+                DB::commit();
+
+                return $event;
+            }
+
+            $event->engagingUsers()->updateExistingPivot(
+                $user->id,
+                [$fieldName->snakeCase() => $data[ $fieldName->value ]]
+            );
+
+            DB::commit();
+        } catch (Throwable $error) {
+            DB::rollBack();
+
+            throw new FailActionOnModelException(
+                $error->getMessage(),
+                'attach engagement',
+                Event::class
+            );
+        }
+
+        return $event;
     }
 }
