@@ -9,4 +9,5 @@ enum RequestRules: string
     case STRING = 'string';
     case PROHIBITED = 'prohibited';
     case ARRAY = 'array';
+    case UUID = 'uuid';
 }

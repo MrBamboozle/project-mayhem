@@ -97,6 +97,10 @@ Route::group(
             RouteEnum::EVENTS->path() . '/{event}',
             [EventController::class, 'destroy']
         )->can('delete', 'event');
+        Route::post(
+            RouteEnum::EVENTS_ENGAGE->value . '/{event}',
+            [EventController::class, 'engageEvent']
+        );
     }
 );
 
