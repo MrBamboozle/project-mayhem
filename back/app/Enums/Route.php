@@ -4,21 +4,37 @@ namespace App\Enums;
 
 enum Route: string
 {
-	case LOGIN = 'login';
-	case REGISTER = 'register';
-	case CITIES = 'cities';
-	case CATEGORIES = 'categories';
-	case LOGOUT = 'logout';
-	case ME = 'me';
-	case USERS = 'users';
-	case AVATARS = 'avatars';
-	case LOCATION = 'location';
-	case EVENTS = 'events';
-	case EVENTS_PRIVATE = 'events/private';
-	case REFRESH = 'refresh-token';
+    case LOGIN = 'login';
+
+    case REGISTER = 'register';
+
+    case CITIES = 'cities';
+
+    case CATEGORIES = 'categories';
+
+    case LOGOUT = 'logout';
+
+    case ME = 'me';
+
+    case USERS = 'users';
+
+    case AVATARS = 'avatars';
+
+    case LOCATION = 'location';
+
+    case EVENTS = 'events';
+
+    case EVENTS_PRIVATE = 'events/private';
+
+    case REFRESH = 'refresh-token';
+
     case UNDEFINED = 'undefined';
 
     case EVENTS_ENGAGE = 'events/engage';
+
+    case USER_NOTIFICATIONS = 'user-notifications';
+
+    case USER_NOTIFICATIONS_ALL = 'user-notifications/all';
 
     public static function create(string $value): self
     {

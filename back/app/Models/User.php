@@ -128,4 +128,21 @@ class User extends Authenticatable implements OwnedModel
             'event_id'
         )->using(EventEngagement::class);
     }
+
+    public function notificationsData(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            UserNotification::class,
+            'user_notification_user',
+            'user_id',
+            'user_notification_id'
+        )
+            ->using(UserNotificationUser::class)
+            ->withPivot(['read']);
+    }
+
+    public function userNotifications(): HasMany
+    {
+        return $this->hasMany(UserNotificationUser::class, 'user_id', 'id');
+    }
 }

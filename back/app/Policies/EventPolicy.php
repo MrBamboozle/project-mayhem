@@ -24,6 +24,10 @@ class EventPolicy
 
     public function update(User $user, Event $event): bool
     {
+        if ($user->role->enum()->isGodMode() || $user->role->enum()->isAdmin()) {
+            return true;
+        }
+
         return $this->userHasAccess($user, $event);
     }
 
