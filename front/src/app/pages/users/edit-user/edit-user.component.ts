@@ -31,7 +31,7 @@ export class EditUserComponent implements OnInit {
 
   constructor(
     private readonly _route: ActivatedRoute,
-    private readonly userService: UsersService,
+    private readonly usersService: UsersService,
   ) { }
 
   ngOnInit(): void {
@@ -45,7 +45,7 @@ export class EditUserComponent implements OnInit {
   }
 
   fetchUser(): void {
-    this.userService.getUser(this.uuid).subscribe(
+    this.usersService.getUser(this.uuid).subscribe(
       (data) => {
         this.user = data;
         this.fetchedUser.next(true);

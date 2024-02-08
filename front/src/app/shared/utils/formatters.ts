@@ -32,3 +32,12 @@ export function formatDateToLocale(date: string): string {
   const dateObj = new Date(date);
   return dateObj.toLocaleString();
 }
+
+export function formatDateToDateTimeLocal(datetimeString: string): string {
+  // Assuming your input format is "YYYY-MM-DD HH:mm:ss"
+  const [date, time] = datetimeString.split(' ');
+  const [hours, minutes] = time.split(':');
+
+  // Return the formatted string without seconds, and with 'T' separator
+  return `${date}T${hours}:${minutes}`;
+}

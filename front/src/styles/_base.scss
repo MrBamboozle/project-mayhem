@@ -29,3 +29,15 @@ h1, h2, h3, h4, h5,
 	font-family: $font-primary;
 	color: $black;
 }
+
+hr {
+	border: none;
+  height: 2px; /* Adjust based on your graphic */
+  background-image: url('../assets/svg/scuffed-line.svg'); /* Update with the correct path */
+  background-repeat: repeat-x;
+  background-size: 200px 2px; /* Match the SVG's width and desired height */
+  width: 90%;
+
+  opacity: 1;
+  margin: 1rem auto;
+}

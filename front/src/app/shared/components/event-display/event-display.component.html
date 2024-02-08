@@ -1,0 +1,58 @@
+<div class="event-content">
+  <h2>{{ formattedTitle }}</h2>
+  <h3>{{ event.tagLine }}</h3>
+  <div class="section categories">
+    <!-- <span>
+      Categories:
+    </span>  -->
+    <div class="selected-categories">
+      <div class="badge-container" *ngFor="let category of event.categories">
+        <span class="badge">
+          {{ category.name }}
+        </span>
+      </div>
+    </div>
+  </div>
+  <hr>
+  <div class="section dates d-flex justify-content-between">
+    <div class="from">
+      <span>
+        From:
+      </span> 
+      <p>
+        {{ formattedDateFrom }}
+      </p>
+    </div>
+    <div class="to">
+      <span>
+        To:
+      </span> 
+      <p>
+        {{ formattedDateTo }}
+      </p>
+    </div>
+  </div>
+  <hr>
+  <div class="section description">
+    <span>
+      Description:
+    </span> 
+    <br/>
+    <p #descriptionText>
+      {{ event.description }}
+    </p>
+  </div>
+  <hr>
+  <div class="section taped double-taped">
+    <div [id]="'preview-map-' + event.id" class="preview-map"></div>
+  </div>
+  <div class="section address">
+    <span>
+      Address:
+    </span> 
+    <p>
+      {{ formattedAddress }}
+    </p>
+  </div>
+  <!-- More content as needed -->
+</div>
