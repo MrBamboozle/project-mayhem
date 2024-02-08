@@ -9,6 +9,7 @@ use App\Http\Controllers\CityController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\UserNotificationController;
 use App\Models\Event as EventModel;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
@@ -100,6 +101,28 @@ Route::group(
         Route::post(
             RouteEnum::EVENTS_ENGAGE->value . '/{event}',
             [EventController::class, 'engageEvent']
+        );
+
+        // UserNotification api
+        Route::get(
+            RouteEnum::USER_NOTIFICATIONS->path(),
+            [UserNotificationController::class, 'index']
+        );
+        Route::patch(
+            RouteEnum::USER_NOTIFICATIONS_ALL->path(),
+            [UserNotificationController::class, 'updateAll']
+        );
+        Route::patch(
+            RouteEnum::USER_NOTIFICATIONS->path() . '/{userNotification}',
+            [UserNotificationController::class, 'update']
+        );
+        Route::delete(
+            RouteEnum::USER_NOTIFICATIONS_ALL->path(),
+            [UserNotificationController::class, 'deleteAll']
+        );
+        Route::delete(
+            RouteEnum::USER_NOTIFICATIONS->path() . '/{userNotification}',
+            [UserNotificationController::class, 'destroy']
         );
     }
 );

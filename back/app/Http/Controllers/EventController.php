@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\EventEngagementType;
 use App\Enums\JsonFieldNames;
 use App\Enums\QueryField;
 use App\Exceptions\Exceptions\FailActionOnModelException;
@@ -10,13 +9,11 @@ use App\Http\Requests\EventEngageRequest;
 use App\Http\Requests\StoreEventRequest;
 use App\Http\Requests\UpdateEventRequest;
 use App\Models\Event;
-use App\Models\User;
 use App\Services\EventService;
 use App\Services\ModelService;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Facades\Auth;
 
 class EventController extends Controller
 {

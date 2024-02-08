@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Enums\EventEngagementType;
 use App\Enums\JsonFieldNames;
+use App\Events\EventUpdated;
 use App\Exceptions\Exceptions\FailActionOnModelException;
 use App\Http\Clients\NormatimOsmClient;
 use App\Models\City;
@@ -98,6 +99,8 @@ class EventService
      */
     public function updateEvent(array $data, Event $event): Event
     {
+        $oldEventValues = $event->load('categories')->toArray();
+
         DB::beginTransaction();
         try {
             foreach ($data as $field => $value) {
@@ -126,7 +129,11 @@ class EventService
 
         DB::commit();
 
-        return $event->load('categories', 'creator', 'city');
+        $event->load('categories');
+
+        EventUpdated::dispatch($event, $oldEventValues);
+
+        return $event->load('creator', 'city');
     }
 
     /**
