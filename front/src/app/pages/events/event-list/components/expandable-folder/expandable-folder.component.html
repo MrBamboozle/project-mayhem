@@ -1,17 +1,11 @@
 <div class="folder" [ngClass]="{'open': closeButtonStyle === 'front'}">
   <div class="back" [ngClass]="{'open': folderState === 'open', 'closed': folderState === 'closed', 'show-content': overflowStyle === 'visible', 'enable-close': closeButtonStyle === 'front'}">
-    <button class="btn btn-link text-warning" (click)="toggleFolder()" [disabled]="folderState === 'closed'">Close</button>
-    <!-- TODO: Refactor this display, oldschool document style -->
-    <div class="event-content" [@contentHeight]="folderState">
-      <h2>{{ formattedTitle }}</h2>
-      <p class="tagline">{{ event.tagLine }}</p>
-      <p class="dates">From: {{ formattedDateFrom }}, To: {{ formattedDateTo }}</p>
-      <p class="description">{{ event.description }}</p>
-      <div class="taped double-taped">
-        <div [id]="'preview-map-' + event.id" style="height: 400px;"></div>
+    <button class="btn btn-link text-warning close-button" (click)="toggleFolder()" [disabled]="folderState === 'closed'">Close</button>
+    <div class="event-preview" [@contentHeight]="folderState">
+      <app-event-display [event]="event"></app-event-display>
+      <div class="d-flex justify-content-end">
+        <button class="btn btn-link" [routerLink]="['/events', event.id]">View</button>
       </div>
-      <p class="address">{{ formattedAddress }}</p>
-      <!-- More content as needed -->
     </div>
   </div>
   <div class="under-cover" [@folderState]="folderState"></div>
@@ -19,7 +13,7 @@
     <button class="btn btn-link text-warning" (click)="toggleFolder()" [disabled]="folderState === 'open'">Open</button>
     <div class="event-preview">
       <h2>{{ formattedTitle }}</h2>
-      <p>{{ event.tagLine }}</p>
+      <h3>{{ event.tagLine }}</h3>
     </div>
   </div>
 </div>

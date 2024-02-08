@@ -1,0 +1,56 @@
+.event-content {
+  // box-shadow: none;
+  box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.5);
+
+  padding: 20px;
+
+  h2 {
+    font-family: 'TopSecret', sans-serif;
+    color: darkred;
+    text-align: center
+  }
+
+  h3 {
+    font-size: 20px;
+    color: $dark;
+    text-align: center;
+    font-weight: bold;
+    margin-top: 10px;
+  }
+
+  .section, .from, .to {
+    >span {
+      display: inline;
+      color: $dark;
+      font-family: $font-printed;
+      font-weight: bold;
+    }
+
+    >p {
+      display: inline;
+      color: $blueish-ink;
+      line-height: 14px;
+
+      background-repeat: repeat-x;
+      background-size: 10px 1px; /* width of dash and height of underline */
+      background-position: 0 100%;
+      background-image: repeating-linear-gradient(to right, $dark 0, $dark 3px, transparent 3px, transparent 5px); /* Adjust these values to control the dash appearance */
+      padding: 0 20px; /* Adds horizontal padding to the text */
+    }
+  }
+
+  .address {
+    margin-top: 20px;
+  }
+
+  .description {
+    p {
+      // width: 100%;
+    }
+  }
+
+  .preview-map {
+    height: 400px;
+    margin-top: 50px;
+  }
+}

@@ -1,12 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { EventsService } from '@app/services/events.service';
 import { Event } from '@app/shared/models/event';
 import { NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
 import { Subject } from 'rxjs';
 import { ExpandableFolderComponent } from './components/expandable-folder/expandable-folder.component';
+import { UserStoreService } from '@app/shared/stores/user.store.service';
 
 @Component({
   selector: 'app-event-list',
@@ -16,6 +17,7 @@ import { ExpandableFolderComponent } from './components/expandable-folder/expand
   styleUrl: './event-list.component.scss',
 })
 export class EventListComponent {
+  public profileEvents: boolean = false;
 
   public eventList: Event[] = [];
 
@@ -32,17 +34,26 @@ export class EventListComponent {
 
   private searchSubject: Subject<string> = new Subject();
 
+
   constructor(
-    private readonly eventsService: EventsService
+    private readonly _route: ActivatedRoute,
+    private readonly eventsService: EventsService,
+    private readonly userStore: UserStoreService
   ) {}
 
   ngOnInit(): void {
-    this.fetchEvents(this.currentPage);
+    this._route.data.subscribe(data => {
+      if (data.profileEvents) {
+        this.profileEvents = true;
+      }
+      this.fetchEvents(this.currentPage);
+    });
   }
 
   fetchEvents(page: number): void {
     let queryParams = `?page=${page}`;
     if (this.searchTerm) queryParams += `&filter[all]=${encodeURIComponent(this.searchTerm)}`;
+    if (this.profileEvents) queryParams += `&filter[userId]=${this.userStore.currentUser.getValue().id}`;
 
     // Construct sorting query parameters
     // const sortingParams = Object.entries(this.sortDirection)

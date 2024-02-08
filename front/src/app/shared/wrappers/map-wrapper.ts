@@ -38,8 +38,6 @@ export class MapWrapper {
     if(location) {
       let coords: L.LatLng = typeof location === 'string' ? coordsFromString(location) : location;
 
-      console.log('new view set for map', this, coords)
-
       this.map.setView(coords, zoom);
 
       return this;

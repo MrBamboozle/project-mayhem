@@ -2,15 +2,16 @@ import { Component, Input } from '@angular/core';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { CommonModule } from '@angular/common';
 import { Event } from '@app/shared/models/event';
-import { MapWrapper } from '@app/shared/wrappers/map-wrapper';
-import { formatAddress, formatDateToLocale, formatTopSecretFontTitle } from '@app/shared/utils/formatters';
+import { RouterLink } from '@angular/router';
+import { formatTopSecretFontTitle } from '@app/shared/utils/formatters';
+import { EventDisplayComponent } from '@app/shared/components/event-display/event-display.component';
 
 @Component({
   selector: 'app-expandable-folder',
   templateUrl: './expandable-folder.component.html',
   styleUrls: ['./expandable-folder.component.scss'],
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink, EventDisplayComponent],
   animations: [
     trigger('folderState', [
       state('closed', style({
@@ -27,7 +28,7 @@ import { formatAddress, formatDateToLocale, formatTopSecretFontTitle } from '@ap
         'max-height': '130px'
       })),
       state('open', style({
-        'max-height': '800px'
+        'max-height': '1500px'
       })),
       transition('closed => open', animate('500ms 200ms ease-out')),
       transition('open => closed', animate('500ms ease-out')),
@@ -40,18 +41,6 @@ export class ExpandableFolderComponent {
   folderState = 'closed';
   overflowStyle = 'hidden';
   closeButtonStyle = 'back';
-
-  private previewMap!: MapWrapper;
-
-  ngAfterViewInit(): void {
-    this.initMap();
-  }
-
-  private initMap(): void {
-    this.previewMap = new MapWrapper(`preview-map-${this.event.id}`)
-      .setView(this.event.location)
-      .addMarker(this.event.location);
-  }
 
   toggleFolder() {
     this.folderState = (this.folderState === 'closed') ? 'open' : 'closed';
@@ -67,17 +56,5 @@ export class ExpandableFolderComponent {
 
   get formattedTitle(): string {
     return formatTopSecretFontTitle(this.event.title);
-  }
-
-  get formattedAddress(): string {
-    return formatAddress(JSON.parse(this.event.address));
-  }
-
-  get formattedDateFrom(): string {
-    return formatDateToLocale(this.event.startTime);
-  }
-
-  get formattedDateTo(): string {
-    return formatDateToLocale(this.event.endTime);
   }
 }

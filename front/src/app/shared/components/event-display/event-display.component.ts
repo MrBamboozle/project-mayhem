@@ -1,0 +1,45 @@
+import { CommonModule } from '@angular/common';
+import { Component, Input } from '@angular/core';
+import { Event } from '@app/shared/models/event';
+import { formatAddress, formatDateToLocale, formatTopSecretFontTitle } from '@app/shared/utils/formatters';
+import { MapWrapper } from '@app/shared/wrappers/map-wrapper';
+
+@Component({
+  selector: 'app-event-display',
+  standalone: true,
+  imports: [CommonModule],
+  templateUrl: './event-display.component.html',
+  styleUrl: './event-display.component.scss'
+})
+export class EventDisplayComponent {
+  @Input() event!: Omit<Event, 'creator' | 'createdAt' | 'updatedAt'>;
+
+  private previewMap!: MapWrapper;
+
+  ngAfterViewInit(): void {
+    this.initMap();
+  }
+
+  private initMap(): void {
+    this.previewMap = new MapWrapper(`preview-map-${this.event.id }`)
+      .setView(this.event.location)
+      .addMarker(this.event.location);
+  }
+
+  get formattedTitle(): string {
+    return formatTopSecretFontTitle(this.event.title);
+  }
+
+  get formattedAddress(): string {
+    return formatAddress(JSON.parse(this.event.address));
+  }
+
+  get formattedDateFrom(): string {
+    return formatDateToLocale(this.event.startTime);
+  }
+
+  get formattedDateTo(): string {
+    return formatDateToLocale(this.event.endTime);
+  }
+
+}

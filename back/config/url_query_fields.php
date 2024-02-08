@@ -34,6 +34,12 @@ return [
 
     Route::EVENTS->value => [
         'filters' => [
+            'userId' => [
+              'key' => 'user_id',
+              'operator' => Operators::EQUALS,
+              'orWhere' => false,
+              'isRelation' => false,
+            ],
             'title' => [
                 'key' => 'title',
                 'operator' => Operators::LIKE,

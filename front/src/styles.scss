@@ -12,12 +12,14 @@
 
 // Shared styles
 @import 'styles/shared/avatar';
+@import 'styles/shared/event-content';
 @import 'styles/shared/folder-cards';
 @import 'styles/shared/form';
 @import 'styles/shared/pagination';
 @import 'styles/shared/tabbed-nav';
 @import 'styles/shared/table';
 @import 'styles/shared/taped';
+@import 'styles/shared/badge';
 
 // TODO: fix modal displaying
 .show-modal .modal {
