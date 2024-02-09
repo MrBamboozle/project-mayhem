@@ -3,8 +3,10 @@
     <button class="btn btn-link" (click)="editEvent()">Edit</button>
   </div>
   <div class="d-flex justify-content-end" *ngIf="!isCurrentUserCreator">
-    <button class="btn btn-link">Watch</button>
-    <button class="btn btn-link">Attend</button>
+    <button class="btn btn-link" *ngIf="!isWatching" (click)="watchEvent()">Watch</button>
+    <button class="btn btn-link text-danger"  *ngIf="isWatching" (click)="detachEvent()">Unwatch</button>
+    <button class="btn btn-link" *ngIf="!isAttending" (click)="attendEvent()">Attend</button>
+    <button class="btn btn-link text-danger" *ngIf="isAttending" (click)="detachEvent()">Unattend</button>
   </div>
   <app-event-display [event]="event"></app-event-display>
 </ng-container>

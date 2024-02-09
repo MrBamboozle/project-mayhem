@@ -12,6 +12,7 @@ export interface Event {
   startTime: string;
   endTime: string;
   categories: Category[];
+  engagingUsersTypes: EngagingUserType[];
 }
 
 export interface CreateEventRequest {
@@ -28,4 +29,21 @@ export interface CreateEventRequest {
 export interface Category {
   id: string;
   name: string;
+}
+
+export interface EngagingUserType {
+  createdAt: string;
+  engagementType: EngagementType;
+  id: string;
+  updatedAt: string;
+  user: User;
+}
+
+export enum EngagementType {
+  watch = 'watch',
+  attend = 'attend',
+  detach = 'detach',
+}
+
+export interface EngagementTypeRequest {
 }

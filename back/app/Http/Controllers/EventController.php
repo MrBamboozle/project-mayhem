@@ -20,6 +20,13 @@ use Illuminate\Support\Facades\Auth;
 
 class EventController extends Controller
 {
+    const DEFAULT_LOADS = [
+      'creator',
+      'city',
+      'categories',
+      'engagingUsersTypes.user',
+    ];
+
     public function __construct(
         private readonly ModelService $modelService,
         private readonly EventService $eventService,
@@ -31,7 +38,7 @@ class EventController extends Controller
      */
     public function index(Request $request): LengthAwarePaginator
     {
-        $query = Event::query()->with(['categories']);
+        $query = Event::query()->with(self::DEFAULT_LOADS);
 
         $query = $this->modelService->applyFilters($query, $request->query(QueryField::FILTER->value));
         $query = $this->modelService->applySorts($query, $request->query(QueryField::SORT->value));
@@ -47,12 +54,12 @@ class EventController extends Controller
      */
     public function store(StoreEventRequest $request): Event
     {
-        return $this->eventService->createEvent($request->validated())->load(['categories']);
+        return $this->eventService->createEvent($request->validated())->load(self::DEFAULT_LOADS);
     }
 
     public function show(Event $event): Event
     {
-        return $event->load(['creator', 'city', 'categories']);
+        return $event->load(self::DEFAULT_LOADS);
     }
 
     /**
@@ -80,6 +87,6 @@ class EventController extends Controller
     {
         return $this->eventService
             ->updateEventEngagement($event, $request->validated())
-            ->load('engagingUsersTypes.user');
+            ->load(self::DEFAULT_LOADS);
     }
 }

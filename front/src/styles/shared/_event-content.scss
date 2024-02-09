@@ -18,7 +18,7 @@
     margin-top: 10px;
   }
 
-  .section, .from, .to {
+  .section, .from, .to, .dropdown-toggle {
     >span {
       display: inline;
       color: $dark;
@@ -37,6 +37,27 @@
       background-image: repeating-linear-gradient(to right, $dark 0, $dark 3px, transparent 3px, transparent 5px); /* Adjust these values to control the dash appearance */
       padding: 0 20px; /* Adds horizontal padding to the text */
     }
+  }
+
+  .dropdown-toggle {
+    margin-left: 20px;
+    >p {
+      padding: 0 5px; /* Adds horizontal padding to the text */
+    }
+  }
+
+  .watchers-dropdown, .attendees-dropdown {
+    cursor: pointer;
+  }
+  
+  .dropdown-item {
+    display: flex;
+    align-items: center;
+  }
+  
+  .dropdown-item img {
+    margin-right: 10px;
+    border-radius: 50%; /* Circular avatar */
   }
 
   .address {
