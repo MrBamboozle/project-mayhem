@@ -234,7 +234,8 @@ export class CreateEventComponent {
       categories: this.selectedCategories,
       tagLine: eventData.tagline,
       address: JSON.stringify(eventData.address),
-      id: 'preview'
+      id: 'preview',
+      engagingUsersTypes: this.event ? this.event.engagingUsersTypes : []
     }
 
     return event;

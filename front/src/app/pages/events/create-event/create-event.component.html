@@ -53,11 +53,12 @@
             
             <div ngbDropdownMenu>
               <button ngbDropdownItem
-              *ngFor="let category of filteredCategories"
-              (click)="selectCategory(category); $event.stopPropagation()">
-              {{ category.name }}
-            </button>
-          </div>
+                *ngFor="let category of filteredCategories"
+                (click)="selectCategory(category); $event.stopPropagation()">
+                {{ category.name }}
+              </button>
+              <div *ngIf="!filteredCategories.length" class="dropdown-item">You've exhausted all the categories.</div>
+            </div>
           
             <div class="selected-categories">
               <div class="badge-container" *ngFor="let category of selectedCategories">

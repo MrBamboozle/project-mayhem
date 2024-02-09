@@ -1,7 +1,7 @@
 <div class="event-content">
   <h2>{{ formattedTitle }}</h2>
   <h3>{{ event.tagLine }}</h3>
-  <div class="section categories">
+  <div class="section categories d-flex justify-content-between">
     <!-- <span>
       Categories:
     </span>  -->
@@ -10,6 +10,42 @@
         <span class="badge">
           {{ category.name }}
         </span>
+      </div>
+    </div>
+
+    <div class="engaging-users align-self-end">
+      <div ngbDropdown class="d-inline-block watchers-dropdown">
+        <div ngbDropdownToggle class="dropdown-toggle">
+          <span>
+            Watchers:
+          </span> 
+          <p>
+            {{ watchers.length }}
+          </p>
+        </div>
+        <div ngbDropdownMenu>
+          <div *ngFor="let watcher of watchers" class="dropdown-item">
+            <img [src]="userAvatarSrc(watcher)" alt="Avatar" width="30" height="30"> {{ watcher.name }}
+          </div>
+          <div *ngIf="!watchers.length" class="dropdown-item">Noone is watching, fully incognito.</div>
+        </div>
+      </div>
+      
+      <div ngbDropdown class="d-inline-block attendees-dropdown">
+        <div ngbDropdownToggle class="dropdown-toggle">
+          <span>
+            Attendees:
+          </span> 
+          <p>
+            {{ attendees.length }}
+          </p>
+        </div>
+        <div ngbDropdownMenu>
+          <div *ngFor="let attendee of attendees" class="dropdown-item">
+            <img [src]="userAvatarSrc(attendee)" alt="Avatar" width="30" height="30"> {{ attendee.name }}
+          </div>
+          <div *ngIf="!attendees.length" class="dropdown-item">Noone is attending... yet!</div>
+        </div>
       </div>
     </div>
   </div>

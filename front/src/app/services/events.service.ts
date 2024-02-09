@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { config } from '@app/core/app-config';
-import { CreateEventRequest, Event } from '@app/shared/models/event';
+import { CreateEventRequest, EngagementTypeRequest, Event } from '@app/shared/models/event';
 import { MessageResponse } from '@app/shared/models/message';
 import { PaginatedResponse } from '@app/shared/models/paginated-response';
 import { Observable } from 'rxjs';
@@ -11,6 +11,7 @@ import { Observable } from 'rxjs';
 })
 export class EventsService {
   private readonly eventsUrl: string = `${config.API_URL}/events`;
+  private readonly eventsEngageUrl: string = `${this.eventsUrl}/engage`;
 
   constructor(
     private readonly _http: HttpClient,
@@ -40,4 +41,9 @@ export class EventsService {
     return this._http
       .delete<MessageResponse>(`${this.eventsUrl}/${id}`);
   }
+
+  public engageEvent(id: string, typeReq: EngagementTypeRequest): Observable<Event> {
+    return this._http
+      .post<Event>(`${this.eventsEngageUrl}/${id}`, typeReq);
+  } 
 }
