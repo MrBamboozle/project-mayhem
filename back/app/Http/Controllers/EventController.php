@@ -27,12 +27,8 @@ class EventController extends Controller
     public function __construct(
         private readonly ModelService $modelService,
         private readonly EventService $eventService,
-    ) {
-    }
+    ) {}
 
-    /**
-     * Display a listing of the resource.
-     */
     public function index(Request $request): LengthAwarePaginator
     {
         $query = Event::query()->with(self::DEFAULT_LOADS);
