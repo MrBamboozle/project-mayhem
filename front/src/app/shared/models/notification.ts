@@ -4,4 +4,5 @@ export interface Notification {
   title: string;
   description: string;
   read: 0 | 1;
+  eventId: string;
 }
