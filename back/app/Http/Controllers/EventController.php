@@ -43,6 +43,16 @@ class EventController extends Controller
         return $query->paginate(5);
     }
 
+    public function unpaginatedIndex(Request $request): array
+    {
+        $query = Event::query()->with(self::DEFAULT_LOADS);
+
+        $query = $this->modelService->applyFilters($query, $request->query(QueryField::FILTER->value));
+        $query = $this->modelService->applySorts($query, $request->query(QueryField::SORT->value));
+
+        return $query->get()->toArray();
+    }
+
     /**
      * Store a newly created resource in storage.
      * @param StoreEventRequest $request

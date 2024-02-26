@@ -24,6 +24,8 @@ enum Route: string
 
     case EVENTS = 'events';
 
+    case EVENTS_ALL = 'events-all';
+
     case EVENTS_PRIVATE = 'events/private';
 
     case REFRESH = 'refresh-token';
