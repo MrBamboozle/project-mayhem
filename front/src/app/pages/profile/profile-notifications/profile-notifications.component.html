@@ -1,1 +1,20 @@
-<p>profile-notifications works!</p>
+<div class="pagination-container">
+  <div class="d-flex flex-row-reverse">
+    <button class="btn btn-link text-danger" (click)="deleteAll()">Delete all</button>
+    <button class="btn btn-link" (click)="markAllAsRead()">Mark all as read</button>
+  </div>
+  <div class="notifications-container paper-bg d-flex">
+    <div class="notification pinned single-pinned" [ngClass]="{'unread': notification.read === 0 }" *ngFor="let notification of notifications">
+      <h3>{{ notification.title }}</h3>
+      <p>{{ notification.description }}</p>
+    </div>
+  </div>
+
+  <ngb-pagination 
+    [collectionSize]="collectionSize" 
+    [(page)]="currentPage" 
+    [pageSize]="pageSize"
+    (pageChange)="onPageChange($event)"
+    aria-label="Default pagination">
+  </ngb-pagination>
+</div>

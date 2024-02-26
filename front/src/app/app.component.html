@@ -27,11 +27,15 @@
           <div ngbDropdown>
             <button class="pokerchip-button" type="button" ngbDropdownToggle>
               <img [src]="avatarSrc">
+              <span *ngIf="notificationsService.hasUnreadNotifications" class="notification-dot">{{ notificationsService.unreadNotificationsNumber }}</span>
             </button>
             <div ngbDropdownMenu aria-labelledby="navbarDropdown2" class="dropdown-menu dropdown-menu-end">
               <button ngbDropdownItem type="button" [routerLink]="['/profile/data']">Your data</button>
               <button ngbDropdownItem type="button" [routerLink]="['/profile/events']">Your Events</button>
-              <button ngbDropdownItem type="button" [routerLink]="['/profile/notifications']">Notifications</button>
+              <button ngbDropdownItem type="button" [routerLink]="['/profile/notifications']">
+                Notifications
+                <span *ngIf="notificationsService.hasUnreadNotifications" class="notification-dot">{{ notificationsService.unreadNotificationsNumber }}</span>
+              </button>
               <button ngbDropdownItem type="button" (click)="signOut()">Sign out</button>
             </div>
           </div>

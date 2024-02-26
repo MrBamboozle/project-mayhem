@@ -7,6 +7,11 @@
   @include paginated-content;
 }
 
+.notifications-container {
+  @include paper-bg;
+  @include paginated-content;
+}
+
 .event-content {
   @include paper-bg;
 }

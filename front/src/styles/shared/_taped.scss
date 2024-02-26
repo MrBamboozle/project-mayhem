@@ -42,3 +42,49 @@
     }
   }
 }
+
+.pinned {
+  position: relative;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+  padding-top: 40px;
+  &.single-pinned {
+    &::after {
+      content: "";
+      position: absolute;
+      top: 0px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-image: url('../../assets/images/pin.png');
+      background-size: cover;
+      width: 50px;
+      height: 40px;
+      z-index: 999;
+    }
+  }
+  &.double-pinned {
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0px;
+      left: 20%;
+      transform: translateX(-50%);
+      background-image: url('../../assets/images/pin.png');
+      background-size: cover;
+      width: 50px;
+      height: 40px;
+      z-index: 999;
+    }
+    &::after {
+      content: "";
+      position: absolute;
+      top: 0px;
+      left: 80%;
+      transform: translateX(-50%);
+      background-image: url('../../assets/images/pin.png');
+      background-size: cover;
+      width: 50px;
+      height: 40px;
+      z-index: 999;
+    }
+  }
+}

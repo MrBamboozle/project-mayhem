@@ -10,6 +10,8 @@ import { AuthenticationService } from './services/authentication.service';
 import { config } from './core/app-config';
 import { ToastsContainer } from './core/components/toast-container.component';
 import { AppInjector } from './core/service/app-injector.service';
+import { Subscription, filter, interval, startWith, switchMap } from 'rxjs';
+import { NotificationsService } from './services/notifications.service';
 
 @Component({
   selector: 'app-root',
@@ -22,6 +24,8 @@ export class AppComponent {
   public isSidebarHidden: boolean = false;
   public title: string = 'PROJECT MAYHEM';
 
+  private notificationSubscription: Subscription;
+
   get avatarSrc(): string {
     return `${config.BACKEND_URL}${this.userStore.currentUser.getValue().avatar.path}`
   }
@@ -30,9 +34,18 @@ export class AppComponent {
     private readonly injector: Injector,
     private readonly modalService: ModalHelperService,
     private readonly authService: AuthenticationService,
+    public readonly notificationsService: NotificationsService,
     public readonly userStore: UserStoreService,
   ) {
     AppInjector.setInjector(injector);
+
+    this.notificationSubscription = interval(60000) // Every 60000 milliseconds (1 minute)
+      .pipe(
+        startWith(0),
+        filter(() => this.userStore.isSignedIn),
+        switchMap(() => this.notificationsService.getNotifications())
+      )
+      .subscribe();
   }
 
   public toggleSidebar(): void {
