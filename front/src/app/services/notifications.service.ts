@@ -19,15 +19,15 @@ export class NotificationsService {
     private readonly _http: HttpClient,
   ) { }
 
-  public getNotifications(queryParams: string = ''): Observable<PaginatedResponse<Notification>> {
+  public getNotifications(queryParams: string = ''): Observable<PaginatedResponse<Notification> & { total: number; totalUnread: number }> {
     return this._http
-      .get<PaginatedResponse<Notification>>(`${this.notificationsUrl}${queryParams}`)
+      .get<PaginatedResponse<Notification> & { total: number; totalUnread: number }>(`${this.notificationsUrl}${queryParams}`)
       .pipe(
         tap(data => {
 
           //TODO: This will come from the BE
-          this.hasUnreadNotifications = data.data.some((notification) => notification.read === 0);
-          this.unreadNotificationsNumber = data.data.filter((notification) => notification.read === 0).length;
+          this.hasUnreadNotifications = data.totalUnread !== 0;
+          this.unreadNotificationsNumber = data.totalUnread;
         })
       );
   }

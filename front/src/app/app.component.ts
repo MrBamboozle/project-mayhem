@@ -24,7 +24,7 @@ export class AppComponent {
   public isSidebarHidden: boolean = false;
   public title: string = 'PROJECT MAYHEM';
 
-  private notificationSubscription: Subscription;
+  private notificationSubscription!: Subscription;
 
   get avatarSrc(): string {
     return `${config.BACKEND_URL}${this.userStore.currentUser.getValue().avatar.path}`
@@ -38,6 +38,14 @@ export class AppComponent {
     public readonly userStore: UserStoreService,
   ) {
     AppInjector.setInjector(injector);
+
+    this.toggleNotificationSubscription();
+  }
+
+  private toggleNotificationSubscription(): void {
+    if(this.notificationSubscription) {
+      this.notificationSubscription.unsubscribe();
+    }
 
     this.notificationSubscription = interval(60000) // Every 60000 milliseconds (1 minute)
       .pipe(
@@ -54,6 +62,14 @@ export class AppComponent {
 
   public openSignInModal(): void {
     const signInModalRef = this.modalService.openModal(SignInModalComponent);
+
+    signInModalRef.result.then(
+      () => {
+      },
+      () => {
+        this.toggleNotificationSubscription();
+      }
+    );
   }
 
   public signOut(): void {
