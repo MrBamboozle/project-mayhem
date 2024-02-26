@@ -73,4 +73,9 @@ class Event extends Model implements OwnedModel
             'id'
         );
     }
+
+    public function notifications(): HasMany
+    {
+        return $this->hasMany(UserNotification::class, 'event_id', 'id');
+    }
 }

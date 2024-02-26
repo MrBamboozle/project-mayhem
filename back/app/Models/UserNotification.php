@@ -41,6 +41,11 @@ class UserNotification extends Model
         return $this->belongsTo(User::class, 'change_by', 'id');
     }
 
+    public function event(): BelongsTo
+    {
+        return $this->belongsTo(Event::class, 'event_id', 'id');
+    }
+
     /**
      * @throws CannotImplementThisMethodException
      */
