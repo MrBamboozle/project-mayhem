@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { NotificationsService } from '@app/services/notifications.service';
 import { Notification } from '@app/shared/models/notification';
 import { ModalHelperService } from '@app/shared/services/modal-helper.service';
@@ -8,7 +9,7 @@ import { NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
 @Component({
   selector: 'app-profile-notifications',
   standalone: true,
-  imports: [CommonModule, NgbPaginationModule],
+  imports: [CommonModule, NgbPaginationModule, RouterLink],
   templateUrl: './profile-notifications.component.html',
   styleUrl: './profile-notifications.component.scss'
 })
