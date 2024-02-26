@@ -26,20 +26,23 @@ class CreateUserNotification
 
     public function handle(EventUpdated $event): void
     {
-        $changedValues = $this->detectObjectChanges($event->event, $event->oldValues);
+        $eventModel = $event->event;
+
+        $changedValues = $this->detectObjectChanges($eventModel, $event->oldValues);
 
         if (empty($changedValues)) {
             return;
         }
 
         $eventTitle = $event->oldValues['title'];
-        $eventUsers = $event->event->engagingUsers;
+        $eventUsers = $eventModel->engagingUsers;
         $description = $this->generateDescription($changedValues);
         $user = Auth::user();
         $userNotification = UserNotification::factory()->createOne([
             'title' => "$user->name changed event $eventTitle",
             'description' => $description,
             'user_id' => $user->id,
+            'event_id' => $eventModel->id,
         ]);
         $engagedUsersIds = $eventUsers->map(fn (User $user) => $user->id);
         $userNotification->users()->withPivotValue('read', 0)->attach($engagedUsersIds);
