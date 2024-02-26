@@ -6,10 +6,8 @@ use App\Events\EventUpdated;
 use App\Models\Event;
 use App\Models\User;
 use App\Models\UserNotification;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Collection as SupportCollection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -21,8 +19,6 @@ class CreateUserNotification
         'created_at',
         'updated_at',
     ];
-
-    public function __construct() {}
 
     public function handle(EventUpdated $event): void
     {

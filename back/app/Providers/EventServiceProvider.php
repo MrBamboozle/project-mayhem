@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Events\EventEngagement;
 use App\Events\EventUpdated;
+use App\Listeners\CreateEventOwnerNotification;
 use App\Listeners\CreateUserNotification;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
@@ -22,6 +24,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         EventUpdated::class => [
             CreateUserNotification::class,
+        ],
+        EventEngagement::class => [
+            CreateEventOwnerNotification::class
         ],
     ];
 

@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Enums\EventEngagementType;
 use App\Enums\JsonFieldNames;
+use App\Events\EventEngagement;
 use App\Events\EventUpdated;
 use App\Exceptions\Exceptions\FailActionOnModelException;
 use App\Http\Clients\NormatimOsmClient;
@@ -177,6 +178,8 @@ class EventService
 
                 DB::commit();
 
+                EventEngagement::dispatch($event, $engagementType);
+
                 return $event;
             }
 
@@ -189,6 +192,8 @@ class EventService
 
                 DB::commit();
 
+                EventEngagement::dispatch($event, $engagementType);
+
                 return $event;
             }
 
@@ -196,6 +201,8 @@ class EventService
                 $user->id,
                 [$fieldName->snakeCase() => $data[ $fieldName->value ]]
             );
+
+            EventEngagement::dispatch($event, $engagementType);
 
             DB::commit();
         } catch (Throwable $error) {
