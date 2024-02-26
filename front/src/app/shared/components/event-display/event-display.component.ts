@@ -26,7 +26,7 @@ export class EventDisplayComponent {
   private initMap(): void {
     this.previewMap = new MapWrapper(`preview-map-${this.event.id }`)
       .setView(this.event.location)
-      .addMarker(this.event.location);
+      .addUniqueMarker(this.event.location);
   }
 
   get formattedTitle(): string {

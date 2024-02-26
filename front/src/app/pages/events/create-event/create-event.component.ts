@@ -172,7 +172,7 @@ export class CreateEventComponent {
     if(existingEvent) {
       this.map = new MapWrapper('map')
         .setView(this.event.location)
-        .addMarker(this.event.location);
+        .addUniqueMarker(this.event.location);
 
       this.isLocationSelected = true;
     } else {
