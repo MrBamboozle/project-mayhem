@@ -33,6 +33,7 @@ Route::get(RouteEnum::CITIES->path(), CityController::class);
 Route::get(RouteEnum::CATEGORIES->path(), CategoryController::class);
 
 Route::get(RouteEnum::EVENTS->path(), [EventController::class, 'index'])->middleware('parse.query');
+Route::get(RouteEnum::EVENTS_ALL->path(), [EventController::class, 'unpaginatedIndex'])->middleware('parse.query');
 Route::get(RouteEnum::EVENTS->path() . '/{event}', [EventController::class, 'show']);
 
 // **** Attempt Login middleware ****
