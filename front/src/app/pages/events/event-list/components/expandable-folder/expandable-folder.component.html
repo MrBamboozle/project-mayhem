@@ -3,9 +3,7 @@
     <button class="btn btn-link text-warning close-button" (click)="toggleFolder()" [disabled]="folderState === 'closed'">Close</button>
     <div class="event-preview" [@contentHeight]="folderState">
       <app-event-display [event]="event"></app-event-display>
-      <div class="d-flex justify-content-end">
-        <button class="btn btn-link" [routerLink]="['/events', event.id]">View</button>
-      </div>
+      <button class="stamp-btn stamp-btn-neutral view-button" [routerLink]="['/events', event.id]">View</button>
     </div>
   </div>
   <div class="under-cover" [@folderState]="folderState"></div>

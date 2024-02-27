@@ -1,0 +1,49 @@
+.stamp-btn {
+
+	font-size: 18px;
+	font-weight: 700;
+	display: inline-block;
+	padding: 0 10px;
+	text-transform: uppercase;
+	border-radius: 5px;
+	// font-family: $font-primary;
+  font-family: "Open sans", Helvetica, Arial, sans-serif;
+	-webkit-mask-image: url('../../assets/images/grunge.png');
+	mask-image: url('../../assets/images/grunge.png');
+  -webkit-mask-size: 944px 604px;
+  mask-size: 944px 604px;
+  mix-blend-mode: multiply;
+  background: none;
+}
+
+.stamp-btn-danger {
+  color: $amaranth;
+  border: 6px double $amaranth;
+	-webkit-mask-position: 10px 15px;
+	mask-position: 10px 15px;
+}
+
+.stamp-btn-success {
+	color: $diamine-green;
+	border: 6px double $diamine-green;
+	-webkit-mask-position: 50px 20px;
+	mask-position: 50px 20px;
+  // border-radius: 0;
+} 
+
+.stamp-btn-neutral {
+	color: $lapis-lazuli;
+	border: 6px double $lapis-lazuli;
+  // border-radius: 0;
+} 
+
+.button-container-top {
+  background-color: #f5deb3;
+  background-image: linear-gradient( to bottom, rgba(255, 255, 255, 0.2) 5%, rgba(0, 0, 0, 0.1) 100%);
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
+  border-radius: 5px;
+  border: none;
+  padding: 10px 10px 20px;
+  margin-bottom: -10px;
+  margin-right: 5px;
+}

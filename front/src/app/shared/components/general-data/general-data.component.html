@@ -30,11 +30,11 @@
     
     <!-- Submit Button -->
     <div class="form-buttons" *ngIf="!isEditMode">
-      <button (click)="enableEditing()" class="btn btn-link">Edit data</button>
+      <button (click)="enableEditing()" class="stamp-btn stamp-btn-neutral">Edit data</button>
     </div>
     <div class="form-buttons" *ngIf="isEditMode">
-      <button type="submit" class="btn btn-link">Save</button>
-      <button (click)="disableEditing()" class="btn btn-warn">Cancel</button>
+      <button type="submit" class="stamp-btn stamp-btn-success me-3">Save</button>
+      <button (click)="disableEditing()" class="stamp-btn stamp-btn-danger">Cancel</button>
     </div>
   </form>
 </div>

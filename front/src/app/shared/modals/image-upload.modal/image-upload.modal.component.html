@@ -7,7 +7,7 @@
 
   <div class="drop-area" (drop)="onDrop($event)" (dragover)="onDragOver($event)" (dragleave)="onDragLeave($event)">
     <p>Drop your image here or click the button to upload</p>
-    <button class="btn btn-link" (click)="fileInput.click()">Upload Image</button>
+    <button class="stamp-btn stamp-btn-neutral" (click)="fileInput.click()">Upload Image</button>
     <input type="file" accept="image/*" #fileInput (change)="onFileChange($event)" hidden>
   </div>
   
@@ -24,6 +24,6 @@
   
 </div>
 <div class="modal-footer">
-  <button type="button" class="btn btn-link text-secondary" (click)="dismiss()">Close</button>
-  <button *ngIf="uploadedFile" class="btn btn-link text-success" (click)="confirmUpload()">{{ cropAndCompress ? 'Crop image' : 'Confirm'}}</button>
+  <button type="button" class="stamp-btn stamp-btn-neutral" (click)="dismiss()">Close</button>
+  <button *ngIf="uploadedFile" class="stamp-btn stamp-btn-success" (click)="confirmUpload()">{{ cropAndCompress ? 'Crop image' : 'Confirm'}}</button>
 </div>
