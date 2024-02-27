@@ -21,6 +21,7 @@
 @import 'styles/shared/table';
 @import 'styles/shared/taped';
 @import 'styles/shared/badge';
+@import 'styles/shared/map';
 
 // TODO: fix modal displaying
 .show-modal .modal {
@@ -183,6 +184,7 @@
 #content {
   background-color: #fff;
   box-shadow: -5px -5px 20px rgba(0, 0, 0, 0.5);
+  padding-bottom: 50px;
 
   // background-image: url('/assets/images/wood-texture-2.jpg'); /* Path to your texture image */
   // background-repeat: repeat; /* This will make the texture repeat */

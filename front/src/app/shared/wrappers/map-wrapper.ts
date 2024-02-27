@@ -67,14 +67,14 @@ export class MapWrapper {
 
       if(shouldAddMarker) {
         const coord = e.latlng;
-        this.addMarker(coord);
+        this.addUniqueMarker(coord);
       }    
     });
 
     return this;
   }
 
-  public addMarker(location: string | L.LatLng): this {
+  public addUniqueMarker(location: string | L.LatLng): this {
     let coords: L.LatLng = typeof location === 'string' ? coordsFromString(location) : location;
 
     if (this.marker) {
@@ -83,6 +83,49 @@ export class MapWrapper {
     this.marker = L.marker([coords.lat, coords.lng], { icon: this.pinIcon }).addTo(this.map);
 
     return this;
+  }
+
+  public addMarker(location: string | L.LatLng): this {
+    let coords: L.LatLng = typeof location === 'string' ? coordsFromString(location) : location;
+
+    L.marker([coords.lat, coords.lng], { icon: this.pinIcon }).addTo(this.map);
+
+    return this;
+  }
+
+  // public addTooltip(location: string | L.LatLng, text: string, interactive: boolean, action: () => void) {
+  //   let coords: L.LatLng = typeof location === 'string' ? coordsFromString(location) : location;
+
+  //   let tooltip = L.tooltip({interactive: true, permanent: true, direction: 'right', offset: new L.Point(-20, -10)})
+  //     .setLatLng(coords)
+  //     .setContent(text)
+  //     .on('click', action)
+  //     .addTo(this.map);
+  // }
+  public addTooltip(location: string | L.LatLng, text: string, interactive: boolean, action: () => void) {
+    let coords: L.LatLng = typeof location === 'string' ? coordsFromString(location) : location;
+
+    // Define the HTML content for your custom divIcon
+    const htmlContent = `
+      <div class="custom-tooltip-container">
+        <div class="custom-tooltip">${text}</div>
+      </div>
+    `;
+
+    // Create a divIcon with your custom HTML content
+    const customIcon = L.divIcon({
+      className: 'custom-tooltip-icon', // Use this class to style your tooltip
+      html: htmlContent,
+      iconSize: L.point(200, 30), // Adjust the size as needed
+    });
+
+    // Create a marker with the divIcon
+    const marker = L.marker(coords, { icon: customIcon }).addTo(this.map);
+
+    // If interactive, attach the click event to the marker
+    if (interactive) {
+      marker.on('click', action);
+    }
   }
 
 }
