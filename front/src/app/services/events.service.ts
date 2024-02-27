@@ -11,6 +11,7 @@ import { Observable } from 'rxjs';
 })
 export class EventsService {
   private readonly eventsUrl: string = `${config.API_URL}/events`;
+  private readonly eventsAllUrl: string = `${config.API_URL}/events-all`;
   private readonly eventsEngageUrl: string = `${this.eventsUrl}/engage`;
 
   constructor(
@@ -20,6 +21,11 @@ export class EventsService {
   public getEvents(queryParams: string = ''): Observable<PaginatedResponse<Event>> {
     return this._http
       .get<PaginatedResponse<Event>>(`${this.eventsUrl}${queryParams}`);
+  }
+
+  public getAllEvents(): Observable<Event[]> {
+    return this._http
+      .get<Event[]>(`${this.eventsAllUrl}`);
   }
 
   public getEvent(id: string): Observable<Event> {
