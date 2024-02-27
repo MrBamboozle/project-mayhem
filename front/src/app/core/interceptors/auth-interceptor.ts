@@ -108,7 +108,9 @@ export class AuthInterceptor implements HttpInterceptor {
           if (e.status !== 401) {
             return this.handleResponseError(e);
           } else {
-            this.toastService.showHttpError(e);
+            if(request && !request.url.endsWith('/me')) {
+              this.toastService.showHttpError(e);
+            }
             this.authService.logout();
             return of(e);
           }

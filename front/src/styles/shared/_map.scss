@@ -13,3 +13,41 @@
   font-family: $font-primary!important;
 
 }
+
+.custom-tooltip-icon {
+  margin-left: -25px!important;
+  margin-top: -30px!important;
+
+  .custom-tooltip-container {
+    position: relative;
+    &::before {
+      content: '';
+      position: absolute;
+      top: 10px;
+      left: -4px;
+      width: 100%;
+      height: 70%;
+      filter: blur(5px);
+      background: rgba(0, 0, 0, 0.2);
+    }
+    
+    .custom-tooltip {
+      background-image: url('../../assets/images/torn-paper-piece.png');
+      background-size: 100% 100%; /* Stretches the image to cover the container */
+      background-position: center; 
+    
+      z-index: 1;
+      position: relative;
+    
+      color: $dark;
+      font-family: $font-primary;
+    
+      padding: 15px;
+      padding-left: 50px;
+      max-height: 66px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+}

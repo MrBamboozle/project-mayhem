@@ -35,10 +35,10 @@ export class HomeComponent {
       this.events = data.data;
 
       this.events.forEach((event) => {
-        this.homepageMap.addMarker(event.location);
         this.homepageMap.addTooltip(event.location, event.title, true, () => {
           this._router.navigate(['events', event.id]);
         })
+        this.homepageMap.addMarker(event.location);
       })
     })
   }
