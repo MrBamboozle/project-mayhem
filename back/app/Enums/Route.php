@@ -2,6 +2,11 @@
 
 namespace App\Enums;
 
+use App\Enums\Filters\EventFilter;
+use App\Enums\Filters\FilterContract;
+use App\Enums\Filters\UndefinedFilter;
+use App\Enums\Filters\UserFilter;
+
 enum Route: string
 {
     case LOGIN = 'login';
@@ -66,30 +71,18 @@ enum Route: string
         return "/$this->value";
     }
 
-    public function hasConfig(): bool
+    public function filterConfig(string $filterName): FilterContract
     {
-        return !empty($this->config());
+        return match ($this) {
+            self::USERS => UserFilter::create($filterName),
+            self::EVENTS => EventFilter::create($filterName),
+            default => UndefinedFilter::create($filterName),
+        };
     }
-
-    public function hasFilterConfig(): bool
-    {
-        return !empty($this->filterConfig());
-    }
-
 
     public function config(): array|null
     {
         return config("url_query_fields.$this->value");
-    }
-
-    public function filterConfig(): array|null
-    {
-        return $this->config()['filters'] ?? null;
-    }
-
-    public function allowAllFilter(): bool
-    {
-        return $this->config()['allowAll'] ?? false;
     }
 
     public function sortConfig(): array|null {
