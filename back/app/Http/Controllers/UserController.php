@@ -12,7 +12,9 @@ use App\Http\Requests\UserStoreRequest;
 use App\Http\Requests\UserUpdateRequest;
 use App\Models\Avatar;
 use App\Models\User;
-use App\Services\ModelService;use App\Services\UserService;
+use App\Services\UrlQuery\UrlQueries\Filters\UsersFilter;
+use App\Services\UrlQuery\UrlQueries\Sorts\BaseSort;
+use App\Services\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Hash;
@@ -20,7 +22,8 @@ use Illuminate\Support\Facades\Hash;
 class UserController extends Controller
 {
     public function __construct(
-        protected readonly ModelService $modelService,
+        protected readonly UsersFilter $filterService,
+        protected readonly BaseSort $sortService,
         protected readonly UserService $userService,
     ) {}
 
@@ -30,18 +33,12 @@ class UserController extends Controller
     public function index(Request $request): LengthAwarePaginator
     {
         $query = User::query();
+        $perPage = $request->query(QueryField::PER_PAGE->value);
 
-        $query = $this->modelService
-            ->applyFilters(
-                $query,
-                $request->query(QueryField::FILTER->value),
-            );
-        $query = $this->modelService->applySorts(
-            $query,
-            $request->query(QueryField::SORT->value),
-        );
+        $query = $this->filterService->applyFilters($query, $request->query(QueryField::FILTER->value));
+        $query = $this->sortService->applySorts($query, $request->query(QueryField::SORT->value));
 
-        return $query->paginate(3);
+        return $query->paginate($perPage);
     }
 
     /**
@@ -68,7 +65,7 @@ class UserController extends Controller
     {
         $user->delete();
 
-        return [JsonFieldNames::MESSAGE->value => "User $user->name with id $user->id deleted"];
+        return [JsonFieldNames::MESSAGE->value => "UserFilter $user->name with id $user->id deleted"];
     }
 
     /**

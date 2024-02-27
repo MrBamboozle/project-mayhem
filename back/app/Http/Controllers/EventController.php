@@ -10,8 +10,10 @@ use App\Http\Requests\StoreEventRequest;
 use App\Http\Requests\UpdateEventRequest;
 use App\Models\Event;
 use App\Services\EventService;
-use App\Services\ModelService;
+use App\Services\UrlQuery\UrlQueries\Filters\EventsFilter;
+use App\Services\UrlQuery\UrlQueries\Sorts\BaseSort;
 use Exception;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 
@@ -25,28 +27,21 @@ class EventController extends Controller
     ];
 
     public function __construct(
-        private readonly ModelService $modelService,
+        private readonly EventsFilter $filterService,
+        private readonly BaseSort $sortService,
         private readonly EventService $eventService,
     ) {}
 
     public function index(Request $request): LengthAwarePaginator
     {
-        $query = Event::query()->with(self::DEFAULT_LOADS);
+        $perPage = $request->query(QueryField::PER_PAGE->value);
 
-        $query = $this->modelService->applyFilters($query, $request->query(QueryField::FILTER->value));
-        $query = $this->modelService->applySorts($query, $request->query(QueryField::SORT->value));
-
-        return $query->paginate(5);
+        return $this->indexData($request)->paginate($perPage);
     }
 
     public function unpaginatedIndex(Request $request): array
     {
-        $query = Event::query()->with(self::DEFAULT_LOADS);
-
-        $query = $this->modelService->applyFilters($query, $request->query(QueryField::FILTER->value));
-        $query = $this->modelService->applySorts($query, $request->query(QueryField::SORT->value));
-
-        return $query->get()->toArray();
+        return $this->indexData($request)->get()->toArray();
     }
 
     /**
@@ -91,5 +86,13 @@ class EventController extends Controller
         return $this->eventService
             ->updateEventEngagement($event, $request->validated())
             ->load(self::DEFAULT_LOADS);
+    }
+
+    private function indexData(Request $request): Builder
+    {
+        $query = Event::query()->with(self::DEFAULT_LOADS);
+        $query = $this->filterService->applyFilters($query, $request->query(QueryField::FILTER->value));
+
+        return $this->sortService->applySorts($query, $request->query(QueryField::SORT->value));
     }
 }

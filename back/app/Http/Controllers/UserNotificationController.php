@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\QueryField;
 use App\Exceptions\Exceptions\FailActionOnModelException;
 use App\Models\UserNotification;
 use App\Services\UserNotificationService;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class UserNotificationController extends Controller
@@ -13,11 +15,12 @@ class UserNotificationController extends Controller
         protected readonly UserNotificationService $notificationService
     ) {}
 
-    public function index(): array
+    public function index(Request $request): array
     {
+        $perPage = $request->query(QueryField::PER_PAGE->value);
         $user = Auth::user();
         $totalUnread = $user->userNotifications()->where('read', 0)->count();
-        $paginator = $user->notificationsData()->paginate(5, [
+        $paginator = $user->notificationsData()->orderByDesc('user_notifications.created_at')->paginate($perPage, [
             'user_notifications.id',
             'user_notifications.user_id',
             'user_notifications.title',

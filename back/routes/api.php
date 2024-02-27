@@ -32,8 +32,8 @@ Route::get(RouteEnum::CITIES->path(), CityController::class);
 
 Route::get(RouteEnum::CATEGORIES->path(), CategoryController::class);
 
-Route::get(RouteEnum::EVENTS->path(), [EventController::class, 'index'])->middleware('parse.query');
-Route::get(RouteEnum::EVENTS_ALL->path(), [EventController::class, 'unpaginatedIndex'])->middleware('parse.query');
+Route::get(RouteEnum::EVENTS->path(), [EventController::class, 'index'])->middleware('per.page');
+Route::get(RouteEnum::EVENTS_ALL->path(), [EventController::class, 'unpaginatedIndex'])->middleware('per.page');
 Route::get(RouteEnum::EVENTS->path() . '/{event}', [EventController::class, 'show']);
 
 // **** Attempt Login middleware ****
@@ -41,7 +41,7 @@ Route::get(RouteEnum::EVENTS->path() . '/{event}', [EventController::class, 'sho
 // If auth failed, continue to the route but Auth::user() is null, means that user is not logged in
 // Checking to see what user data to return
 Route::middleware('attempt.login')->group(function () {
-    Route::get(RouteEnum::USERS->path(), [UserController::class, 'index'])->middleware('parse.query');
+    Route::get(RouteEnum::USERS->path(), [UserController::class, 'index'])->middleware('per.page');
     Route::get(RouteEnum::USERS->path() . '/{user}', [UserController::class, 'show']);
 });
 
@@ -53,7 +53,7 @@ Route::group(
         Route::post(RouteEnum::LOGOUT->path(), [Authenticate::class, 'logout']);
         Route::get(RouteEnum::ME->path(), [Authenticate::class, 'loggedInUser']);
 
-        //User api
+        //UserFilter api
         Route::post(
             RouteEnum::USERS->path(),
             [UserController::class, 'store']
@@ -82,7 +82,7 @@ Route::group(
         //Location api
         Route::post(RouteEnum::LOCATION->path(), LocationController::class);
 
-        //Event api
+        //EventFilter api
         Route::post(
             RouteEnum::EVENTS->path(),
             [EventController::class, 'store']
@@ -108,7 +108,7 @@ Route::group(
         Route::get(
             RouteEnum::USER_NOTIFICATIONS->path(),
             [UserNotificationController::class, 'index']
-        );
+        )->middleware('per.page');
         Route::patch(
             RouteEnum::USER_NOTIFICATIONS_ALL->path(),
             [UserNotificationController::class, 'updateAll']
