@@ -1,12 +1,24 @@
 <ng-container *ngIf="fetchedEvent | async">
   <div class="d-flex justify-content-end" *ngIf="isCurrentUserCreator">
-    <button class="btn btn-link" (click)="editEvent()">Edit</button>
+    <div class="button-container-top">
+      <button class="stamp-btn stamp-btn-neutral" (click)="editEvent()">Edit</button>
+    </div>
   </div>
   <div class="d-flex justify-content-end" *ngIf="!isCurrentUserCreator">
-    <button class="btn btn-link" *ngIf="!isWatching" (click)="watchEvent()">Watch</button>
-    <button class="btn btn-link text-danger"  *ngIf="isWatching" (click)="detachEvent()">Unwatch</button>
-    <button class="btn btn-link" *ngIf="!isAttending" (click)="attendEvent()">Attend</button>
-    <button class="btn btn-link text-danger" *ngIf="isAttending" (click)="detachEvent()">Unattend</button>
+    <div class="button-container-top" *ngIf="!isWatching">
+      <button class="stamp-btn stamp-btn-neutral" (click)="watchEvent()">Watch</button>
+    </div>
+    <div class="button-container-top" *ngIf="isWatching">
+      <button class="stamp-btn stamp-btn-danger"  (click)="detachEvent()">Unwatch</button>
+    </div>
+    <div class="button-container-top" *ngIf="!isAttending">
+      <button class="stamp-btn stamp-btn-success" (click)="attendEvent()">Attend</button>
+    </div>
+    <div class="button-container-top" *ngIf="isAttending">
+      <button class="stamp-btn stamp-btn-danger" (click)="detachEvent()">Unattend</button>
+    </div>
   </div>
-  <app-event-display [event]="event"></app-event-display>
+  <div class="event-display-container">
+    <app-event-display [event]="event"></app-event-display>
+  </div>
 </ng-container>

@@ -71,7 +71,7 @@
           </div>
           
           <div class="d-flex justify-content-end">
-            <button class="btn btn-link text-success" (click)="onNextStep(stepper, createEventFormFirst)">Next</button>
+            <button class="stamp-btn stamp-btn-success" (click)="onNextStep(stepper, createEventFormFirst)">Next</button>
           </div>
         </form>
       </mat-step>
@@ -108,8 +108,8 @@
           </div>
           
           <div class="d-flex justify-content-between pt-4">
-            <button class="btn btn-link text-danger" matStepperPrevious>Back</button>
-            <button class="btn btn-link text-success" (click)="onNextStep(stepper, createEventFormSecond)">Next</button>
+            <button class="stamp-btn stamp-btn-danger" matStepperPrevious>Back</button>
+            <button class="stamp-btn stamp-btn-success" (click)="onNextStep(stepper, createEventFormSecond)">Next</button>
           </div>
         </form>
       </mat-step>
@@ -130,8 +130,8 @@
           
           
           <div class="d-flex justify-content-between pt-4">
-            <button class="btn btn-link text-danger" matStepperPrevious>Back</button>
-            <button class="btn btn-link text-success" (click)="onNextStep(stepper, createEventFormThird)">Next</button>
+            <button class="stamp-btn stamp-btn-danger" matStepperPrevious>Back</button>
+            <button class="stamp-btn stamp-btn-success" (click)="onNextStep(stepper, createEventFormThird)">Next</button>
           </div>
         </form>
       </mat-step>
@@ -142,8 +142,8 @@
         <app-event-display *ngIf="stepper.selectedIndex === stepper.steps.length - 1" [event]="previewEvent"></app-event-display>
         
         <div class="d-flex justify-content-between pt-4">
-          <button class="btn btn-link text-danger" matStepperPrevious>Back</button>
-          <button class="btn btn-link text-success" (click)="submitEvent()">Submit</button>
+          <button class="stamp-btn stamp-btn-danger" matStepperPrevious>Back</button>
+          <button class="stamp-btn stamp-btn-success" (click)="submitEvent()">Submit</button>
         </div>
       </mat-step>
     </mat-horizontal-stepper>

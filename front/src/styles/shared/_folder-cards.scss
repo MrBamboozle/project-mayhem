@@ -37,6 +37,13 @@
 
     .event-preview {
       overflow: hidden;
+      position: relative;
+
+      .view-button {
+        position: absolute;
+        top: 30px;
+        right: 30px;
+      }
     }
 
     &.show-content {

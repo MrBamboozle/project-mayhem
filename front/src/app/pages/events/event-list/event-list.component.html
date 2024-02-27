@@ -1,6 +1,10 @@
 
 <div class="pagination-container">
-  <button class="btn btn-link" [routerLink]="['/events', 'create']">Create Event</button>
+  <div class="d-flex justify-content-end">
+    <div class="button-container-top">
+      <button class="stamp-btn stamp-btn-success" [routerLink]="['/events', 'create']">Create Event</button>
+    </div>
+  </div>
   <div class="events-container">
     <!-- Search and Filter Area -->
     <div class="printed-form">
