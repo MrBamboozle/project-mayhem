@@ -31,8 +31,8 @@ export class HomeComponent {
   }
 
   private fetchHomepageEvents(): void {
-    this.eventsService.getEvents().subscribe((data) => {
-      this.events = data.data;
+    this.eventsService.getAllEvents().subscribe((data) => {
+      this.events = data;
 
       this.events.forEach((event) => {
         this.homepageMap.addTooltip(event.location, event.title, true, () => {
