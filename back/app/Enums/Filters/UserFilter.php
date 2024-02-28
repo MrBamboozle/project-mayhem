@@ -10,6 +10,8 @@ enum UserFilter: string implements FilterContract
 
     case EMAIL = 'email';
 
+    case ALL = 'all';
+
     case UNDEFINED = 'undefined';
 //Route::USERS->value
 
@@ -32,6 +34,7 @@ enum UserFilter: string implements FilterContract
         return match ($this) {
             self::NAME => 'filterByName',
             self::EMAIL => 'filterByEmail',
+            self::ALL => 'filterByAll',
             default => $this->value,
         };
     }
