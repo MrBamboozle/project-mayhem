@@ -15,6 +15,7 @@ use App\Models\User;
 use App\Services\UrlQuery\UrlQueries\Filters\UsersFilter;
 use App\Services\UrlQuery\UrlQueries\Sorts\BaseSort;
 use App\Services\UserService;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Hash;
@@ -32,13 +33,14 @@ class UserController extends Controller
      */
     public function index(Request $request): LengthAwarePaginator
     {
-        $query = User::query();
         $perPage = $request->query(QueryField::PER_PAGE->value);
 
-        $query = $this->filterService->applyFilters($query, $request->query(QueryField::FILTER->value));
-        $query = $this->sortService->applySorts($query, $request->query(QueryField::SORT->value));
+        return $this->getIndexData($request)->paginate($perPage);
+    }
 
-        return $query->paginate($perPage);
+    public function unpaginatedIndex(Request $request): array
+    {
+        return $this->getIndexData($request)->limit(10)->get()->toArray();
     }
 
     /**
@@ -93,5 +95,13 @@ class UserController extends Controller
         return [
             JsonFieldNames::MESSAGE->value => 'Password changed successfully'
         ];
+    }
+
+    private function getIndexData(Request $request): Builder
+    {
+        $query = User::query();
+        $query = $this->filterService->applyFilters($query, $request->query(QueryField::FILTER->value));
+
+        return $this->sortService->applySorts($query, $request->query(QueryField::SORT->value));
     }
 }
