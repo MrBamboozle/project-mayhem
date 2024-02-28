@@ -42,6 +42,7 @@ Route::get(RouteEnum::EVENTS->path() . '/{event}', [EventController::class, 'sho
 // Checking to see what user data to return
 Route::middleware('attempt.login')->group(function () {
     Route::get(RouteEnum::USERS->path(), [UserController::class, 'index'])->middleware('per.page');
+    Route::get(RouteEnum::USERS_ALL->path(), [UserController::class, 'unpaginatedIndex'])->middleware('per.page');
     Route::get(RouteEnum::USERS->path() . '/{user}', [UserController::class, 'show']);
 });
 

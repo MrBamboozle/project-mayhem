@@ -23,6 +23,8 @@ enum Route: string
 
     case USERS = 'users';
 
+    case USERS_ALL = 'users-all';
+
     case AVATARS = 'avatars';
 
     case LOCATION = 'location';
@@ -42,6 +44,7 @@ enum Route: string
     case USER_NOTIFICATIONS = 'user-notifications';
 
     case USER_NOTIFICATIONS_ALL = 'user-notifications/all';
+
 
     public static function create(string $value): self
     {
@@ -74,23 +77,9 @@ enum Route: string
     public function filterConfig(string $filterName): FilterContract
     {
         return match ($this) {
-            self::USERS => UserFilter::create($filterName),
-            self::EVENTS => EventFilter::create($filterName),
+            self::USERS, self::USERS_ALL => UserFilter::create($filterName),
+            self::EVENTS, self::EVENTS_ALL => EventFilter::create($filterName),
             default => UndefinedFilter::create($filterName),
         };
-    }
-
-    public function config(): array|null
-    {
-        return config("url_query_fields.$this->value");
-    }
-
-    public function sortConfig(): array|null {
-        return $this->config()['sorts'] ?? null;
-    }
-
-    public function hasSortConfig(): bool
-    {
-        return !empty($this->sortConfig());
     }
 }
