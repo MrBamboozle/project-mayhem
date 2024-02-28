@@ -8,6 +8,7 @@ use App\Enums\Route;
 use App\Traits\ApplyFilters;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Str;
 
 class EventsFilter
 {
@@ -96,9 +97,24 @@ class EventsFilter
         return $query->where('city_id', Operators::EQUALS->value, $value);
     }
 
-    private function filterByCategories(Builder $query, string $value): Builder
+    private function filterByCategories(Builder $query, string $values): Builder
     {
-        return $query->where('category_id', Operators::EQUALS->value, $value);
+        $valuesArray = explode(',', $values);
+        $categoryIds = [];
+
+        foreach ($valuesArray as $categoryId) {
+            if (!Str::isUuid($categoryId)) {
+                continue;
+            }
+
+            $categoryIds = $categoryId;
+        }
+
+        if (empty($categoryIds)) {
+            return $query;
+        }
+
+        return $query->whereHas('categories', fn (Builder $q) => $q->whereIn('categories.id', $categoryIds));
     }
 
     private function filterByAll(Builder $query, string $value): Builder
