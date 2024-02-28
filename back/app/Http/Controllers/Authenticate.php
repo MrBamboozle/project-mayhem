@@ -11,12 +11,15 @@ use App\Exceptions\Exceptions\InvalidTokenGeneration\MalformedRefreshTokenExcept
 use App\Exceptions\Exceptions\InvalidTokenGeneration\UnableToGenerateTokenPairsException;
 use App\Http\Requests\AuthenticateRequest;
 use App\Http\Requests\RegisterRequest;
+use App\Mail\VerifyEmail;
 use App\Models\PersonalAccessToken;
 use App\Models\User;
 use App\Services\TokenGenerate\TokenGeneration;
 use App\Services\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\URL;
 
 class Authenticate extends Controller
 {
@@ -101,10 +104,23 @@ class Authenticate extends Controller
         $user = $this->userService->createUser($request->validated());
         $tokenPair = $this->tokenGenerationService->generateTokenPair($user);
 
+        $url = URL::temporarySignedRoute('verifyEmail', now()->addMinutes(5), ['user' => $user->id]);
+
+        Mail::to($user)->queue(new VerifyEmail($user, $url));
+
         return [
             JsonFieldNames::USER->value=> $user,
             JsonFieldNames::TOKEN->value => $tokenPair->getAccessToken()->plainTextToken,
             JsonFieldNames::REFRESH_TOKEN->value => $tokenPair->getRefreshToken()->plainTextToken,
         ];
+    }
+
+    public function verifyEmail(Request $request, User $user)
+    {
+        if ($this->userService->verifyUserEmail($user, $request)) {
+            return view('emailVerified');
+        }
+
+        return view('linkExpired');
     }
 }

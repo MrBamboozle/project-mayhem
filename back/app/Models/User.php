@@ -6,6 +6,8 @@ use App\Models\Interfaces\OwnedModel;
 use App\Traits\ToCamelCaseArray;
 use Auth;
 use DateTimeInterface;
+use Illuminate\Contracts\Auth\CanResetPassword;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;

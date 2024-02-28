@@ -19,6 +19,25 @@ services:
     networks:
       - app
 
+  worker:
+      build:
+          args:
+              user: app
+              uid: 1000
+          context: .
+          dockerfile: docker/php/Dockerfile
+      image: php
+      container_name: worker
+      command: bash -c "php artisan queue:work --tries=3"
+      restart: unless-stopped
+      working_dir: /var/www/back
+      volumes:
+          - ./:/var/www/back
+      extra_hosts:
+          - "host.docker.internal:host-gateway"
+      networks:
+          - app
+
   db:
     image: mysql:5.7
     container_name: db
