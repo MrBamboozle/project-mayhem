@@ -19,4 +19,11 @@ class UsersFilter
     {
         return $query->orWhere('email', Operators::LIKE->value, "%$value%");
     }
+
+    public function filterByAll(Builder $query, string $value): Builder
+    {
+        $query = $this->filterByName($query, $value);
+
+        return $this->filterByEmail($query, $value);
+    }
 }

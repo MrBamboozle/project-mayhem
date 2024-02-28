@@ -62,6 +62,12 @@ class EventsFilter
         return $query->where('tag_line', Operators::LIKE->value, "%$value%");
     }
 
+    private function filterByDescription(Builder $query, string $value): Builder
+    {
+        return $query->where('description', Operators::LIKE->value, "%$value%");
+    }
+
+
     private function filterByStartTime(Builder $query, string $value, string $from = ''): Builder
     {
         if (empty($from)) {
@@ -93,6 +99,14 @@ class EventsFilter
     private function filterByCategories(Builder $query, string $value): Builder
     {
         return $query->where('category_id', Operators::EQUALS->value, $value);
+    }
+
+    private function filterByAll(Builder $query, string $value): Builder
+    {
+        $query = $this->filterByTitle($query, $value);
+        $query = $this->filterByTagLine($query, $value);
+
+        return $this->filterByDescription($query, $value);
     }
 
     private function isRangeProvided(?array $filters, EventFilter $filter): bool
