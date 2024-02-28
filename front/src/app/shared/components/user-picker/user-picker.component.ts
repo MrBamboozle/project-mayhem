@@ -44,7 +44,7 @@ export class UserPickerComponent {
 
   fetchUsers(): void {
     let queryParams = ``;
-    if (this.searchTerm) queryParams += `&filter[all]=${encodeURIComponent(this.searchTerm)}`;
+    if (this.searchTerm) queryParams += `?filter[all]=${encodeURIComponent(this.searchTerm)}`;
 
     this.usersService.getAllUsers(queryParams).subscribe((data) => {
       this.users = data;

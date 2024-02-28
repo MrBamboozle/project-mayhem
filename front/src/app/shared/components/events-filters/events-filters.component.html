@@ -1,11 +1,9 @@
 <form [formGroup]="filterForm" (ngSubmit)="onSubmit()" class="printed-form">
-  <input formControlName="search" placeholder="Search events">
+
   <div class="form-group">
     <label for="search">Search</label>
     <input id="search" formControlName="all" type="text" class="form-control" placeholder="Search...">
   </div>
-  <input formControlName="creator" placeholder="Creator">
-  <!-- Creator Dropdown - Implement as needed based on your UI/UX preferences -->
   
   <app-category-picker
     (onSelectedCategoryChange)="onSelectedCategoryChange($event)" 
