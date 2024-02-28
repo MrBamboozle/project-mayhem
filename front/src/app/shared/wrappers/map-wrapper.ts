@@ -1,6 +1,8 @@
 import * as L from 'leaflet';
 import { ToastService } from '../services/toaster.service';
 import { AppInjector } from '@app/core/service/app-injector.service';
+import { DomSanitizer } from '@angular/platform-browser';
+import { SecurityContext } from '@angular/core';
 
 export function coordsFromString(location: string): L.LatLng {
   const splitLocation = location.split(',').map((segment: string) => Number(segment));
@@ -10,6 +12,8 @@ export function coordsFromString(location: string): L.LatLng {
 export class MapWrapper {
 
   protected toasterService: ToastService;
+  protected sanitizer: DomSanitizer;
+
 
   private readonly map: L.Map;
   private marker: L.Marker;
@@ -26,6 +30,7 @@ export class MapWrapper {
     maxZoom: number = 19
   ) {
     this.toasterService = AppInjector.getInjector().get(ToastService);
+    this.sanitizer = AppInjector.getInjector().get(DomSanitizer)
     this.map = L.map(id);
     this.marker = L.marker([51.505, -0.09], { icon: this.pinIcon })
 
@@ -108,7 +113,7 @@ export class MapWrapper {
     // Define the HTML content for your custom divIcon
     const htmlContent = `
       <div class="custom-tooltip-container">
-        <div class="custom-tooltip">${text}</div>
+        <div class="custom-tooltip">${this.sanitizer.sanitize(SecurityContext.HTML, text)}</div>
       </div>
     `;
 

@@ -1,0 +1,27 @@
+<div ngbDropdown #dropdown="ngbDropdown" (openChange)="onDropdownOpenChange($event)" class="form-group user-picker">
+  <label for="user">Creator</label>
+  <input type="text"
+  id="user"
+  class="form-control"
+  ngbDropdownAnchor
+  [(ngModel)]="searchTerm"
+  [ngModelOptions]="{standalone: true}"
+  (focus)="open($event)"
+  (click)="preventClose($event)"
+  (keyup)="onSearchChange()"
+  placeholder="Select creator..."
+  autocomplete="off">
+  
+  <div ngbDropdownMenu>
+    <button ngbDropdownItem
+      *ngFor="let user of users"
+      (click)="selectUser(user); $event.stopPropagation()">
+      <img [src]="userAvatarSrc(user)" alt="Avatar" width="30" height="30"> {{ user.name }}
+    </button>
+    <div *ngIf="!users.length" class="dropdown-item">No users found.</div>
+  </div>
+
+  <div class="selected-user" *ngIf="selectedUser">
+    {{selectedUser.name}} <span aria-hidden="true" class="close text-danger" (click)="removeUser()">&times;</span>
+  </div>
+</div>

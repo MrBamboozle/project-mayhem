@@ -3,6 +3,7 @@ import { Component, Input } from '@angular/core';
 import { config } from '@app/core/app-config';
 import { EngagementType, Event } from '@app/shared/models/event';
 import { User } from '@app/shared/models/user';
+import { userAvatarSrc } from '@app/shared/utils/avatar';
 import { formatAddress, formatDateToLocale, formatTopSecretFontTitle } from '@app/shared/utils/formatters';
 import { MapWrapper } from '@app/shared/wrappers/map-wrapper';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
@@ -15,6 +16,7 @@ import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
   styleUrl: './event-display.component.scss'
 })
 export class EventDisplayComponent {
+  public userAvatarSrc = userAvatarSrc;
   @Input() event!: Omit<Event, 'creator' | 'createdAt' | 'updatedAt'>;
 
   private previewMap!: MapWrapper;
@@ -56,9 +58,4 @@ export class EventDisplayComponent {
       .filter((engagingUserType) => engagingUserType.engagementType === EngagementType.attend)
       .map((engagingUserType) => engagingUserType.user);
   }
-
-  public userAvatarSrc(user: User): string {
-    return `${config.BACKEND_URL}${user.avatar.path}`;
-  }
-
 }

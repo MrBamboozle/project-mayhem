@@ -82,7 +82,7 @@ export class UserListComponent {
       this.currentPage = paginatedData.current_page;
       this.pageSize = paginatedData.per_page;
       this.collectionSize = paginatedData.total;
-    })
+    });
   }
 
   onPageChange(page: number): void {

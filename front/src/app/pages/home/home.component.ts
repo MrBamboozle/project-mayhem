@@ -1,13 +1,15 @@
 import { Component } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { EventsService } from '@app/services/events.service';
+import { EventsFiltersComponent } from '@app/shared/components/events-filters/events-filters.component';
 import { Event } from '@app/shared/models/event';
 import { MapWrapper } from '@app/shared/wrappers/map-wrapper';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [],
+  imports: [EventsFiltersComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
@@ -19,7 +21,7 @@ export class HomeComponent {
 
   constructor(
     private readonly _router: Router,
-    private readonly eventsService: EventsService
+    private readonly eventsService: EventsService,
   ) {}
 
   ngOnInit(): void {
