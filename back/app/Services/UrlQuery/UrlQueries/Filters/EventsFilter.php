@@ -4,9 +4,7 @@ namespace App\Services\UrlQuery\UrlQueries\Filters;
 
 use App\Enums\Filters\EventFilter;
 use App\Enums\Operators;
-use App\Enums\Route;
 use App\Traits\ApplyFilters;
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
 
@@ -18,6 +16,9 @@ class EventsFilter
 
     public function applyFilters(Builder $query, ?array $filters): Builder
     {
+        if (empty($filters)) {
+            return $query;
+        }
 
         if ($this->isRangeProvided($filters, EventFilter::START_TIME_TO)) {
             $query = $this->filterByStartTime(
@@ -125,7 +126,7 @@ class EventsFilter
         return $this->filterByDescription($query, $value);
     }
 
-    private function isRangeProvided(?array $filters, EventFilter $filter): bool
+    private function isRangeProvided(array $filters, EventFilter $filter): bool
     {
         return array_key_exists($filter->value, $filters);
     }
