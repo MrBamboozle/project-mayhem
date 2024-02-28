@@ -10,6 +10,10 @@
   <app-category-picker
     (onSelectedCategoryChange)="onSelectedCategoryChange($event)" 
     ></app-category-picker>
+
+  <app-user-picker
+    (onSelectedUserChange)="onSelectedUserChange($event)" 
+    ></app-user-picker>
   
   <input type="date" formControlName="startDateFrom" placeholder="Start Date From">
   <input type="date" formControlName="startDateTo" placeholder="Start Date To">
