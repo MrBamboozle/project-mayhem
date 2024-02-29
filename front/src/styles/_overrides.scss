@@ -17,3 +17,8 @@
 .mat-stepper-horizontal {
   background: none!important;
 }
+
+.list-group-item.active {
+  background-color: $page-home!important;
+  color: $dark!important;
+}

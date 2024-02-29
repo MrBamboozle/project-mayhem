@@ -11,6 +11,10 @@
   position: relative;
 }
 
-.homepage-filters-toggle-container {
-  margin-top: -50px;
+.homepage-filters-toggle-container, .events-buttons-container, .view-event-buttons-container {
+  margin-top: -40px;
+}
+
+.notification-buttons-container {
+  margin-top: -30px;
 }
