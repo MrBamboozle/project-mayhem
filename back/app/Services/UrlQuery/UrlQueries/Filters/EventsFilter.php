@@ -54,19 +54,49 @@ class EventsFilter
         return $query->where('user_id', Operators::EQUALS->value, $value);
     }
 
-    private function filterByTitle(Builder $query, string $value): Builder
+    private function filterByTitle(Builder $query, string $value, bool $or = false): Builder
     {
-        return $query->where('title', Operators::LIKE->value, "%$value%");
+        $params = [
+            'column' => 'title',
+            'operator' => Operators::LIKE->value,
+            'value' => "%$value%",
+        ];
+
+        if ($or) {
+            return $query->orWhere(...$params);
+        }
+
+        return $query->where(...$params);
     }
 
-    private function filterByTagLine(Builder $query, string $value): Builder
+    private function filterByTagLine(Builder $query, string $value, bool $or = false): Builder
     {
-        return $query->where('tag_line', Operators::LIKE->value, "%$value%");
+        $params = [
+            'column' => 'tag_line',
+            'operator' => Operators::LIKE->value,
+            'value' => "%$value%",
+        ];
+
+        if ($or) {
+            return $query->orWhere(...$params);
+        }
+
+        return $query->where(...$params);
     }
 
-    private function filterByDescription(Builder $query, string $value): Builder
+    private function filterByDescription(Builder $query, string $value, bool $or = false): Builder
     {
-        return $query->where('description', Operators::LIKE->value, "%$value%");
+        $params = [
+            'column' => 'description',
+            'operator' => Operators::LIKE->value,
+            'value' => "%$value%",
+        ];
+
+        if ($or) {
+            return $query->orWhere(...$params);
+        }
+
+        return $query->where(...$params);
     }
 
 
@@ -120,10 +150,10 @@ class EventsFilter
 
     private function filterByAll(Builder $query, string $value): Builder
     {
-        $query = $this->filterByTitle($query, $value);
-        $query = $this->filterByTagLine($query, $value);
+        $query = $this->filterByTitle($query, $value, true);
+        $query = $this->filterByTagLine($query, $value, true);
 
-        return $this->filterByDescription($query, $value);
+        return $this->filterByDescription($query, $value, true);
     }
 
     private function isRangeProvided(array $filters, EventFilter $filter): bool
