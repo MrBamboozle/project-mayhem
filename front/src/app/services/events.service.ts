@@ -23,9 +23,9 @@ export class EventsService {
       .get<PaginatedResponse<Event>>(`${this.eventsUrl}${queryParams}`);
   }
 
-  public getAllEvents(): Observable<Event[]> {
+  public getAllEvents(queryParams: string = ''): Observable<Event[]> {
     return this._http
-      .get<Event[]>(`${this.eventsAllUrl}`);
+      .get<Event[]>(`${this.eventsAllUrl}${queryParams}`);
   }
 
   public getEvent(id: string): Observable<Event> {

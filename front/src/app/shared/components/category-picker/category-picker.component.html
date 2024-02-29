@@ -13,7 +13,7 @@
   autocomplete="off">
   
   <div ngbDropdownMenu>
-    <button ngbDropdownItem
+    <button ngbDropdownItem type="button"
       *ngFor="let category of filteredCategories"
       (click)="selectCategory(category); $event.stopPropagation()">
       {{ category.name }}
@@ -21,7 +21,7 @@
     <div *ngIf="!filteredCategories.length" class="dropdown-item">You've exhausted all the categories.</div>
   </div>
 
-  <div class="selected-categories">
+  <div class="selected-categories" *ngIf="selectedCategories.length">
     <div class="badge-container" *ngFor="let category of selectedCategories">
       <span class="badge">
         {{ category.name }}

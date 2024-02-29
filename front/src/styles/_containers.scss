@@ -1,22 +1,16 @@
-.create-event-container {
+.create-event-container, .events-container, .notifications-container, .event-content, .homepage-container {
   @include paper-bg;
 }
 
-.events-container {
-  @include paper-bg;
+.events-container, .notifications-container, .homepage-container {
   @include paginated-content;
-}
-
-.notifications-container {
-  @include paper-bg;
-  @include paginated-content;
-}
-
-.event-content {
-  @include paper-bg;
 }
 
 .event-display-container {
   z-index: 2;
   position: relative;
+}
+
+.homepage-filters-toggle-container {
+  margin-top: -50px;
 }

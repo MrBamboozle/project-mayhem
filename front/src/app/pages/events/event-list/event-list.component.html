@@ -1,19 +1,21 @@
 
 <div class="pagination-container">
-  <div class="d-flex justify-content-end">
+  <div class="d-flex justify-content-between align-items-end">
     <div class="button-container-top">
       <button class="stamp-btn stamp-btn-success" [routerLink]="['/events', 'create']">Create Event</button>
     </div>
+    <div class="button-container-top">
+      <button class="stamp-btn stamp-btn-neutral stamp-btn-small" type="button" (click)="areFiltersCollapsed = !areFiltersCollapsed" [attr.aria-expanded]="!areFiltersCollapsed" aria-controls="filterSection">
+        {{ areFiltersCollapsed ? 'Show Filters' : 'Hide Filters' }}
+      </button>
+    </div>
   </div>
   <div class="events-container">
-    <!-- Search and Filter Area -->
-    <div class="printed-form">
-      <div class="form-group">
-        <label for="searchEvents">Search Events</label>
-        <input id="searchEvents" type="text" class="form-control" placeholder="Search events..." 
-          [(ngModel)]="searchTerm" (keyup)="onSearchChange()">
-      </div>
-      <!-- Add filters here if needed -->
+    <!-- Filter Section -->
+    <div id="filterSection" [ngbCollapse]="areFiltersCollapsed">
+      <app-events-filters
+        (onFilterChange)="onFilterChange($event)"></app-events-filters>
+      <hr>
     </div>
 
     <ng-container *ngFor="let event of eventList">

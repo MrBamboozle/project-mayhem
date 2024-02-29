@@ -1,5 +1,8 @@
 <div ngbDropdown #dropdown="ngbDropdown" (openChange)="onDropdownOpenChange($event)" class="form-group user-picker">
   <label for="user">Creator</label>
+  <div class="selected-user" *ngIf="selectedUser">
+    <img [src]="userAvatarSrc(selectedUser)" alt="Avatar" width="20" height="20"> {{selectedUser.name}} <span aria-hidden="true" class="close text-danger" (click)="removeUser()">&times;</span>
+  </div>
   <input type="text"
   id="user"
   class="form-control"
@@ -13,7 +16,7 @@
   autocomplete="off">
   
   <div ngbDropdownMenu>
-    <button ngbDropdownItem
+    <button ngbDropdownItem type="button"
       *ngFor="let user of users"
       (click)="selectUser(user); $event.stopPropagation()">
       <img [src]="userAvatarSrc(user)" alt="Avatar" width="30" height="30"> {{ user.name }}
@@ -21,7 +24,4 @@
     <div *ngIf="!users.length" class="dropdown-item">No users found.</div>
   </div>
 
-  <div class="selected-user" *ngIf="selectedUser">
-    {{selectedUser.name}} <span aria-hidden="true" class="close text-danger" (click)="removeUser()">&times;</span>
-  </div>
 </div>

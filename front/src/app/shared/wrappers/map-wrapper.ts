@@ -18,6 +18,9 @@ export class MapWrapper {
   private readonly map: L.Map;
   private marker: L.Marker;
 
+  private markers: L.Marker[] = [];
+  private tooltips: L.Marker[] = [];
+
   private readonly pinIcon: L.Icon = L.icon({
     iconUrl: 'assets/images/pin.png',
     iconSize: [56, 48], // size of the icon
@@ -93,20 +96,12 @@ export class MapWrapper {
   public addMarker(location: string | L.LatLng): this {
     let coords: L.LatLng = typeof location === 'string' ? coordsFromString(location) : location;
 
-    L.marker([coords.lat, coords.lng], { icon: this.pinIcon }).addTo(this.map);
+    const marker = L.marker([coords.lat, coords.lng], { icon: this.pinIcon }).addTo(this.map);
+    this.markers.push(marker);
 
     return this;
   }
 
-  // public addTooltip(location: string | L.LatLng, text: string, interactive: boolean, action: () => void) {
-  //   let coords: L.LatLng = typeof location === 'string' ? coordsFromString(location) : location;
-
-  //   let tooltip = L.tooltip({interactive: true, permanent: true, direction: 'right', offset: new L.Point(-20, -10)})
-  //     .setLatLng(coords)
-  //     .setContent(text)
-  //     .on('click', action)
-  //     .addTo(this.map);
-  // }
   public addTooltip(location: string | L.LatLng, text: string, interactive: boolean, action: () => void) {
     let coords: L.LatLng = typeof location === 'string' ? coordsFromString(location) : location;
 
@@ -131,6 +126,15 @@ export class MapWrapper {
     if (interactive) {
       marker.on('click', action);
     }
+
+    this.tooltips.push(marker);
+  }
+
+  public clearTooltipsAndMarkers(): void {
+    this.markers.forEach(marker => marker.remove());
+    this.markers = []; // Reset the markers array
+    this.tooltips.forEach(tooltip => tooltip.remove());
+    this.tooltips = []; // Reset the markers array
   }
 
 }

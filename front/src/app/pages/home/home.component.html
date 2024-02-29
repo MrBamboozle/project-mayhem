@@ -1,5 +1,20 @@
-<app-events-filters></app-events-filters>
-
-<div class="taped double-taped">
-  <div [id]="'homepage-map'" class="homepage-map" [style]="{height: '600px'}"></div>
+<div class="d-flex justify-content-end homepage-filters-toggle-container">
+  <div class="button-container-top">
+    <button class="stamp-btn stamp-btn-neutral stamp-btn-small" type="button" (click)="areFiltersCollapsed = !areFiltersCollapsed" [attr.aria-expanded]="!areFiltersCollapsed" aria-controls="filterSection">
+      {{ areFiltersCollapsed ? 'Show Filters' : 'Hide Filters' }}
+    </button>
+  </div>
+</div>
+<div class="homepage-container">
+  <!-- Filter Section -->
+  <div id="filterSection" [ngbCollapse]="areFiltersCollapsed">
+      <app-events-filters
+        [initialFilters]="initialEventFilters"
+        (onFilterChange)="onFilterChange($event)"></app-events-filters>
+    <hr>
+  </div>
+  
+  <div class="taped double-taped">
+    <div [id]="'homepage-map'" class="homepage-map" [style]="{height: '600px'}"></div>
+  </div>
 </div>

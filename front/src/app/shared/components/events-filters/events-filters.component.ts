@@ -1,9 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CategoryPickerComponent } from '../category-picker/category-picker.component';
 import { UserPickerComponent } from '../user-picker/user-picker.component';
 import { User } from '@app/shared/models/user';
+import { InitialEventFilters } from '@app/shared/models/filter';
 
 @Component({
   selector: 'app-events-filters',
@@ -14,16 +15,25 @@ import { User } from '@app/shared/models/user';
 })
 export class EventsFiltersComponent {
   @Output() onFilterChange = new EventEmitter<string>();
-  
+  @Input() initialFilters: InitialEventFilters = {};
+
   public filterForm: FormGroup = this.fb.group({
     all: [''],
     creator: [''],
     categories: [[]],
-    startDateFrom: [''],
-    startDateTo: ['']
-  });;
+    startTime: [''],
+    startTimeTo: ['']
+  });
 
   constructor(private fb: FormBuilder) {}
+
+  ngAfterViewInit(): void {
+    Object.keys(this.initialFilters).forEach(key => {
+      if (this.filterForm.contains(key)) {
+        this.filterForm.get(key)?.setValue(this.initialFilters[key]);
+      }
+    });
+  }
 
   get controlsFilterForm(): { [p: string]: AbstractControl } {
     return this.filterForm.controls;
@@ -39,6 +49,7 @@ export class EventsFiltersComponent {
       .filter(([_, value]) => value) // Remove entries with falsy values
       .map(([key, value]) => {
         if (key === 'categories' && Array.isArray(value)) { // Handle array values for categories
+          if (!value.length) return '';
           return `filter[${key}]=${value.map(val => encodeURIComponent(val)).join(',')}`;
         }
         return `filter[${key}]=${encodeURIComponent(value as string)}`;
