@@ -1,6 +1,8 @@
 import * as L from 'leaflet';
 import { ToastService } from '../services/toaster.service';
 import { AppInjector } from '@app/core/service/app-injector.service';
+import { DomSanitizer } from '@angular/platform-browser';
+import { SecurityContext } from '@angular/core';
 
 export function coordsFromString(location: string): L.LatLng {
   const splitLocation = location.split(',').map((segment: string) => Number(segment));
@@ -10,9 +12,14 @@ export function coordsFromString(location: string): L.LatLng {
 export class MapWrapper {
 
   protected toasterService: ToastService;
+  protected sanitizer: DomSanitizer;
+
 
   private readonly map: L.Map;
   private marker: L.Marker;
+
+  private markers: L.Marker[] = [];
+  private tooltips: L.Marker[] = [];
 
   private readonly pinIcon: L.Icon = L.icon({
     iconUrl: 'assets/images/pin.png',
@@ -26,6 +33,7 @@ export class MapWrapper {
     maxZoom: number = 19
   ) {
     this.toasterService = AppInjector.getInjector().get(ToastService);
+    this.sanitizer = AppInjector.getInjector().get(DomSanitizer)
     this.map = L.map(id);
     this.marker = L.marker([51.505, -0.09], { icon: this.pinIcon })
 
@@ -88,27 +96,19 @@ export class MapWrapper {
   public addMarker(location: string | L.LatLng): this {
     let coords: L.LatLng = typeof location === 'string' ? coordsFromString(location) : location;
 
-    L.marker([coords.lat, coords.lng], { icon: this.pinIcon }).addTo(this.map);
+    const marker = L.marker([coords.lat, coords.lng], { icon: this.pinIcon }).addTo(this.map);
+    this.markers.push(marker);
 
     return this;
   }
 
-  // public addTooltip(location: string | L.LatLng, text: string, interactive: boolean, action: () => void) {
-  //   let coords: L.LatLng = typeof location === 'string' ? coordsFromString(location) : location;
-
-  //   let tooltip = L.tooltip({interactive: true, permanent: true, direction: 'right', offset: new L.Point(-20, -10)})
-  //     .setLatLng(coords)
-  //     .setContent(text)
-  //     .on('click', action)
-  //     .addTo(this.map);
-  // }
   public addTooltip(location: string | L.LatLng, text: string, interactive: boolean, action: () => void) {
     let coords: L.LatLng = typeof location === 'string' ? coordsFromString(location) : location;
 
     // Define the HTML content for your custom divIcon
     const htmlContent = `
       <div class="custom-tooltip-container">
-        <div class="custom-tooltip">${text}</div>
+        <div class="custom-tooltip">${this.sanitizer.sanitize(SecurityContext.HTML, text)}</div>
       </div>
     `;
 
@@ -126,6 +126,15 @@ export class MapWrapper {
     if (interactive) {
       marker.on('click', action);
     }
+
+    this.tooltips.push(marker);
+  }
+
+  public clearTooltipsAndMarkers(): void {
+    this.markers.forEach(marker => marker.remove());
+    this.markers = []; // Reset the markers array
+    this.tooltips.forEach(tooltip => tooltip.remove());
+    this.tooltips = []; // Reset the markers array
   }
 
 }

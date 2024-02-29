@@ -1,0 +1,32 @@
+<div ngbDropdown #dropdown="ngbDropdown" (openChange)="onDropdownOpenChange($event)" class="form-group category-picker">
+  <label for="categories">Categories</label>
+  <input type="text"
+  id="categories"
+  class="form-control"
+  ngbDropdownAnchor
+  [(ngModel)]="searchTerm"
+  [ngModelOptions]="{standalone: true}"
+  (focus)="open($event)"
+  (click)="preventClose($event)"
+  (ngModelChange)="filterCategories()"
+  placeholder="Select categories..."
+  autocomplete="off">
+  
+  <div ngbDropdownMenu>
+    <button ngbDropdownItem type="button"
+      *ngFor="let category of filteredCategories"
+      (click)="selectCategory(category); $event.stopPropagation()">
+      {{ category.name }}
+    </button>
+    <div *ngIf="!filteredCategories.length" class="dropdown-item">You've exhausted all the categories.</div>
+  </div>
+
+  <div class="selected-categories" *ngIf="selectedCategories.length">
+    <div class="badge-container" *ngFor="let category of selectedCategories">
+      <span class="badge">
+        {{ category.name }}
+        <span aria-hidden="true" class="close text-danger" (click)="removeCategory(category)">&times;</span>
+      </span>
+    </div>
+  </div>
+</div>

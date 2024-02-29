@@ -10,22 +10,22 @@ import * as L from 'leaflet';
 import { LocationService } from '@app/services/location.service';
 import { LocationRequest } from '@app/shared/models/location';
 import { MapWrapper } from '@app/shared/wrappers/map-wrapper';
-import { formatAddress, formatDateToDateTimeLocal, formatDateToLocale, formatTopSecretFontTitle } from '@app/shared/utils/formatters';
+import { formatAddress, formatDateToDateTimeLocal } from '@app/shared/utils/formatters';
 import { CategoriesService } from '@app/services/categories.service';
-import { NgbDropdown, NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { EventDisplayComponent } from '@app/shared/components/event-display/event-display.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
+import { CategoryPickerComponent } from '@app/shared/components/category-picker/category-picker.component';
 
 @Component({
   selector: 'app-create-event',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, MatStepperModule, NgbDropdownModule, EventDisplayComponent],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, MatStepperModule, EventDisplayComponent, CategoryPickerComponent],
   templateUrl: './create-event.component.html',
   styleUrl: './create-event.component.scss'
 })
 export class CreateEventComponent {
-  @ViewChild('dropdown') dropdown!: NgbDropdown;
+  @ViewChild(CategoryPickerComponent) categoryPicker!: CategoryPickerComponent;
   @ViewChild('stepper') stepper!: MatStepper;
 
   public fetchedEvent: BehaviorSubject<boolean> = new BehaviorSubject(false);
@@ -33,8 +33,7 @@ export class CreateEventComponent {
   public shouldDisplayPreview: boolean = false;
 
   public categories: Category[] = [];
-  public filteredCategories: Category[] = this.categories;
-  public searchTerm: string = '';
+  public initialSelectedCategoryIds: string[] = [];
 
   private map!: MapWrapper;
 
@@ -83,7 +82,6 @@ export class CreateEventComponent {
     this.categoriesService.getCategories().subscribe(
       (data: Category[]) => {
         this.categories = data;
-        this.filteredCategories = this.categories;
       }
     )
 
@@ -135,10 +133,6 @@ export class CreateEventComponent {
     this._changeDetectorRef.detectChanges();     
   }
 
-  // ngAfterViewInit(): void {
-  //   this.initMap();
-  // }
-
   private fetchEvent(): void {
     this.eventsService.getEvent(this.uuid).subscribe(
       (data) => {
@@ -146,7 +140,8 @@ export class CreateEventComponent {
         this.controlsFirst.title.setValue(this.event.title);
         this.controlsFirst.tagline.setValue(this.event.tagLine);
         this.controlsFirst.description.setValue(this.event.description);
-        this.controlsFirst.categories.setValue(this.event.categories.map((category: Category) => category.id));
+        this.initialSelectedCategoryIds = this.event.categories.map((category: Category) => category.id);
+        this.controlsFirst.categories.setValue(this.initialSelectedCategoryIds);
         this.controlsSecond.dateFrom.setValue(formatDateToDateTimeLocal(this.event.startTime));
         this.controlsSecond.dateTo.setValue(formatDateToDateTimeLocal(this.event.endTime));
         this.controlsThird.location.setValue(this.event.location);
@@ -260,18 +255,8 @@ export class CreateEventComponent {
     });
   }
 
-  // Category picking
-  closeDropdown() {
-    if (this.dropdown.isOpen()) {
-      this.dropdown.close();
-    }
-  }
-
-  preventClose(event: MouseEvent): void {
-    // Check if the dropdown is already open; if so, stop propagation
-    if (this.dropdown.isOpen()) {
-      event.stopPropagation();
-    }
+  onSelectedCategoryChange(selectedIds: string[]) {
+    this.controlsFirst.categories.setValue(selectedIds);
   }
 
   onDropdownOpenChange(isOpen: boolean): void {
@@ -285,35 +270,8 @@ export class CreateEventComponent {
     return this.categories.filter(category => this.controlsFirst.categories.value.some((selectedId: string) => selectedId === category.id));
   }
 
-  filterCategories() {
-    this.filteredCategories = this.categories.filter(category => 
-      category.name.toLowerCase().includes(this.searchTerm.toLowerCase()) &&
-      !this.controlsFirst.categories.value.some((selectedId: string) => selectedId === category.id));
-  }
-
-  selectCategory(category: Category) {
-    // Add category ID to the form control
-    const categories = this.controlsFirst.categories.value;
-    if (!categories.includes(category.id)) {
-      this.controlsFirst.categories.setValue([...categories, category.id]);
-    }
-  }
-
-  removeCategory(categoryToRemove: Category) {
-    // Remove category ID from the form control
-    const categories = this.controlsFirst.categories.value;
-    this.controlsFirst.categories.setValue(categories.filter((id: string) => id !== categoryToRemove.id));
-  }
-
-  open(event: any) {
-    this.filterCategories(); // Ensure dropdown opens with all items
-    if (!this.dropdown.isOpen()) {
-      setTimeout(() => {
-        this.dropdown.open();
-      }, 10)
-    } else {
-      event.stopPropagation()
-    }
+  closeDropdown() {
+    this.categoryPicker.closeDropdown();
   }
 
   submitEvent() {

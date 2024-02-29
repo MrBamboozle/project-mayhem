@@ -11,6 +11,7 @@ import { Observable } from 'rxjs';
 })
 export class UsersService {
   private readonly usersUrl: string = `${config.API_URL}/users`;
+  private readonly usersAllUrl: string = `${config.API_URL}/users-all`;
 
   constructor(
     private readonly _http: HttpClient,
@@ -19,6 +20,11 @@ export class UsersService {
   public getUsers(queryParams: string = ''): Observable<PaginatedResponse<User>> {
     return this._http
       .get<PaginatedResponse<User>>(`${this.usersUrl}${queryParams}`);
+  }
+
+  public getAllUsers(queryParams: string = ''): Observable<User[]> {
+    return this._http
+      .get<User[]>(`${this.usersAllUrl}${queryParams}`);
   }
 
   public getUser(id: string): Observable<User> {
