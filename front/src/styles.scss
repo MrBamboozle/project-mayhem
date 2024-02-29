@@ -81,6 +81,8 @@
       border-bottom-left-radius: 10px;
       position: relative;
       z-index: auto!important;
+      background-color: #1b283a;
+      color: #fff;
     }
 
     a::after {
@@ -184,16 +186,17 @@
 }
 
 #content {
-  background-color: #fff;
+  background-color: $page-home;
   box-shadow: -5px -5px 20px rgba(0, 0, 0, 0.5);
   padding-bottom: 50px;
+  padding-top: 35px;
+  .page-title {
+    font-family: 'TopSecret', sans-serif;
+    color: darkred;
+    text-align: center;
+  }
 
-  // background-image: url('/assets/images/wood-texture-2.jpg'); /* Path to your texture image */
-  // background-repeat: repeat; /* This will make the texture repeat */
-  // background-size: auto; /* Keep the texture's original size */
-  // // background-attachment: fixed; /* Optional: makes the background fixed during scroll */
-  // background-position: center; /* Optional: positions the background image */
-  // border-radius: 70px;
+  .no-buttons-above {
+    margin-top: 25px;
+  }
 }
-
-

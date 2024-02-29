@@ -1,13 +1,13 @@
 
 <div class="pagination-container">
-  <div class="d-flex justify-content-between align-items-end">
-    <div class="button-container-top">
-      <button class="stamp-btn stamp-btn-success" [routerLink]="['/events', 'create']">Create Event</button>
-    </div>
+  <div class="d-flex justify-content-between align-items-end events-buttons-container">
     <div class="button-container-top">
       <button class="stamp-btn stamp-btn-neutral stamp-btn-small" type="button" (click)="areFiltersCollapsed = !areFiltersCollapsed" [attr.aria-expanded]="!areFiltersCollapsed" aria-controls="filterSection">
         {{ areFiltersCollapsed ? 'Show Filters' : 'Hide Filters' }}
       </button>
+    </div>
+    <div class="button-container-top">
+      <button class="stamp-btn stamp-btn-success" [routerLink]="['/events', 'create']">Create Event</button>
     </div>
   </div>
   <div class="events-container">
@@ -21,7 +21,9 @@
     <ng-container *ngFor="let event of eventList">
       <app-expandable-folder [event]="event"></app-expandable-folder>
     </ng-container>
-  
+    <ng-container *ngIf="!eventList.length">
+      <p class="empty-list">No events to display.</p>
+    </ng-container>
 
   
   </div>
