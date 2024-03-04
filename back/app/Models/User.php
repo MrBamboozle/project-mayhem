@@ -55,7 +55,8 @@ class User extends Authenticatable implements OwnedModel
     ];
 
     protected $with = [
-        'avatar:id,path'
+        'avatar:id,path',
+        'role:id,name'
     ];
 
     public function avatar(): BelongsTo
