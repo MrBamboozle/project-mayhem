@@ -29,6 +29,9 @@ export class AppComponent {
   get avatarSrc(): string {
     return `${config.BACKEND_URL}${this.userStore.currentUser.getValue().avatar.path}`
   }
+  get pencilSrc(): string {
+    return `../assets/images.pencil.png`
+  }
 
   constructor(
     private readonly injector: Injector,

@@ -17,4 +17,8 @@ export class UserStoreService {
   public get isSignedIn(): boolean {
     return this.isStored.getValue();
   }
+
+  public get isAdmin(): boolean {
+    return this.currentUser.getValue().role;
+  }
 }
