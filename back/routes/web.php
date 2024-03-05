@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,10 +14,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::get('/', function () {
-//    return 'Welcome to my humble abode';
-// });
-
 Route::get('/login', function () {
     return view('unauthenticated');
 })->name('login');
+
+Route::get('/forgot-password/form', function (Request $request) {
+    if (!$request->hasValidSignature()) {
+        return view('linkExpired');
+    }
+
+    return view('forgotPasswordForm', ['token' => $request->query->get('signature')]);
+})->name('passwordForm');

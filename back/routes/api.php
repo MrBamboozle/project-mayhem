@@ -8,6 +8,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CityController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\LocationController;
+use App\Http\Controllers\ResetForgotPasswordController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserNotificationController;
 use App\Models\Event as EventModel;
@@ -45,6 +46,8 @@ Route::middleware('attempt.login')->group(function () {
     Route::get(RouteEnum::USERS_ALL->path(), [UserController::class, 'unpaginatedIndex'])->middleware('per.page');
     Route::get(RouteEnum::USERS->path() . '/{user}', [UserController::class, 'show']);
 });
+
+Route::get('verifyEmail/{user}', [Authenticate::class, 'verifyEmail'])->name('verifyEmail');
 
 // TODO Remove Policy references
 //  Users and Events
@@ -133,3 +136,6 @@ Route::middleware(['auth:sanctum','ability:' . TokenAbility::ISSUE_ACCESS_TOKEN-
     // get new access_token|refresh_token pair
     Route::get(RouteEnum::REFRESH->path(),[Authenticate::class, 'refreshAccessToken']);
 });
+
+Route::post('/forgot-password', [ResetForgotPasswordController::class, 'forgotPassword']);
+Route::post('/reset-password/{token}', [ResetForgotPasswordController::class, 'resetPassword'])->name('resetPassword');

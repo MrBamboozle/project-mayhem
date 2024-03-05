@@ -8,6 +8,7 @@ use App\Models\Avatar;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -46,6 +47,17 @@ class UserService
         $this->deleteCurrentAvatar($currentAvatar);
 
         return $user;
+    }
+
+    public function verifyUserEmail(User $user, Request $request): bool
+    {
+        if (!$request->hasValidSignature() || $user->hasVerifiedEmail()) {
+            return false;
+        }
+
+        $user->markEmailAsVerified();
+
+        return true;
     }
 
     private function getDefaultAvatar(): Avatar
