@@ -98,7 +98,7 @@ class Authenticate extends Controller
      */
     public function register(RegisterRequest $request): array
     {
-        $user = $this->userService->createUser($request->validated());
+        $user = $this->userService->createUser($request->validated())->load('role');
         $tokenPair = $this->tokenGenerationService->generateTokenPair($user);
 
         return [
