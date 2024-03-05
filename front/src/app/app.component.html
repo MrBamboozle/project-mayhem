@@ -8,7 +8,7 @@
     </div>
     <div class="list-group navigation-menu">
       <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" class="list-group-item list-group-item-action">Homepage</a>
-      <a routerLink="/users" routerLinkActive="active" class="list-group-item list-group-item-action">Users</a>
+      <a routerLink="/users" routerLinkActive="active" class="list-group-item list-group-item-action" *ngIf="userStore.isAdmin || userStore.isGodMode">Users</a>
       <a routerLink="/events" routerLinkActive="active" class="list-group-item list-group-item-action">Events</a>
     </div>
   </nav>
@@ -49,5 +49,8 @@
       </div>
     </div>
   </div>
+
+  <img [src]="pencilSrc" class="pencil"/>
+  <img [src]="rulerSrc" class="ruler"/>
 
 </div>

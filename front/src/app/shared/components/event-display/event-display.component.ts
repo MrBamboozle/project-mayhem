@@ -17,12 +17,18 @@ import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 })
 export class EventDisplayComponent {
   public userAvatarSrc = userAvatarSrc;
-  @Input() event!: Omit<Event, 'creator' | 'createdAt' | 'updatedAt'>;
-
+  @Input() event!: Omit<Event, 'createdAt' | 'updatedAt'>;
+  
   private previewMap!: MapWrapper;
-
+  
   ngAfterViewInit(): void {
-    this.initMap();
+    setTimeout(() => {
+      this.initMap();
+    })
+  }
+
+  ngOnDestroy(): void {
+    this.previewMap.destroyMap();
   }
 
   private initMap(): void {
@@ -58,4 +64,5 @@ export class EventDisplayComponent {
       .filter((engagingUserType) => engagingUserType.engagementType === EngagementType.attend)
       .map((engagingUserType) => engagingUserType.user);
   }
+
 }

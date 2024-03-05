@@ -1,17 +1,19 @@
 import { Component } from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { EventsService } from '@app/services/events.service';
 import { EventsFiltersComponent } from '@app/shared/components/events-filters/events-filters.component';
+import { SignInModalComponent } from '@app/shared/modals/sign-in.modal/sign-in.modal.component';
 import { Event } from '@app/shared/models/event';
 import { InitialEventFilters } from '@app/shared/models/filter';
+import { ModalHelperService } from '@app/shared/services/modal-helper.service';
+import { UserStoreService } from '@app/shared/stores/user.store.service';
 import { MapWrapper } from '@app/shared/wrappers/map-wrapper';
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [EventsFiltersComponent, NgbCollapseModule, RouterLink],
+  imports: [EventsFiltersComponent, NgbCollapseModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
@@ -26,6 +28,8 @@ export class HomeComponent {
   constructor(
     private readonly _router: Router,
     private readonly eventsService: EventsService,
+    private readonly userStore: UserStoreService,
+    private readonly modalService: ModalHelperService,
   ) {
     const currentDate = new Date();
     const oneWeekFromNow = new Date(currentDate.getTime() + 7 * 24 * 60 * 60 * 1000);
@@ -41,6 +45,16 @@ export class HomeComponent {
 
   ngAfterViewInit(): void {
     this.initMap();
+  }
+
+  public onCreateClick(): void {
+    if(this.userStore.isSignedIn) {
+      this._router.navigate(['events', 'create'])
+    } else {
+      this.modalService.openSignInModal(() => {
+        this._router.navigate(['events', 'create']);
+      });
+    }
   }
 
   public onFilterChange(queryParams: string): void {

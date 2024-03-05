@@ -200,3 +200,20 @@
     margin-top: 25px;
   }
 }
+
+.pencil {
+  position: absolute;
+  top: -150px;
+  left: 75px;
+  width: 320px;
+  transform: rotate(-69deg);
+  z-index: -1;
+}
+.ruler {
+  position: absolute;
+  top: 300px;
+  left: -250px;
+  width: 500px;
+  transform: rotate(45deg);
+  z-index: -1;
+}

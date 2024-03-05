@@ -7,7 +7,7 @@
       </button>
     </div>
     <div class="button-container-top">
-      <button class="stamp-btn stamp-btn-success" [routerLink]="['/events', 'create']">Create Event</button>
+      <button class="stamp-btn stamp-btn-success" (click)="onCreateClick()">Create Event</button>
     </div>
   </div>
   <div class="events-container">

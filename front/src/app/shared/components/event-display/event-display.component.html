@@ -50,6 +50,18 @@
     </div>
   </div>
   <hr>
+  <div class="section creator">
+    <span>
+      Created by:
+    </span> 
+    <div class="avatar-container avatar-container__small as-input ms-3 me-4">
+      <img [src]="userAvatarSrc(event.creator)"/>
+    </div>
+    <p>
+      {{ event.creator.name }}
+    </p>
+  </div>
+  <hr>
   <div class="section dates d-flex justify-content-between">
     <div class="from">
       <span>
