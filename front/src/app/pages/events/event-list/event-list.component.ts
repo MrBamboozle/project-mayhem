@@ -1,14 +1,14 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { EventsService } from '@app/services/events.service';
 import { Event } from '@app/shared/models/event';
 import { NgbCollapseModule, NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
-import { Subject } from 'rxjs';
 import { ExpandableFolderComponent } from './components/expandable-folder/expandable-folder.component';
 import { UserStoreService } from '@app/shared/stores/user.store.service';
 import { EventsFiltersComponent } from '@app/shared/components/events-filters/events-filters.component';
+import { ModalHelperService } from '@app/shared/services/modal-helper.service';
 
 @Component({
   selector: 'app-event-list',
@@ -28,9 +28,11 @@ export class EventListComponent {
   public collectionSize: number = 0; // Total number of items
 
   constructor(
+    private readonly _router: Router,
     private readonly _route: ActivatedRoute,
     private readonly eventsService: EventsService,
-    private readonly userStore: UserStoreService
+    private readonly userStore: UserStoreService,
+    private readonly modalService: ModalHelperService,
   ) {}
 
   ngOnInit(): void {
@@ -54,6 +56,16 @@ export class EventListComponent {
         this.collectionSize = paginatedData.total;
       }
     )
+  }
+
+  public onCreateClick(): void {
+    if(this.userStore.isSignedIn) {
+      this._router.navigate(['events', 'create'])
+    } else {
+      this.modalService.openSignInModal(() => {
+        this._router.navigate(['events', 'create']);
+      });
+    }
   }
 
   onFilterChange(queryParams: string): void {

@@ -3,8 +3,10 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { UsersService } from '@app/services/users.service';
+import { RoleEnum } from '@app/shared/enums/roles';
 import { User } from '@app/shared/models/user';
 import { ModalHelperService } from '@app/shared/services/modal-helper.service';
+import { UserStoreService } from '@app/shared/stores/user.store.service';
 import { NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
 import { Subject, debounceTime } from 'rxjs';
 
@@ -36,6 +38,7 @@ export class UserListComponent {
     private readonly _router: Router,
     private readonly usersService: UsersService,
     private readonly modalService: ModalHelperService,
+    public userStore: UserStoreService
   ) {}
 
   ngOnInit(): void {
@@ -103,6 +106,10 @@ export class UserListComponent {
           this.fetchUsers(this.currentPage);
         });
       }
-    )
+    );
+  }
+
+  public isNonAdmin(user: User): boolean {
+    return user.role.name === RoleEnum.PREMIUM || user.role.name === RoleEnum.REGULAR;
   }
 }

@@ -137,4 +137,9 @@ export class MapWrapper {
     this.tooltips = []; // Reset the markers array
   }
 
+  public destroyMap(): void {
+    this.map.remove();
+    this.map.off();
+  }
+
 }

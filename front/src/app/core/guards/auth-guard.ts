@@ -1,13 +1,13 @@
-import { Injectable, Injector } from '@angular/core';
 import { ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { UserStoreService } from '@app/shared/stores/user.store.service';
+import { AppInjector } from '../service/app-injector.service';
 
 // Functional guard for user access
-export function userGuard(injector: Injector) {
+export function userGuard() {
   return (route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree => {
-    const userStore = injector.get(UserStoreService);
-    const router = injector.get(Router);
+    const userStore = AppInjector.getInjector().get(UserStoreService);
+    const router = AppInjector.getInjector().get(Router);
     const url: string = state.url;
 
     if (userStore.isSignedIn) {
@@ -24,16 +24,16 @@ export function userGuard(injector: Injector) {
 }
 
 // Functional guard for admin access
-export function adminGuard(injector: Injector) {
+export function adminGuard() {
   return (route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree => {
-    const userStore = injector.get(UserStoreService);
-    const router = injector.get(Router);
+    const userStore = AppInjector.getInjector().get(UserStoreService);
+    const router = AppInjector.getInjector().get(Router);
 
-    if (userStore.isSignedIn && userStore.isAdmin) {
+    if (userStore.isSignedIn && (userStore.isAdmin || userStore.isGodMode)) {
       return true;
     }
 
-    router.navigate(['/not-found']);
+    router.navigate(['/']);
     return false;
   };
 }

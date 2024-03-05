@@ -2,8 +2,8 @@ body {
   background-image: url('../assets/images/wood-texture.jpg'); /* Path to your texture image */
   background-repeat: repeat; /* This will make the texture repeat */
   background-size: auto; /* Keep the texture's original size */
-  background-attachment: fixed; /* Optional: makes the background fixed during scroll */
-  background-position: center; /* Optional: positions the background image */
+  // background-attachment: fixed; /* Optional: makes the background fixed during scroll */
+  background-position: top; /* Optional: positions the background image */
 
 	font-family: $font-primary;
 	font-size: 14px;

@@ -1,4 +1,4 @@
-import { Routes } from '@angular/router';
+import { Router, Routes } from '@angular/router';
 
 import { HomeComponent } from './pages/home/home.component';
 import { EventsComponent } from './pages/events/events.component';
@@ -12,6 +12,9 @@ import { CreateEventComponent } from './pages/events/create-event/create-event.c
 import { ProfileDataComponent } from './pages/profile/profile-data/profile-data.component';
 import { ProfileNotificationsComponent } from './pages/profile/profile-notifications/profile-notifications.component';
 import { ViewEventComponent } from './pages/events/view-event/view-event.component';
+import { userGuard, adminGuard } from './core/guards/auth-guard'; // Adjust the import path as needed
+import { Injector } from '@angular/core';
+import { UserStoreService } from './shared/stores/user.store.service';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent, },
@@ -20,9 +23,9 @@ export const routes: Routes = [
     children: [
       { path: '', component: EventListComponent },
       { path: 'list', component: EventListComponent },
-      { path: 'create', component: CreateEventComponent },
+      { path: 'create', component: CreateEventComponent, canActivate: [userGuard()] },
       { path: ':uuid', component: ViewEventComponent },
-      { path: ':uuid/edit', component: CreateEventComponent },
+      { path: ':uuid/edit', component: CreateEventComponent, canActivate: [userGuard()] },
     ],
   },
   {
@@ -31,7 +34,7 @@ export const routes: Routes = [
       { path: '', component: UserListComponent },
       { path: 'list', component: UserListComponent },
       { path: 'edit/:uuid', component: EditUserComponent },
-    ],
+    ], canActivateChild: [adminGuard()]
   },
   { path: 'profile', component: ProfileComponent,
     children: [
@@ -39,7 +42,7 @@ export const routes: Routes = [
       { path: 'data', component: ProfileDataComponent },
       { path: 'events', component: EventListComponent, data: { profileEvents: true } },
       { path: 'notifications', component: ProfileNotificationsComponent },
-    ],
+    ], canActivate: [userGuard()]
   },
   { path: '**', component: NotFoundComponent }
 ];

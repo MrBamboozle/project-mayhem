@@ -1,3 +1,5 @@
+import { RoleEnum } from "../enums/roles";
+
 export interface User {
   id: string;
   createdAt: string;
@@ -6,6 +8,7 @@ export interface User {
   email: string;
   emailVerifiedAt: string;
   avatar: Avatar;
+  role: Role;
 }
 
 export interface UserRequest {
@@ -22,4 +25,9 @@ export interface UserEditRequest {
 export interface Avatar {
   id: string;
   path: string;
+}
+
+export interface Role {
+  id: string;
+  name: RoleEnum;
 }

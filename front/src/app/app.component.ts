@@ -2,7 +2,6 @@ import { Component, Injector } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { NgbDropdownModule, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
-import { SignInModalComponent } from './shared/modals/sign-in.modal/sign-in.modal.component';
 import { ModalHelperService } from './shared/services/modal-helper.service';
 import { HttpClientModule } from '@angular/common/http';
 import { UserStoreService } from './shared/stores/user.store.service';
@@ -10,7 +9,6 @@ import { AuthenticationService } from './services/authentication.service';
 import { config } from './core/app-config';
 import { ToastsContainer } from './core/components/toast-container.component';
 import { AppInjector } from './core/service/app-injector.service';
-import { Subscription, filter, interval, startWith, switchMap } from 'rxjs';
 import { NotificationsService } from './services/notifications.service';
 
 @Component({
@@ -24,13 +22,14 @@ export class AppComponent {
   public isSidebarHidden: boolean = false;
   public title: string = 'PROJECT MAYHEM';
 
-  private notificationSubscription!: Subscription;
-
   get avatarSrc(): string {
     return `${config.BACKEND_URL}${this.userStore.currentUser.getValue().avatar.path}`
   }
   get pencilSrc(): string {
-    return `../assets/images.pencil.png`
+    return `assets/images/pencil.png`
+  }
+  get rulerSrc(): string {
+    return `assets/images/ruler.png`
   }
 
   constructor(
@@ -42,21 +41,7 @@ export class AppComponent {
   ) {
     AppInjector.setInjector(injector);
 
-    this.toggleNotificationSubscription();
-  }
-
-  private toggleNotificationSubscription(): void {
-    if(this.notificationSubscription) {
-      this.notificationSubscription.unsubscribe();
-    }
-
-    this.notificationSubscription = interval(60000) // Every 60000 milliseconds (1 minute)
-      .pipe(
-        startWith(0),
-        filter(() => this.userStore.isSignedIn),
-        switchMap(() => this.notificationsService.getNotifications())
-      )
-      .subscribe();
+    this.notificationsService.toggleNotificationSubscription();
   }
 
   public toggleSidebar(): void {
@@ -64,15 +49,7 @@ export class AppComponent {
   }
 
   public openSignInModal(): void {
-    const signInModalRef = this.modalService.openModal(SignInModalComponent);
-
-    signInModalRef.result.then(
-      () => {
-      },
-      () => {
-        this.toggleNotificationSubscription();
-      }
-    );
+    this.modalService.openSignInModal();
   }
 
   public signOut(): void {

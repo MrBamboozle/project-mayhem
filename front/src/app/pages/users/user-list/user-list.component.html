@@ -15,6 +15,7 @@
           <th>#</th>
           <th class="sortable" (click)="sort('name')">Name <span [ngClass]="getSortIcon('name')">></span></th>
           <th class="sortable" (click)="sort('email')">Email <span [ngClass]="getSortIcon('email')">></span></th>
+          <th>Role</th>
           <th>Actions</th>
           <!-- Add other user attributes here -->
         </tr>
@@ -24,11 +25,12 @@
           <td class="printed">{{ (currentPage - 1) * pageSize + i + 1 }}</td>
           <td>{{ user.name }}</td>
           <td>{{ user.email }}</td>
+          <td>{{ user.role.name }}</td>
           <td>
-            <button class="btn btn-sm btn-link" (click)="editUser(user.id)">
+            <button class="btn btn-sm btn-link" (click)="editUser(user.id)" *ngIf="userStore.isGodMode || isNonAdmin(user)">
               Edit
             </button>
-            <button class="btn btn-sm btn-link text-danger" (click)="deleteUser(user.id)">
+            <button class="btn btn-sm btn-link text-danger" (click)="deleteUser(user.id)" *ngIf="userStore.isGodMode || isNonAdmin(user)">
               Delete
             </button>
           </td>

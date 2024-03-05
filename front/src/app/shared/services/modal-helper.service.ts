@@ -4,6 +4,8 @@ import { ConfirmDialogModalComponent } from '../modals/confirm-dialog.modal/conf
 import { ImageUploadModalComponent } from '../modals/image-upload.modal/image-upload.modal.component';
 import { ImageCropCompressModalComponent } from '../modals/image-crop-compress.modal/image-crop-compress.modal.component';
 import { ImagePreviewModalComponent } from '../modals/image-preview.modal/image-preview.modal.component';
+import { NotificationsService } from '@app/services/notifications.service';
+import { SignInModalComponent } from '../modals/sign-in.modal/sign-in.modal.component';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +13,8 @@ import { ImagePreviewModalComponent } from '../modals/image-preview.modal/image-
 export class ModalHelperService {
 
   constructor(
-    private readonly modalService: NgbModal
+    private readonly modalService: NgbModal,
+    private readonly notificationsService: NotificationsService
   ) {}
 
   openModal(component: any): NgbModalRef {
@@ -24,12 +27,25 @@ export class ModalHelperService {
     return modalRef;
   }
 
-  openCofirmModal(
+  public openSignInModal(successFn: () => void = () => {}): void {
+    const modalRef = this.openModal(SignInModalComponent);
+
+    modalRef.result.then(
+      () => {
+      },
+      () => {
+        this.notificationsService.toggleNotificationSubscription();
+        successFn();
+      }
+    );
+  }
+
+  public openCofirmModal(
     title: string,
     message: string,
     confirmFn: () => void,
     cancelFn: () => void = () => {},
-  ) {
+  ): void {
     const modalRef = this.modalService.open(ConfirmDialogModalComponent);
     modalRef.componentInstance.title = title; // Customize title
     modalRef.componentInstance.message = message; // Customize message
@@ -54,10 +70,10 @@ export class ModalHelperService {
     );
   }
 
-  openImageUploadModal(
+  public openImageUploadModal(
     cropAndCompress: boolean,
     confirmFn: (file: File) => void,
-  ) {
+  ): void {
     const modalRef = this.modalService.open(ImageUploadModalComponent, {size: 'xl', animation: false});
     modalRef.componentInstance.cropAndCompress = cropAndCompress;
 
@@ -66,20 +82,20 @@ export class ModalHelperService {
     });
 
     modalRef.result.then(
-        (result) => {
-        // Logic to execute on confirmation
-        confirmFn(result);
+      (result) => {
+      // Logic to execute on confirmation
+      confirmFn(result);
       }, 
       (reason) => {}
     );
   }
 
-  openImageCropAndCompressModal(
+  public openImageCropAndCompressModal(
     image: File,
     confirmFn: (file: File) => void,
     targetSize: number = 102400*3,
     aspectRatio: number = 1 / 1,
-  ) {
+  ): void {
     const modalRef = this.modalService.open(ImageCropCompressModalComponent, {size: 'xl', animation: false});
     modalRef.componentInstance.image = image;
     modalRef.componentInstance.targetSize = targetSize;
@@ -98,10 +114,10 @@ export class ModalHelperService {
     );
   }
 
-  openImagePreviewModal(
+  public openImagePreviewModal(
     previewImage: string,
     confirmFn: () => void
-  ) {
+  ): void {
     const modalRef = this.modalService.open(ImagePreviewModalComponent, {size: 'xl', animation: false});
     modalRef.componentInstance.previewImage = previewImage;
 

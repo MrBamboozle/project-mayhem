@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, ReplaySubject, Subject, isEmpty } from 'rxjs';
 import { User } from '../models/user';
+import { RoleEnum } from '../enums/roles';
 
 @Injectable({
   providedIn: 'root'
@@ -19,6 +20,10 @@ export class UserStoreService {
   }
 
   public get isAdmin(): boolean {
-    return this.currentUser.getValue().role;
+    return this.isSignedIn && this.currentUser.getValue().role.name === RoleEnum.ADMIN;
+  }
+
+  public get isGodMode(): boolean {
+    return this.isSignedIn && this.currentUser.getValue().role.name === RoleEnum.GODMODE;
   }
 }

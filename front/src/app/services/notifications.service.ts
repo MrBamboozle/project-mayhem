@@ -3,7 +3,8 @@ import { Injectable } from '@angular/core';
 import { config } from '@app/core/app-config';
 import { Notification } from '@app/shared/models/notification';
 import { PaginatedResponse } from '@app/shared/models/paginated-response';
-import { Observable, tap } from 'rxjs';
+import { UserStoreService } from '@app/shared/stores/user.store.service';
+import { Observable, tap, Subscription, filter, interval, startWith, switchMap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -15,8 +16,11 @@ export class NotificationsService {
   public hasUnreadNotifications: boolean = false;
   public unreadNotificationsNumber: number = 0;
 
+  private notificationSubscription!: Subscription;
+
   constructor(
     private readonly _http: HttpClient,
+    private readonly userStore: UserStoreService
   ) { }
 
   public getNotifications(queryParams: string = ''): Observable<PaginatedResponse<Notification> & { total: number; totalUnread: number }> {
@@ -40,5 +44,19 @@ export class NotificationsService {
   public deleteNotifications(): Observable<PaginatedResponse<Notification>> {
     return this._http
       .delete<PaginatedResponse<Notification>>(this.notificationsAllUrl);
+  }
+
+  public toggleNotificationSubscription(): void {
+    if(this.notificationSubscription) {
+      this.notificationSubscription.unsubscribe();
+    }
+
+    this.notificationSubscription = interval(60000) // Every 60000 milliseconds (1 minute)
+      .pipe(
+        startWith(0),
+        filter(() => this.userStore.isSignedIn),
+        switchMap(() => this.getNotifications())
+      )
+      .subscribe();
   }
 }

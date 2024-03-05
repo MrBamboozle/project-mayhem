@@ -16,6 +16,7 @@ import { EventDisplayComponent } from '@app/shared/components/event-display/even
 import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { CategoryPickerComponent } from '@app/shared/components/category-picker/category-picker.component';
+import { UserStoreService } from '@app/shared/stores/user.store.service';
 
 @Component({
   selector: 'app-create-event',
@@ -75,7 +76,8 @@ export class CreateEventComponent {
     private readonly renderer: Renderer2,
     private readonly _router: Router,
     private readonly _route: ActivatedRoute,
-    private readonly _changeDetectorRef: ChangeDetectorRef
+    private readonly _changeDetectorRef: ChangeDetectorRef,
+    private readonly userStore: UserStoreService
   ) {}
 
   ngOnInit(): void {
@@ -210,7 +212,7 @@ export class CreateEventComponent {
     return this.createEventFormThird.controls;
   }
 
-  get previewEvent(): Omit<Event, 'creator' | 'createdAt' | 'updatedAt'> {
+  get previewEvent(): Omit<Event, 'createdAt' | 'updatedAt'> {
 
     const eventData = {
       ...this.createEventFormFirst.value,
@@ -220,7 +222,7 @@ export class CreateEventComponent {
     };
 
     
-    const event: Omit<Event, 'creator' | 'createdAt' | 'updatedAt'> = {
+    const event: Omit<Event, 'createdAt' | 'updatedAt'> = {
       title: eventData.title,
       description: eventData.description,
       startTime: eventData.dateFrom,
@@ -230,7 +232,8 @@ export class CreateEventComponent {
       tagLine: eventData.tagline,
       address: JSON.stringify(eventData.address),
       id: 'preview',
-      engagingUsersTypes: this.event ? this.event.engagingUsersTypes : []
+      engagingUsersTypes: this.event ? this.event.engagingUsersTypes : [],
+      creator: this.userStore.currentUser.getValue()
     }
 
     return event;

@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { EventsService } from '@app/services/events.service';
 import { EventDisplayComponent } from '@app/shared/components/event-display/event-display.component';
 import { EngagementType, EngagementTypeRequest, Event } from '@app/shared/models/event';
+import { ModalHelperService } from '@app/shared/services/modal-helper.service';
 import { UserStoreService } from '@app/shared/stores/user.store.service';
 import { BehaviorSubject } from 'rxjs';
 
@@ -26,7 +27,8 @@ export class ViewEventComponent {
     private readonly _route: ActivatedRoute,
     private readonly _router: Router,
     private readonly eventsService: EventsService,
-    private readonly userStore: UserStoreService
+    public userStore: UserStoreService,
+    private readonly modalService: ModalHelperService
   ) { }
 
   ngOnInit(): void {
@@ -44,14 +46,25 @@ export class ViewEventComponent {
       (data) => {
         this.event = data;
         this.fetchedEvent.next(true);
-
-        this.isCurrentUserCreator = this.userStore.currentUser.getValue().id === this.event.creator.id;
+        this.checkCreator();
       }
     )
   }
 
   public editEvent(): void {
     this._router.navigate(['events', this.event.id, 'edit']);
+  }
+  
+  public deleteEvent(): void {
+    this.modalService.openCofirmModal(
+      'Delete event?',
+      'Are you sure you want to delete this event?',
+      () => {
+        this.eventsService.deleteEvent(this.event.id).subscribe(() => {
+          this._router.navigate(['events']);
+        });
+      }
+    );
   }
 
   get isWatching(): boolean {
@@ -67,27 +80,39 @@ export class ViewEventComponent {
   }
 
   public watchEvent(): void {
-    const req: EngagementTypeRequest = {
-      engagementType: EngagementType.watch
-    };
-
-    this.eventsService.engageEvent(this.event.id, req).subscribe(
-      (data) => {
-        this.event = data;
-      }
-    );
+    if(this.userStore.isSignedIn) {
+      const req: EngagementTypeRequest = {
+        engagementType: EngagementType.watch
+      };
+  
+      this.eventsService.engageEvent(this.event.id, req).subscribe(
+        (data) => {
+          this.event = data;
+        }
+      );
+    } else {
+      this.modalService.openSignInModal(() => {
+        this.checkCreator();
+      });
+    }
   }
 
   public attendEvent(): void {
-    const req: EngagementTypeRequest = {
-      engagementType: EngagementType.attend
-    };
-
-    this.eventsService.engageEvent(this.event.id, req).subscribe(
-      (data) => {
-        this.event = data;
-      }
-    );
+    if(this.userStore.isSignedIn) {
+      const req: EngagementTypeRequest = {
+        engagementType: EngagementType.attend
+      };
+  
+      this.eventsService.engageEvent(this.event.id, req).subscribe(
+        (data) => {
+          this.event = data;
+        }
+      );
+    } else {
+      this.modalService.openSignInModal(() => {
+        this.checkCreator();
+      });
+    }
   }
 
   public detachEvent(): void {
@@ -100,6 +125,10 @@ export class ViewEventComponent {
         this.event = data;
       }
     );
+  }
+
+  public checkCreator(): void {
+    this.isCurrentUserCreator = this.userStore.currentUser.getValue().id === this.event.creator.id;
   }
 
 }

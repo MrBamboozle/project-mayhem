@@ -6,13 +6,26 @@
 
 .avatar-container {
   position: relative;
+  width: fit-content;
+
+  img {
+    width: 150px;
+    height: 150px;
+
+    box-shadow: -3px 3px 6px rgba(0, 0, 0, 0.5);
+  }
 
   &.pickable {
     cursor: pointer;
   }
 
+  &.as-input {
+    /* Outline properties */
+    outline: 2px dashed $dark; /* '3px solid #000000' is the outline style */
+    outline-offset: 5px; /* Adjust '10px' to control the space between the outline and the element */
+  }
+
   &__big {
-    width: fit-content;
     img {
       width: 200px;
       height: 200px;
@@ -21,11 +34,14 @@
     }
   }
 
-  img {
-    width: 150px;
-    height: 150px;
+  &__small {
+    display: inline-block;
+    img {
+      width: 100px;
+      height: 100px;
 
-    box-shadow: -3px 3px 6px rgba(0, 0, 0, 0.5);
+      box-shadow: -2px 2px 4px rgba(0, 0, 0, 0.5);
+    }
   }
 
   &::after {
