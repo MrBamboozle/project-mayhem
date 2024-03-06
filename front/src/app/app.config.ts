@@ -9,6 +9,7 @@ import { Observable, catchError, of, tap } from 'rxjs';
 import { config } from './core/app-config';
 import { ToastInterceptor } from './core/interceptors/toast-interceptor';
 import { provideAnimations } from '@angular/platform-browser/animations';
+import { APP_BASE_HREF } from '@angular/common';
 
 function initializeAppFactory(httpClient: HttpClient, userStore: UserStoreService): () => Observable<any> {
   return () => httpClient.get(`${config.API_URL}/me`)
@@ -40,6 +41,10 @@ export const appConfig: ApplicationConfig = {
       provide: HTTP_INTERCEPTORS,
       useClass: ToastInterceptor,
       multi: true
+    },
+    {
+      provide: APP_BASE_HREF, 
+      useValue: '/'
     },
     provideRouter(routes),
     provideHttpClient(withFetch(), withInterceptorsFromDi()),
