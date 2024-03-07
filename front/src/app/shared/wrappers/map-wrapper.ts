@@ -108,7 +108,7 @@ export class MapWrapper {
     // Define the HTML content for your custom divIcon
     const htmlContent = `
       <div class="custom-tooltip-container">
-        <div class="custom-tooltip">${this.sanitizer.sanitize(SecurityContext.HTML, text)}</div>
+        <div class="custom-tooltip">${this.sanitizeHtml(this.sanitizer.sanitize(SecurityContext.HTML, text))}</div>
       </div>
     `;
 
@@ -140,6 +140,12 @@ export class MapWrapper {
   public destroyMap(): void {
     this.map.remove();
     this.map.off();
+  }
+
+  private sanitizeHtml(htmlContent: string | null) {
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = htmlContent ? htmlContent : '';
+    return tempDiv.textContent || tempDiv.innerText || '';
   }
 
 }
