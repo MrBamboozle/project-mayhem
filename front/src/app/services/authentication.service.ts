@@ -2,7 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { config } from '@app/core/app-config';
-import { LoginRequest, LoginResponse, RefreshTokenResponse, RegisterRequest } from '@app/shared/models/login';
+import { ForgotPasswordRequest, LoginRequest, LoginResponse, RefreshTokenResponse, RegisterRequest } from '@app/shared/models/login';
+import { MessageResponse } from '@app/shared/models/message';
 import { User } from '@app/shared/models/user';
 import { UserStoreService } from '@app/shared/stores/user.store.service';
 import { Observable, catchError, map, of, take, tap } from 'rxjs';
@@ -14,6 +15,7 @@ export class AuthenticationService {
   private readonly loginUrl: string = `${config.API_URL}/login`;
   private readonly logoutUrl: string = `${config.API_URL}/logout`;
   private readonly registerUrl: string = `${config.API_URL}/register`;
+  private readonly forgotPasswordUrl: string = `${config.API_URL}/forgot-password`;
   private readonly refreshTokenUrl: string = `${config.API_URL}/refresh-token`;
   private readonly currentUserUrl: string = `${config.API_URL}/me`;
 
@@ -38,14 +40,21 @@ export class AuthenticationService {
     return this._http
       .post<LoginResponse>(this.registerUrl, request);
   }
-
+  
   public logout() {
     this.clearTokens();
     this.userStore.storeCurrentUser(new class {} as User);
     this.userStore.isStored.next(false);
     this._router.navigate(['']);
     return this._http
-      .post(this.logoutUrl, {})
+    .post(this.logoutUrl, {})
+  }
+
+  public forgotPassword(
+    request: ForgotPasswordRequest,
+  ): Observable<MessageResponse> {
+    return this._http
+      .post<MessageResponse>(this.forgotPasswordUrl, request);
   }
 
   public getRefreshToken(): Observable<RefreshTokenResponse|null> {

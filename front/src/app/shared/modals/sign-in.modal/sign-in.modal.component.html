@@ -15,12 +15,22 @@
             Register!
           </button>
         </p>
+        <br>
+        <button class="btn btn-sm btn-link" (click)="nav.select(3)">
+          Forgot password?
+        </button>
       </ng-template>
     </li>
     <li [ngbNavItem]="2">
       <button ngbNavLink>Register</button>
       <ng-template ngbNavContent>
         <app-register (onRegistered)="activeModal.dismiss('User registered')"></app-register>
+      </ng-template>
+    </li>
+    <li [ngbNavItem]="3">
+      <button ngbNavLink>Forgot password</button>
+      <ng-template ngbNavContent>
+        <app-forgot-password></app-forgot-password>
       </ng-template>
     </li>
   </ul>

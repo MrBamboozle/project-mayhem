@@ -22,3 +22,7 @@ export interface RegisterRequest {
   password: string;
   repeatPassword: string;
 }
+
+export interface ForgotPasswordRequest {
+  email: string;
+}
