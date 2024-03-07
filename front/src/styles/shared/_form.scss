@@ -31,6 +31,7 @@
     flex-wrap: wrap;
 
     margin-bottom: 20px;
+    // background-color: red;
   
     label {
       // flex: 0 0 auto; // Don't grow, don't shrink, and be automatically sized
@@ -41,6 +42,14 @@
       color: $dark;
       font-weight: bold;
       line-height: 1;
+    }
+
+    textarea {
+      height: 100px!important;
+      padding: 10px!important;
+      resize: none!important;
+      border: 1px dashed rgba(0, 0, 0, .7);
+      box-sizing: border-box; /* Ensures padding does not affect the final size */
     }
   
     .form-control {

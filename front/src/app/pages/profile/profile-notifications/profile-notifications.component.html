@@ -1,9 +1,9 @@
 <div class="pagination-container">
   <div class="d-flex justify-content-between align-items-end notification-buttons-container" *ngIf="notificationsService.hasUnreadNotifications || notifications.length">
-    <div class="button-container-top" *ngIf="notificationsService.hasUnreadNotifications">
+    <div class="button-container__top" *ngIf="notificationsService.hasUnreadNotifications">
       <button class="stamp-btn stamp-btn-neutral stamp-btn-small" (click)="markAllAsRead()">Mark all as read</button>
     </div>
-    <div class="button-container-top" *ngIf="notifications.length">
+    <div class="button-container__top" *ngIf="notifications.length">
       <button class="stamp-btn stamp-btn-danger stamp-btn-small" (click)="deleteAll()">Delete all</button>
     </div>
   </div>

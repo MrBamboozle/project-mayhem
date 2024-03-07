@@ -1,12 +1,12 @@
 
 <div class="pagination-container">
   <div class="d-flex justify-content-between align-items-end events-buttons-container">
-    <div class="button-container-top">
+    <div class="button-container__top">
       <button class="stamp-btn stamp-btn-neutral stamp-btn-small" type="button" (click)="areFiltersCollapsed = !areFiltersCollapsed" [attr.aria-expanded]="!areFiltersCollapsed" aria-controls="filterSection">
         {{ areFiltersCollapsed ? 'Show Filters' : 'Hide Filters' }}
       </button>
     </div>
-    <div class="button-container-top">
+    <div class="button-container__top">
       <button class="stamp-btn stamp-btn-success" (click)="onCreateClick()">Create Event</button>
     </div>
   </div>

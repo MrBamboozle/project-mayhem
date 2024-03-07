@@ -14,6 +14,16 @@
   padding-top: 24px!important;
 }
 
+.mat-horizontal-stepper-header-container {
+  .mat-step-icon-state-edit {
+    background-color: $dark-blue-ink!important;
+  }
+
+  .mat-step-icon-selected {
+    background-color: $dark-blue-ink!important;
+  }
+}
+
 .mat-stepper-horizontal {
   background: none!important;
 }
