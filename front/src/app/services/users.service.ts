@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { config } from '@app/core/app-config';
 import { MessageResponse } from '@app/shared/models/message';
 import { PaginatedResponse } from '@app/shared/models/paginated-response';
-import { User, UserEditRequest, UserRequest } from '@app/shared/models/user';
+import { PasswordChangeRequest, User, UserEditRequest, UserRequest } from '@app/shared/models/user';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -12,6 +12,7 @@ import { Observable } from 'rxjs';
 export class UsersService {
   private readonly usersUrl: string = `${config.API_URL}/users`;
   private readonly usersAllUrl: string = `${config.API_URL}/users-all`;
+  private readonly changePasswordUrl: string = `${this.usersUrl}/password-change`;
 
   constructor(
     private readonly _http: HttpClient,
@@ -58,5 +59,10 @@ export class UsersService {
 
     return this._http
       .post<User>(`${this.usersUrl}/${userId}/avatars`, formData);
+  }
+
+  public changePassword(id: string, passwordChangeReq: PasswordChangeRequest): Observable<User> {
+    return this._http
+      .patch<User>(`${this.changePasswordUrl}/${id}`, passwordChangeReq);
   }
 }

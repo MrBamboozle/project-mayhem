@@ -23,7 +23,7 @@ export class RegisterComponent {
     name: ['', [Validators.maxLength(16), usernameValidator(), Validators.required]],
     password: ['', [Validators.required]],
     repeatPassword: ['', [Validators.required]],
-  }, { validators: passwordMatchingValidator() })
+  }, { validators: passwordMatchingValidator('password', 'repeatPassword') })
 
   constructor(
     private readonly formBuilder: FormBuilder,
