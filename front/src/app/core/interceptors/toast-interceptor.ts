@@ -15,7 +15,7 @@ export class ToastInterceptor implements HttpInterceptor {
       tap(evt => {
         // Show success toast only for POST, PATCH, DELETE requests
         if (evt instanceof HttpResponse && ['POST', 'PATCH', 'DELETE'].includes(req.method)) {
-          this.toastService.show('You did it!', { header: 'Success', classname: 'bg-success text-light' });
+          this.toastService.show(evt.body?.message ? evt.body?.message : 'You did it!', { header: 'Success', classname: 'bg-success text-light' });
         }
       }),
       catchError((error: HttpErrorResponse) => {

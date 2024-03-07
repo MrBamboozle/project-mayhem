@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { UsersService } from '@app/services/users.service';
-import { User, UserEditRequest } from '@app/shared/models/user';
+import { PasswordChangeRequest, User, UserEditRequest } from '@app/shared/models/user';
 import { passwordMatchingValidator } from '@app/shared/validators/password-matching.validator';
 
 @Component({
@@ -17,9 +17,10 @@ export class ChangePasswordComponent {
   @Input() user!: User;
 
   public readonly changePasswordForm: FormGroup = this.formBuilder.group({
-    password: ['', [Validators.required]],
+    oldPassword: ['', [Validators.required]],
+    newPassword: ['', [Validators.required]],
     repeatPassword: ['', [Validators.required]],
-  }, { validators: passwordMatchingValidator() })
+  }, { validators: passwordMatchingValidator('newPassword', 'repeatPassword') })
 
   constructor(
     private readonly formBuilder: FormBuilder,
@@ -35,23 +36,16 @@ export class ChangePasswordComponent {
       return;
     }
 
-    const request: UserEditRequest = {
-      password: this.changePasswordForm.value.password,
-      repeatPassword: this.changePasswordForm.value.repeatPassword,
+    const request: PasswordChangeRequest = {
+      password: this.changePasswordForm.value.newPassword,
+      passwordOld: this.changePasswordForm.value.oldPassword,
     }
 
-
-    // this.authService
-    //   .login(request)
-    //   .subscribe({
-    //     next: (data: LoginResponse) => {
-    //       this.userStore.storeCurrentUser(data.user);
-    //       this.authService.storeAccessToken(data.token)
-    //       this.onSignedIn.emit(true);
-    //     },
-    //     error: (e) => console.error(e),
-    //     complete: () => console.info('complete') 
-    //   })
+    this.userService.changePassword(this.user.id, request).subscribe(
+      () => {
+        // Good job
+      }
+    )
   }
 
 }

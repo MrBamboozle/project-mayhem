@@ -16,6 +16,11 @@ export interface UserRequest {
   email: string;
 }
 
+export interface PasswordChangeRequest {
+  password: string;
+  passwordOld: string;
+}
+
 export interface UserEditRequest {
   name?: string;
   password?: string;
