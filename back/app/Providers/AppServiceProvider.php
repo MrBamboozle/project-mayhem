@@ -27,7 +27,8 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(EventsFilter::class, fn(Application $app) => new EventsFilter());
         $this->app->singleton(BaseSort::class, fn(Application $app) => new BaseSort());
         $this->app->singleton(UserService::class, fn(Application $app) => new UserService());
-        $this->app->singleton(EventService::class, fn(Application $app) => new EventService(new NormatimOsmClient()));
+        $this->app->singleton(NormatimOsmClient::class, fn(Application $app) => new NormatimOsmClient());
+        $this->app->singleton(EventService::class, fn(Application $app) => new EventService(app(NormatimOsmClient::class)));
     }
 
     /**

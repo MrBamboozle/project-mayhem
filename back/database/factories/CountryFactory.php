@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\CountrySubdivision;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +18,8 @@ class CountryFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'id' => $this->faker->unique(false, 6)->countryCode,
+            'name' => $this->faker->country,
         ];
     }
 }

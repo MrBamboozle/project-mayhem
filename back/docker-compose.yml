@@ -17,7 +17,7 @@ services:
     extra_hosts:
         - "host.docker.internal:host-gateway"
     networks:
-      - app
+      - project_mayhem
 
   worker:
       build:
@@ -36,10 +36,10 @@ services:
       extra_hosts:
           - "host.docker.internal:host-gateway"
       networks:
-          - app
+          - project_mayhem
 
   db:
-    image: mysql:5.7
+    image: mysql:8.0
     container_name: db
     restart: unless-stopped
     environment:
@@ -54,7 +54,25 @@ services:
     ports:
       - "3306:3306"
     networks:
-      - app
+      - project_mayhem
+
+  test_db:
+      image: mysql:8.0
+      container_name: test_db
+      restart: unless-stopped
+      environment:
+          MYSQL_DATABASE: ${DB_DATABASE}
+          MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+          MYSQL_PASSWORD: ${DB_PASSWORD}
+          MYSQL_USER: ${DB_USERNAME}
+          SERVICE_TAGS: dev
+          SERVICE_NAME: mysql
+      volumes:
+          - ./docker/mysql/test_data:/var/lib/mysql
+      ports:
+          - "3307:3306"
+      networks:
+          - project_mayhem
 
   nginx:
     image: nginx:1.25.3-alpine
@@ -66,7 +84,7 @@ services:
       - ./:/var/www/back
       - ./docker/nginx:/etc/nginx/conf.d
     networks:
-      - app
+      - project_mayhem
 networks:
-  app:
+  project_mayhem:
     driver: bridge

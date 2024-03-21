@@ -10,8 +10,7 @@ use App\Exceptions\Exceptions\FailActionOnModelException;
 use App\Http\Clients\NormatimOsmClient;
 use App\Models\City;
 use App\Models\Event;
-use App\Models\User;
-use DateTime;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Facades\Auth;
@@ -22,7 +21,7 @@ use Throwable;
 class EventService
 {
     public function __construct(
-        private readonly NormatimOsmClient $osmClient,
+        public readonly NormatimOsmClient $osmClient,
     ) {}
 
 
@@ -33,15 +32,15 @@ class EventService
     {
         DB::beginTransaction();
         try {
-            $event = Event::factory()->make([
-                JsonFieldNames::TITLE->value => $data[JsonFieldNames::TITLE->value],
-                JsonFieldNames::TAG_LINE->snakeCase() => $data[JsonFieldNames::TAG_LINE->value] ?? null,
-                JsonFieldNames::DESCRIPTION->value => $data[JsonFieldNames::DESCRIPTION->value],
-                JsonFieldNames::START_TIME->snakeCase() => new DateTime($data[JsonFieldNames::START_TIME->value]),
-                JsonFieldNames::END_TIME->snakeCase() => new DateTime($data[JsonFieldNames::END_TIME->value]),
-                JsonFieldNames::LOCATION->value => $data[JsonFieldNames::LOCATION->value],
-                JsonFieldNames::USER_ID->snakeCase() => Auth::user()->id,
-            ]);
+            $event = new Event();
+
+            $event->title = $data[JsonFieldNames::TITLE->value];
+            $event->tag_line = $data[JsonFieldNames::TAG_LINE->value] ?? null;
+            $event->description = $data[JsonFieldNames::DESCRIPTION->value];
+            $event->start_time = new Carbon($data[JsonFieldNames::START_TIME->value]);
+            $event->end_time = new Carbon($data[JsonFieldNames::END_TIME->value]);
+            $event->location = $data[JsonFieldNames::LOCATION->value];
+            $event->user_id = Auth::user()->id;
 
             $address = $data['address'] ?? null;
 
@@ -123,7 +122,7 @@ class EventService
 
             $event->save();
         } catch (Throwable $error) {
-            DB::rollBack();
+             DB::rollBack();
 
             throw new FailActionOnModelException($error->getMessage(), 'update', Event::class);
         }
@@ -142,16 +141,8 @@ class EventService
      */
     public function deleteEvent(Event $event): void
     {
-        DB::beginTransaction();
-        try {
-            $event->categories()->sync([]);
-            $event->delete();
-        } catch (Throwable $error) {
-            DB::rollBack();
-
-            throw new FailActionOnModelException($error->getMessage(), 'delete', Event::class);
-        }
-        DB::commit();
+        $event->categories()->sync([]);
+        $event->delete();
     }
 
     /**
@@ -161,59 +152,43 @@ class EventService
     {
         $user = Auth::user();
         $fieldName = JsonFieldNames::ENGAGEMENT_TYPE;
-        $engagementType = EventEngagementType::create($data[$fieldName->value]);
+        $fieldValue = $data[$fieldName->value] ?? '';
+        $engagementType = EventEngagementType::create($fieldValue);
 
         if ($engagementType->isUndefined()) {
             throw new FailActionOnModelException(
-                'Invalid engagement ' . $data[$fieldName->value] . ' received',
+                "Invalid engagement $fieldValue received",
                 'attach engagement',
                 Event::class
             );
         }
 
-        DB::beginTransaction();
-        try {
-            if ($engagementType->isDetach()) {
-                $event->engagingUsers()->detach($user->id);
-
-                DB::commit();
-
-                EventEngagement::dispatch($event, $engagementType);
-
-                return $event;
-            }
-
-            $engagingUsers = $event->engagingUsers()->where('user_id', '=', $user->id)->get();
-
-            if ($engagingUsers->isEmpty()) {
-                $event->engagingUsers()
-                    ->withPivotValue($fieldName->snakeCase(), $data[$fieldName->value])
-                    ->attach($user->id);
-
-                DB::commit();
-
-                EventEngagement::dispatch($event, $engagementType);
-
-                return $event;
-            }
-
-            $event->engagingUsers()->updateExistingPivot(
-                $user->id,
-                [$fieldName->snakeCase() => $data[ $fieldName->value ]]
-            );
+        if ($engagementType->isDetach()) {
+            $event->engagingUsers()->detach($user->id);
 
             EventEngagement::dispatch($event, $engagementType);
 
-            DB::commit();
-        } catch (Throwable $error) {
-            DB::rollBack();
-
-            throw new FailActionOnModelException(
-                $error->getMessage(),
-                'attach engagement',
-                Event::class
-            );
+            return $event;
         }
+
+        $engagingUsers = $event->engagingUsers()->find($user->id);
+
+        if (empty($engagingUsers)) {
+            $event->engagingUsers()
+                ->withPivotValue($fieldName->snakeCase(), $fieldValue)
+                ->attach($user->id);
+
+            EventEngagement::dispatch($event, $engagementType);
+
+            return $event;
+        }
+
+        $event->engagingUsers()->updateExistingPivot(
+            $user->id,
+            [$fieldName->snakeCase() => $fieldValue]
+        );
+
+        EventEngagement::dispatch($event, $engagementType);
 
         return $event;
     }

@@ -19,6 +19,11 @@ class Event extends Model implements OwnedModel
         'city_id'
     ];
 
+    protected $casts = [
+        'start_time' => 'datetime:d/m/y H:i:s',
+        'end_time' => 'datetime:d/m/y H:i:s',
+    ];
+
     public function categories(): BelongsToMany
     {
         return $this->belongsToMany(
