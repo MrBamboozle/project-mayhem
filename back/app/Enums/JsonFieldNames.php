@@ -3,6 +3,7 @@
 namespace App\Enums;
 
 use Illuminate\Support\Str;
+use ValueError;
 
 enum JsonFieldNames: string
 {
@@ -36,6 +37,37 @@ enum JsonFieldNames: string
     case EVENT_ID = 'eventId';
 
     case ENGAGEMENT_TYPE = 'engagementType';
+
+    case UNDEFINED = 'undefined';
+
+    public static function create(string $value): self
+    {
+        try {
+            return self::from($value);
+        } catch (ValueError) {
+            return self::UNDEFINED;
+        }
+    }
+
+    public function isUser(): bool
+    {
+        return $this === self::USER;
+    }
+
+    public function isUserId(): bool
+    {
+        return $this === self::USER_ID;
+    }
+
+    public function isCity(): bool
+    {
+        return $this === self::CITY;
+    }
+
+    public function isCityId(): bool
+    {
+        return $this === self::CITY_ID;
+    }
 
     public function snakeCase(): string
     {
